@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChitOS — Mobile All Screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --warm:#F9F7F4;--warm2:#F2EFE9;--card:#fff;
+  --t1:#1A1A1A;--t2:#6B6B6B;--t3:#A8A39A;
+  --b:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.13);
+  --green:#16A34A;--gbg:#EAF5EE;--gb:rgba(22,163,74,0.2);
+  --amber:#D97706;--abg:#FEF3C7;--ab:rgba(217,119,6,0.2);
+  --red:#DC2626;--rbg:#FEE2E2;--rb:rgba(220,38,38,0.2);
+  --blue:#2563EB;--bbg:#EFF6FF;--bb:rgba(37,99,235,0.2);
+  --gold:#B45309;--saffron:#E67C2A;
+  --r:12px;--rs:8px;
+}
+body{font-family:'DM Sans',sans-serif;background:#E8E4DC;-webkit-font-smoothing:antialiased;}
+
+.page-header{text-align:center;padding:24px 16px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#888;letter-spacing:0.8px;}
+
+.device-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:16px;}
+.device-wrap{}
+.device{background:#1A1A1A;border-radius:40px;padding:10px;width:320px;flex-shrink:0;}
+.device-screen{background:var(--warm);border-radius:32px;overflow:hidden;height:620px;display:flex;flex-direction:column;position:relative;}
+.device-label{text-align:center;font-size:11px;color:#777;margin-top:8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
+
+.screen-scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;}
+.screen-scroll::-webkit-scrollbar{display:none;}
+.scroll-pad{padding:14px;display:flex;flex-direction:column;gap:12px;padding-bottom:80px;}
+
+/* TOP BAR */
+.top-bar{background:var(--card);border-bottom:0.5px solid var(--b2);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.tb-logo{font-family:'Newsreader',serif;font-size:17px;font-weight:300;color:var(--t1);}
+.tb-logo em{font-style:normal;color:var(--green);}
+.tb-right{display:flex;align-items:center;gap:8px;}
+.tb-notif{width:30px;height:30px;border-radius:var(--rs);border:0.5px solid var(--b2);display:flex;align-items:center;justify-content:center;position:relative;background:var(--warm);}
+.tb-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--red);border:1.5px solid var(--card);}
+.tb-av{width:28px;height:28px;border-radius:50%;background:var(--gbg);border:0.5px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:var(--green);}
+.tb-back{display:flex;align-items:center;gap:6px;}
+.tb-back svg{width:16px;height:16px;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.tb-title{font-size:14px;font-weight:500;color:var(--t1);}
+
+/* GREET */
+.greet-lbl{font-size:11px;color:var(--t3);}
+.greet-name{font-family:'Newsreader',serif;font-size:20px;font-weight:300;color:var(--t1);letter-spacing:-0.3px;}
+.greet-name em{font-style:italic;color:var(--green);}
+
+/* CARDS */
+.card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;}
+.card-p{padding:12px;}
+.card-head{padding:12px 14px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.ch-title{font-size:13px;font-weight:500;color:var(--t1);}
+.ch-sub{font-size:10px;color:var(--t3);margin-top:1px;}
+
+/* BADGES */
+.badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;display:inline-block;white-space:nowrap;}
+.bg-g{background:var(--gbg);color:#15803D;border:0.5px solid var(--gb);}
+.bg-a{background:var(--abg);color:#92400E;border:0.5px solid var(--ab);}
+.bg-r{background:var(--rbg);color:#991B1B;border:0.5px solid var(--rb);}
+.bg-b{background:var(--bbg);color:#1D4ED8;border:0.5px solid var(--bb);}
+.bg-grey{background:#F1EFE8;color:#5F5E5A;border:0.5px solid rgba(0,0,0,0.1);}
+.bg-live{background:var(--bbg);color:#1D4ED8;border:0.5px solid #93C5FD;animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* STATS */
+.stats2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.sc{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;}
+.sc-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+.sc-v{font-family:'Newsreader',serif;font-size:24px;font-weight:300;color:var(--t1);letter-spacing:-0.5px;}
+.sc-v.g{color:var(--green);}.sc-v.r{color:var(--red);}.sc-v.a{color:var(--amber);}
+.sc-s{font-size:10px;color:var(--t3);margin-top:2px;}
+
+/* PROGRESS */
+.prog{height:3px;background:var(--b2);border-radius:2px;overflow:hidden;margin:6px 0 2px;}
+.pf{height:100%;border-radius:2px;}
+.pf-g{background:var(--green);}.pf-a{background:var(--amber);}.pf-b{background:var(--blue);}.pf-grey{background:#B4B2A9;}
+
+/* AVATARS */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0;}
+.av-sm{width:26px;height:26px;font-size:9px;}
+.av-md{width:32px;height:32px;font-size:10px;}
+.av-g{background:var(--gbg);color:var(--green);border:0.5px solid var(--gb);}
+.av-b{background:var(--bbg);color:var(--blue);border:0.5px solid var(--bb);}
+.av-a{background:var(--abg);color:var(--amber);border:0.5px solid var(--ab);}
+.av-r{background:var(--rbg);color:var(--red);border:0.5px solid var(--rb);}
+
+/* GROUP CARDS */
+.grp-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;}
+.gc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.gc-ind{width:3px;height:34px;border-radius:2px;flex-shrink:0;margin-top:1px;}
+.gc-info{flex:1;min-width:0;}
+.gc-name{font-size:13px;font-weight:500;color:var(--t1);}
+.gc-meta{font-size:11px;color:var(--t3);margin-top:1px;}
+.gc-amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0;}
+.ga{background:var(--warm2);border-radius:var(--rs);padding:7px 8px;}
+.ga-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.3px;font-family:'JetBrains Mono',monospace;}
+.ga-v{font-size:12px;font-weight:500;color:var(--t1);margin-top:2px;}
+.gc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.paid-chips{display:flex;align-items:center;}
+.paid-chip{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--card);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:500;margin-left:-4px;}
+.paid-chip:first-child{margin-left:0;}
+.pc-g{background:var(--gbg);color:var(--green);}
+.pc-r{background:var(--rbg);color:var(--red);}
+.paid-lbl{font-size:10px;color:var(--t2);margin-left:6px;}
+.gc-link{font-size:11px;color:var(--blue);}
+
+/* MEMBER ROWS */
+.member-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--b);}
+.member-row:last-child{border-bottom:none;}
+.mr-info{flex:1;min-width:0;}
+.mr-name{font-size:12px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mr-meta{font-size:10px;color:var(--t3);margin-top:1px;}
+.mr-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
+.cs{font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px;}
+.cs-paid{background:var(--gbg);color:#15803D;}
+.cs-over{background:var(--rbg);color:#991B1B;}
+.cs-part{background:var(--abg);color:#92400E;}
+.trust{font-size:9px;color:var(--t3);}
+
+/* ACCORDION */
+.acc-hdr{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:0.5px solid var(--b);}
+.acc-title{font-size:12px;font-weight:500;}
+.acc-sub{font-size:10px;color:var(--t3);margin-top:1px;}
+.acc-chev{font-size:10px;color:var(--t3);}
+
+/* TIMELINE */
+.tl{display:flex;gap:6px;overflow-x:auto;padding:12px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tl::-webkit-scrollbar{display:none;}
+.tl-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:52px;}
+.tl-c{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;}
+.tl-done{background:var(--gbg);border:1.5px solid var(--green);color:var(--green);}
+.tl-active{background:var(--bbg);border:2px solid var(--blue);color:var(--blue);}
+.tl-future{background:var(--warm2);border:1.5px dashed var(--b2);color:var(--t3);}
+.tl-lbl{font-size:8px;color:var(--t3);text-align:center;line-height:1.3;}
+.tl-lbl.g{color:var(--green);}.tl-lbl.b{color:var(--blue);font-weight:500;}
+
+/* ACTIVITY */
+.act-row{display:flex;gap:8px;padding:9px 14px;border-bottom:0.5px solid var(--b);align-items:flex-start;}
+.act-row:last-child{border-bottom:none;}
+.act-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.act-t{font-size:12px;color:var(--t1);line-height:1.4;flex:1;}
+.act-time{font-size:10px;color:var(--t3);margin-top:2px;}
+
+/* BID ROWS */
+.bid-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--rs);background:var(--warm2);margin-bottom:5px;border:0.5px solid var(--b);}
+.bid-rank{font-size:10px;font-weight:500;color:var(--t3);width:20px;font-family:'JetBrains Mono',monospace;}
+.bid-rank.first{color:var(--gold);}
+.bid-name{flex:1;font-size:12px;color:var(--t1);}
+.bid-name.me{font-weight:500;}
+.bid-amt{font-size:12px;font-weight:500;color:var(--t1);}
+.bid-tag{font-size:9px;padding:2px 5px;border-radius:100px;background:var(--abg);color:var(--gold);margin-left:3px;border:0.5px solid var(--ab);}
+
+/* TIMER */
+.timer-box{background:var(--warm2);border:0.5px solid var(--b);border-radius:var(--r);padding:14px;text-align:center;}
+.timer-val{font-family:'Newsreader',serif;font-size:30px;font-weight:300;color:var(--t1);letter-spacing:-0.5px;}
+.timer-lbl{font-size:10px;color:var(--t3);margin-top:3px;font-family:'JetBrains Mono',monospace;}
+
+/* APPROVAL */
+.ap-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--b);}
+.ap-row:last-child{border-bottom:none;}
+.ap-info{flex:1;min-width:0;}
+.ap-name{font-size:12px;font-weight:500;color:var(--t1);}
+.ap-meta{font-size:10px;color:var(--t3);margin-top:1px;}
+.ap-btns{display:flex;gap:5px;flex-shrink:0;}
+.btn-app{font-size:10px;padding:5px 10px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:500;}
+.btn-approve{background:var(--gbg);color:var(--green);border:0.5px solid var(--gb);}
+.btn-reject{background:var(--rbg);color:var(--red);border:0.5px solid var(--rb);}
+
+/* NOTIFICATION */
+.notif-row{display:flex;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--b);align-items:flex-start;}
+.notif-row:last-child{border-bottom:none;}
+.notif-row.unread{background:#FAFAF8;}
+.ni{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ni-g{background:var(--gbg);}.ni-r{background:var(--rbg);}.ni-b{background:var(--bbg);}.ni-a{background:var(--abg);}
+.ni svg{width:14px;height:14px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.notif-body{flex:1;min-width:0;}
+.notif-title{font-size:12px;font-weight:500;color:var(--t1);}
+.notif-msg{font-size:11px;color:var(--t2);line-height:1.4;margin-top:1px;}
+.notif-time{font-size:10px;color:var(--t3);margin-top:3px;}
+.unread-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px;}
+
+/* CELEBRATE */
+.celebrate-card{background:var(--gbg);border:1px solid var(--gb);border-radius:var(--r);padding:16px;text-align:center;}
+.cel-icon{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.cel-title{font-family:'Newsreader',serif;font-size:17px;font-weight:300;color:var(--t1);margin-bottom:4px;}
+.cel-amt{font-family:'Newsreader',serif;font-size:30px;font-weight:300;color:var(--green);margin:6px 0;}
+.cel-sub{font-size:11px;color:var(--t2);line-height:1.5;}
+.cel-breakdown{background:#fff;border-radius:var(--rs);padding:10px;margin:10px 0;}
+.cel-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;}
+.cel-k{color:var(--t2);}.cel-v{font-weight:500;color:var(--t1);}
+
+/* FORM ELEMENTS */
+.form-lbl{font-size:10px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px;display:block;font-family:'JetBrains Mono',monospace;}
+.form-input{width:100%;padding:9px 11px;border:0.5px solid var(--b2);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--t1);background:var(--card);outline:none;}
+.form-select{appearance:none;cursor:pointer;}
+
+/* BUTTONS */
+.btn-p{background:var(--t1);color:#fff;border:none;border-radius:var(--rs);padding:10px 16px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;width:100%;}
+.btn-o{background:none;color:var(--t1);border:0.5px solid var(--b2);border-radius:var(--rs);padding:10px 16px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;width:100%;}
+.btn-g{background:var(--gbg);color:var(--green);border:0.5px solid var(--gb);border-radius:var(--rs);padding:10px 16px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;width:100%;}
+
+/* WIZARD */
+.wiz-steps{display:flex;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--b);background:var(--warm2);}
+.ws{display:flex;align-items:center;flex:1;}
+.ws-n{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0;}
+.ws-n.done{background:var(--green);color:#fff;}
+.ws-n.act{background:var(--t1);color:#fff;}
+.ws-n.todo{background:var(--card);color:var(--t3);border:0.5px solid var(--b2);}
+.ws-lbl{font-size:9px;margin-left:4px;white-space:nowrap;}
+.ws-lbl.done{color:var(--green);font-weight:500;}
+.ws-lbl.act{color:var(--t1);font-weight:500;}
+.ws-lbl.todo{color:var(--t3);}
+.ws-line{flex:1;height:1px;background:var(--b2);margin:0 4px;}
+.ws-line.done{background:var(--green);}
+.wiz-foot{padding:12px 14px;border-top:0.5px solid var(--b);display:flex;gap:8px;background:var(--card);}
+
+/* STRATEGY CARDS */
+.strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;}
+.strat-card{border:0.5px solid var(--b2);border-radius:var(--rs);padding:9px;cursor:pointer;}
+.strat-card.sel{border:1.5px solid var(--green);background:var(--gbg);}
+.strat-name{font-size:12px;font-weight:500;color:var(--t1);}
+.strat-desc{font-size:10px;color:var(--t3);margin-top:2px;line-height:1.3;}
+
+/* INVITE CHIPS */
+.invite-chip{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--gbg);border:0.5px solid var(--gb);border-radius:var(--rs);}
+.ic-av{width:22px;height:22px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:#fff;flex-shrink:0;}
+.ic-info{flex:1;min-width:0;}
+.ic-name{font-size:11px;font-weight:500;color:#15803D;}
+.ic-contact{font-size:10px;color:#16A34A;}
+.ic-tag{font-size:9px;padding:2px 6px;border-radius:100px;background:#fff;color:var(--green);border:0.5px solid var(--gb);flex-shrink:0;}
+
+/* PREVIEW CARD */
+.preview-card{background:var(--warm2);border-radius:var(--r);padding:12px;border:0.5px solid var(--b);}
+.prev-row{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:0.5px solid var(--b);}
+.prev-row:last-child{border-bottom:none;}
+.prev-k{color:var(--t2);}.prev-v{font-weight:500;color:var(--t1);}
+
+/* FREQ PILLS */
+.freq-pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.freq-pill{font-size:11px;padding:5px 10px;border-radius:100px;border:0.5px solid var(--b2);color:var(--t2);cursor:pointer;background:var(--card);}
+.freq-pill.sel{background:var(--t1);color:#fff;border-color:var(--t1);}
+
+/* SECTION LABEL */
+.section-lbl{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:10px 0 4px;}
+
+/* INFO BOX */
+.info-box{border-radius:var(--rs);padding:10px 12px;font-size:11px;line-height:1.5;}
+.info-g{background:var(--gbg);color:#15803D;border:0.5px solid var(--gb);}
+.info-a{background:var(--abg);color:#92400E;border:0.5px solid var(--ab);}
+.info-b{background:var(--bbg);color:#1D4ED8;border:0.5px solid var(--bb);}
+
+/* CHECKLIST */
+.checklist-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--rs);margin-bottom:6px;}
+.cli-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:500;}
+.cli-done{background:var(--green);color:#fff;}
+.cli-warn{background:var(--amber);color:#fff;}
+.cli-todo{background:var(--b2);color:var(--t3);}
+.cli-title{font-size:13px;font-weight:500;}
+.cli-sub{font-size:10px;margin-top:1px;}
+
+/* POT CARD (saffron) */
+.pot-card-saffron{background:var(--saffron);border-radius:var(--rs);padding:12px;margin-bottom:8px;position:relative;overflow:hidden;}
+.pot-card-saffron::after{content:'';position:absolute;top:-15px;right:-15px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.12);}
+.pot-lbl{font-size:9px;color:rgba(255,255,255,0.7);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:3px;}
+.pot-val{font-family:'Newsreader',serif;font-size:24px;font-weight:300;color:#fff;letter-spacing:-0.5px;}
+.pot-sub{font-size:10px;color:rgba(255,255,255,0.65);}
+
+/* BOTTOM NAV */
+.bottom-nav{background:var(--card);border-top:0.5px solid var(--b2);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 0 10px;position:sticky;bottom:0;z-index:10;}
+.bn-tab{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
+.bn-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
+.bn-icon svg{width:19px;height:19px;stroke:var(--t3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.bn-lbl{font-size:9px;color:var(--t3);}
+.bn-tab.active .bn-lbl{color:var(--green);font-weight:500;}
+.bn-tab.active .bn-icon svg{stroke:var(--green);}
+.bn-badge{position:absolute;top:-1px;right:22px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--card);}
+
+/* TOAST */
+.toast-m{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;padding:8px 16px;border-radius:100px;font-size:11px;opacity:0;transition:opacity 0.2s;pointer-events:none;z-index:99;white-space:nowrap;}
+.toast-m.show{opacity:1;}
+
+/* PLAN BADGES */
+.plan-row{display:flex;justify-content:space-between;font-size:11px;padding:6px 0;border-bottom:0.5px solid var(--b);}
+.plan-row:last-child{border-bottom:none;}
+.plan-k{color:var(--t2);}
+.plan-v{font-weight:500;color:var(--t1);}
+
+/* LAYOUT LABEL */
+.screen-layout{display:flex;flex-direction:column;height:100%;}
+</style>
+</head>
+<body>
+
+<div class="page-header">CHITOS — ALL MOBILE SCREENS · TAP BUTTONS TO INTERACT</div>
+
+<div class="device-row">
+
+<!-- ══ SCREEN 1: DASHBOARD ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast1" class="toast-m"></div>
+<div class="top-bar">
+  <div class="tb-logo">Chit<em>OS</em></div>
+  <div class="tb-right">
+    <div class="tb-notif">
+      <svg style="width:14px;height:14px;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <div class="tb-dot"></div>
+    </div>
+    <div class="tb-av">RK</div>
+  </div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div><div class="greet-lbl">Good morning,</div><div class="greet-name">Ravi <em>Kumar</em></div></div>
+  <div class="card card-p">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+      <div><div class="sc-l">Total pot value</div><div style="font-family:'Newsreader',serif;font-size:26px;font-weight:300;letter-spacing:-0.5px;">₹1,20,000</div><div class="sc-s">Across 3 groups</div></div>
+      <div class="badge bg-grey">Free plan</div>
+    </div>
+    <div class="stats2" style="gap:6px;">
+      <div style="background:var(--warm2);border-radius:var(--rs);padding:8px;text-align:center;"><div style="font-family:'Newsreader',serif;font-size:20px;font-weight:300;color:var(--green);">2</div><div style="font-size:9px;color:var(--t3);margin-top:1px;">Active</div></div>
+      <div style="background:var(--warm2);border-radius:var(--rs);padding:8px;text-align:center;"><div style="font-family:'Newsreader',serif;font-size:20px;font-weight:300;">24</div><div style="font-size:9px;color:var(--t3);margin-top:1px;">Members</div></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Your groups</div><div style="font-size:11px;color:var(--blue);">+ New</div></div>
+  <!-- Group 1 -->
+  <div class="grp-card">
+    <div class="gc-top"><div class="gc-ind" style="background:var(--green);"></div><div class="gc-info"><div class="gc-name">Friends Circle</div><div class="gc-meta">Month 4 of 10 · Due 25 Apr</div></div><div class="badge bg-b">Auction</div></div>
+    <div class="gc-amounts">
+      <div class="ga"><div class="ga-l">Pot</div><div class="ga-v">₹10K</div></div>
+      <div class="ga"><div class="ga-l">/month</div><div class="ga-v">₹1,000</div></div>
+      <div class="ga"><div class="ga-l">Members</div><div class="ga-v">10/15</div></div>
+    </div>
+    <div class="prog"><div class="pf pf-g" style="width:40%"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><div style="font-size:10px;color:var(--t3);">40% complete</div><div style="font-size:10px;color:var(--t3);">6 months left</div></div>
+    <div class="gc-bottom">
+      <div class="paid-chips"><div class="paid-chip pc-g">RK</div><div class="paid-chip pc-g">SB</div><div class="paid-chip pc-g">PR</div><div class="paid-chip pc-g">AN</div><div class="paid-chip pc-g">VR</div><div class="paid-chip pc-g">DN</div><div class="paid-chip pc-g">KK</div><div class="paid-chip pc-g">SP</div><div class="paid-chip pc-r">MI</div><div class="paid-chip pc-r">LD</div><div class="paid-lbl">8/10 paid</div></div>
+      <div class="gc-link">View →</div>
+    </div>
+  </div>
+  <!-- Group 2 -->
+  <div class="grp-card">
+    <div class="gc-top"><div class="gc-ind" style="background:var(--amber);"></div><div class="gc-info"><div class="gc-name">Office Gang</div><div class="gc-meta">Starts 1 Jun · 2 pending approval</div></div><div class="badge bg-g">Lottery</div></div>
+    <div class="prog" style="margin-top:4px;"><div class="pf pf-a" style="width:75%"></div></div>
+    <div class="gc-bottom" style="margin-top:6px;"><div style="font-size:10px;color:var(--amber);font-weight:500;">2 approvals needed</div><div class="gc-link">Review →</div></div>
+  </div>
+  <!-- Group 3 -->
+  <div class="grp-card" style="opacity:0.65;">
+    <div class="gc-top"><div class="gc-ind" style="background:#B4B2A9;"></div><div class="gc-info"><div class="gc-name">Family Savings</div><div class="gc-meta">Completed Apr 2025</div></div><div class="badge bg-grey">Done</div></div>
+    <div class="prog" style="margin-top:4px;"><div class="pf pf-grey" style="width:100%"></div></div>
+    <div class="gc-bottom" style="margin-top:6px;"><div style="font-size:10px;color:var(--t3);">All 4 members received pot</div><div class="gc-link">History →</div></div>
+  </div>
+  <!-- Approvals -->
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Pending approvals</div><span class="badge bg-r">2</span></div>
+  <div class="card">
+    <div class="ap-row"><div class="av av-md av-a">SW</div><div class="ap-info"><div class="ap-name">Swathi Reddy</div><div class="ap-meta">Office Gang · 10 Apr</div></div><div class="ap-btns"><button class="btn-app btn-approve" onclick="t1('Swathi approved!')">Approve</button><button class="btn-app btn-reject" onclick="t1('Rejected.')">Reject</button></div></div>
+    <div class="ap-row"><div class="av av-md av-b">RG</div><div class="ap-info"><div class="ap-name">Rohit Gupta</div><div class="ap-meta">Office Gang · 12 Apr</div></div><div class="ap-btns"><button class="btn-app btn-approve" onclick="t1('Rohit approved!')">Approve</button><button class="btn-app btn-reject" onclick="t1('Rejected.')">Reject</button></div></div>
+  </div>
+  <!-- Activity -->
+  <div style="font-size:13px;font-weight:500;">Recent activity</div>
+  <div class="card">
+    <div class="act-row"><div class="act-dot" style="background:var(--blue);"></div><div class="act-body"><div class="act-t">Auction opened · Friends Circle April</div><div class="act-time">Today 8:00am</div></div></div>
+    <div class="act-row"><div class="act-dot" style="background:var(--green);"></div><div class="act-body"><div class="act-t">Sravani's ₹1,000 marked paid · UPI</div><div class="act-time">Today 9:30am</div></div></div>
+    <div class="act-row"><div class="act-dot" style="background:var(--green);"></div><div class="act-body"><div class="act-t">Anita received ₹9,200 — March winner</div><div class="act-time">27 Mar</div></div></div>
+  </div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon" style="position:relative;"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><div class="bn-badge"></div></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab"><div class="bn-icon" style="position:relative;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="bn-badge"></div></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">01 — Dashboard</div>
+</div>
+
+<!-- ══ SCREEN 2: GROUP DETAIL ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div class="top-bar">
+  <div class="tb-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><div class="tb-title">Friends Circle</div></div>
+  <div class="badge bg-live">M4 · Live</div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div class="card card-p">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div><div class="sc-l">This month's pot</div><div style="font-family:'Newsreader',serif;font-size:24px;font-weight:300;">₹10,000</div><div class="sc-s">Due 25 Apr · Auction open</div></div>
+      <div class="badge bg-b">Auction</div>
+    </div>
+    <div class="prog" style="margin-top:10px;"><div class="pf pf-g" style="width:40%"></div></div>
+    <div style="display:flex;justify-content:space-between;"><div style="font-size:10px;color:var(--t3);">Cycle 4 of 10</div><div style="font-size:10px;color:var(--green);font-weight:500;">8/10 paid ₹1,000</div></div>
+  </div>
+  <div class="stats2"><div class="sc"><div class="sc-l">Collected</div><div class="sc-v g">₹8,000</div><div class="sc-s">8 members</div></div><div class="sc"><div class="sc-l">Overdue</div><div class="sc-v r">2</div><div class="sc-s">₹1,500 due</div></div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Cycle timeline</div><div style="font-size:11px;color:var(--blue);">All cycles</div></div>
+  <div class="card"><div class="tl">
+    <div class="tl-item"><div class="tl-c tl-done">SB</div><div class="tl-lbl g">M1<br>₹8.5K</div></div>
+    <div class="tl-item"><div class="tl-c tl-done">PR</div><div class="tl-lbl g">M2<br>₹9K</div></div>
+    <div class="tl-item"><div class="tl-c tl-done">AN</div><div class="tl-lbl g">M3<br>₹9.2K</div></div>
+    <div class="tl-item"><div class="tl-c tl-active">M4</div><div class="tl-lbl b">Now<br>Open</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M5</div><div class="tl-lbl">May<br>—</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M6</div><div class="tl-lbl">Jun<br>—</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M7</div><div class="tl-lbl">Jul<br>—</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M8</div><div class="tl-lbl">Aug<br>—</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M9</div><div class="tl-lbl">Sep<br>—</div></div>
+    <div class="tl-item"><div class="tl-c tl-future">M10</div><div class="tl-lbl">Oct<br>—</div></div>
+  </div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Members</div><div style="font-size:11px;color:var(--blue);">+ Add</div></div>
+  <div class="card">
+    <div class="acc-hdr"><div><div class="acc-title" style="color:var(--green);">Paid this month</div><div class="acc-sub">8 of 10 members</div></div><div class="acc-chev">▾</div></div>
+    <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar (you)</div><div class="mr-meta">UPI · 15 Apr · ref UPI123456</div></div><div class="mr-right"><div class="trust" style="color:var(--green);">Reliable 82</div><div class="cs cs-paid">Paid</div></div></div>
+    <div class="member-row"><div class="av av-md av-b">SB</div><div class="mr-info"><div class="mr-name">Suresh Babu</div><div class="mr-meta">UPI · 14 Apr · Pot winner M1</div></div><div class="mr-right"><div class="trust" style="color:var(--green);">Excellent 94</div><div class="cs cs-paid">Paid</div></div></div>
+    <div class="member-row"><div class="av av-md av-g">PR</div><div class="mr-info"><div class="mr-name">Priya Reddy</div><div class="mr-meta">Bank · 16 Apr · Pot winner M2</div></div><div class="mr-right"><div class="trust" style="color:var(--green);">Excellent 91</div><div class="cs cs-paid">Paid</div></div></div>
+    <div class="acc-hdr" style="border-top:0.5px solid var(--b);"><div><div class="acc-title" style="color:var(--red);">Overdue</div><div class="acc-sub">2 members · action needed</div></div><div class="acc-chev">▾</div></div>
+    <div class="member-row"><div class="av av-md av-r">MI</div><div class="mr-info"><div class="mr-name">Mahesh Iyer</div><div class="mr-meta">Due 25 Apr · Penalty ₹50</div></div><div class="mr-right"><div class="trust">Fair 52</div><div class="cs cs-over">Overdue</div></div></div>
+    <div class="member-row"><div class="av av-md av-a">LD</div><div class="mr-info"><div class="mr-name">Lakshmi Devi</div><div class="mr-meta">Paid ₹500 · ₹500 remaining</div></div><div class="mr-right"><div class="trust">Good 68</div><div class="cs cs-part">Partial</div></div></div>
+  </div>
+  <button class="btn-g">Open auction room →</button>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">02 — Group detail</div>
+</div>
+
+<!-- ══ SCREEN 3: AUCTION ROOM ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast3" class="toast-m"></div>
+<div class="top-bar">
+  <div class="tb-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><div class="tb-title">Auction Room</div></div>
+  <div class="badge bg-live">Live</div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div class="timer-box">
+    <div class="sc-l" style="margin-bottom:8px;">Friends Circle · April 2026</div>
+    <div class="timer-val" id="timer-m">36:22:08</div>
+    <div class="timer-lbl">hrs · min · sec until close</div>
+    <div style="margin-top:10px;height:3px;background:var(--b2);border-radius:2px;overflow:hidden;"><div class="pf pf-b" style="width:24%;"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;"><div style="font-size:9px;color:var(--t3);">Opened 20 Apr</div><div style="font-size:9px;color:var(--t3);">Closes 22 Apr 8am</div></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:2px 0;">
+    <div style="font-size:11px;color:var(--t2);">Pot value: <strong style="color:var(--t1);">₹10,000</strong></div>
+    <div style="font-size:11px;color:var(--t2);">Min bid: <strong style="color:var(--t1);">₹7,000</strong></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Current bids <span style="color:var(--t3);font-weight:400;">(3 of 10)</span></div></div>
+  <div>
+    <div class="bid-row" style="background:var(--abg);border-color:rgba(180,83,9,0.25);"><div class="bid-rank first">1</div><div class="av av-sm av-b" style="flex-shrink:0;">VR</div><div class="bid-name" style="flex:1;">Venkat Rao</div><div class="bid-amt">₹9,100 <span class="bid-tag">Lowest</span></div></div>
+    <div class="bid-row"><div class="bid-rank">2</div><div class="av av-sm av-g" style="flex-shrink:0;">DN</div><div class="bid-name" style="flex:1;">Deepika Nair</div><div class="bid-amt">₹9,300</div></div>
+    <div class="bid-row" style="border:1px solid var(--bb);"><div class="bid-rank">3</div><div class="av av-sm av-g" style="flex-shrink:0;">RK</div><div class="bid-name me" style="flex:1;">You (Ravi)</div><div class="bid-amt">₹9,400</div></div>
+  </div>
+  <div class="info-box info-g">If Venkat wins at ₹9,100 — each member receives a dividend of <strong>₹100</strong></div>
+  <div><label class="form-lbl">Update your bid</label><div style="display:flex;gap:6px;"><input class="form-input" type="number" placeholder="Enter bid amount" style="flex:1;"/><button class="btn-p" style="width:auto;padding:9px 14px;" onclick="t3('Bid updated!')">Update</button></div></div>
+  <div class="card card-p">
+    <div style="font-size:13px;font-weight:500;margin-bottom:8px;">Override winner</div>
+    <div style="font-size:11px;color:var(--t2);margin-bottom:8px;line-height:1.5;">Manually pick the winner regardless of bids.</div>
+    <select class="form-input form-select" style="margin-bottom:8px;"><option>Select member...</option><option>Venkat Rao</option><option>Deepika Nair</option></select>
+    <button class="btn-p" onclick="t3('Payout recorded!')">Confirm payout →</button>
+  </div>
+  <div class="info-box info-b" style="font-size:10px;"><strong>Dividend:</strong> ₹10,000 − ₹9,100 = ₹900 ÷ 9 members = <strong style="color:var(--blue);">+₹100 each</strong></div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">03 — Auction room</div>
+</div>
+
+<!-- ══ SCREEN 4: APPROVALS ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast4" class="toast-m"></div>
+<div class="top-bar">
+  <div class="tb-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><div class="tb-title">Approvals</div></div>
+  <span class="badge bg-r">2 waiting</span>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div style="font-size:12px;color:var(--t2);line-height:1.5;">Office Gang members waiting for your approval to join.</div>
+  <div style="font-size:13px;font-weight:500;">Pending requests</div>
+  <div class="card">
+    <div class="ap-row"><div class="av av-md av-a">SW</div><div class="ap-info"><div class="ap-name">Swathi Reddy</div><div class="ap-meta">+91 85432 10987</div><div class="ap-meta">Requested 10 Apr · via invite link</div></div><div class="ap-btns" style="flex-direction:column;gap:5px;"><button class="btn-app btn-approve" onclick="t4('Swathi approved!')">Approve</button><button class="btn-app btn-reject" onclick="t4('Rejected.')">Reject</button></div></div>
+    <div class="ap-row"><div class="av av-md av-b">RG</div><div class="ap-info"><div class="ap-name">Rohit Gupta</div><div class="ap-meta">+91 84321 09876</div><div class="ap-meta">Requested 12 Apr · via WhatsApp</div></div><div class="ap-btns" style="flex-direction:column;gap:5px;"><button class="btn-app btn-approve" onclick="t4('Rohit approved!')">Approve</button><button class="btn-app btn-reject" onclick="t4('Rejected.')">Reject</button></div></div>
+  </div>
+  <div style="font-size:13px;font-weight:500;">Approved members <span style="color:var(--t3);font-weight:400;">(5 of 8)</span></div>
+  <div class="card">
+    <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar (owner)</div><div class="mr-meta">Approved · organiser</div></div><div class="mr-right"><div class="badge bg-g">Owner</div></div></div>
+    <div class="member-row"><div class="av av-md av-g">NP</div><div class="mr-info"><div class="mr-name">Naveen Prasad</div><div class="mr-meta">Approved 5 Mar</div></div><div class="mr-right"><div class="badge bg-g">Approved</div></div></div>
+    <div class="member-row"><div class="av av-md av-b">TK</div><div class="mr-info"><div class="mr-name">Teja Varma</div><div class="mr-meta">Approved 6 Mar</div></div><div class="mr-right"><div class="badge bg-g">Approved</div></div></div>
+    <div class="member-row"><div class="av av-md av-g">SK</div><div class="mr-info"><div class="mr-name">Sindhu Krishnan</div><div class="mr-meta">Approved 7 Mar</div></div><div class="mr-right"><div class="badge bg-g">Approved</div></div></div>
+    <div class="member-row"><div class="av av-md av-b">AM</div><div class="mr-info"><div class="mr-name">Arjun Mehta</div><div class="mr-meta">Approved 8 Mar</div></div><div class="mr-right"><div class="badge bg-g">Approved</div></div></div>
+  </div>
+  <div style="font-size:13px;font-weight:500;">Invite link</div>
+  <div style="background:var(--warm2);border:0.5px solid var(--b2);border-radius:var(--rs);padding:10px 12px;font-size:11px;color:var(--blue);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">chitos.app/join/tok-ghi789jkl</div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn-o" style="flex:1;font-size:12px;" onclick="t4('Link copied!')">Copy link</button>
+    <button class="btn-g" style="flex:1;font-size:12px;">WhatsApp share</button>
+  </div>
+  <div style="font-size:10px;color:var(--t3);text-align:center;">Link expires in 7 days · 2 uses remaining</div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">04 — Member approvals</div>
+</div>
+
+<!-- ══ SCREEN 5: NOTIFICATIONS ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div class="top-bar">
+  <div style="font-family:'Newsreader',serif;font-size:17px;font-weight:300;">Notifications</div>
+  <div style="font-size:11px;color:var(--blue);cursor:pointer;">Mark all read</div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div class="section-lbl">Today</div>
+  <div class="card">
+    <div class="notif-row unread"><div class="ni ni-a"><svg viewBox="0 0 24 24" style="stroke:var(--amber);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div><div class="notif-body"><div class="notif-title">New join request</div><div class="notif-msg">Swathi Reddy wants to join Office Gang</div><div class="notif-time">2 hrs ago</div></div><div class="unread-dot"></div></div>
+    <div class="notif-row unread"><div class="ni ni-a"><svg viewBox="0 0 24 24" style="stroke:var(--amber);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div><div class="notif-body"><div class="notif-title">New join request</div><div class="notif-msg">Rohit Gupta wants to join Office Gang</div><div class="notif-time">4 hrs ago</div></div><div class="unread-dot"></div></div>
+    <div class="notif-row unread"><div class="ni ni-r"><svg viewBox="0 0 24 24" style="stroke:var(--red);"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="notif-body"><div class="notif-title">Overdue contribution</div><div class="notif-msg">Mahesh Iyer has not paid ₹1,000 for April</div><div class="notif-time">6 hrs ago · Friends Circle</div></div><div class="unread-dot"></div></div>
+  </div>
+  <div class="section-lbl">Earlier</div>
+  <div class="card">
+    <div class="notif-row"><div class="ni ni-b"><svg viewBox="0 0 24 24" style="stroke:var(--blue);"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="notif-body"><div class="notif-title">Auction opened</div><div class="notif-msg">Friends Circle April auction is live. Closes 22 Apr 8am.</div><div class="notif-time">Yesterday · Friends Circle</div></div></div>
+    <div class="notif-row"><div class="ni ni-g"><svg viewBox="0 0 24 24" style="stroke:var(--green);"><polyline points="20 6 9 17 4 12"/></svg></div><div class="notif-body"><div class="notif-title">Contribution paid</div><div class="notif-msg">Your ₹1,000 for April has been recorded</div><div class="notif-time">15 Apr · Friends Circle</div></div></div>
+    <div class="notif-row"><div class="ni ni-g"><svg viewBox="0 0 24 24" style="stroke:var(--green);"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="notif-body"><div class="notif-title">Payout recorded</div><div class="notif-msg">Anita Sharma received ₹9,200 — March winner</div><div class="notif-time">27 Mar · Friends Circle</div></div></div>
+    <div class="notif-row"><div class="ni ni-a"><svg viewBox="0 0 24 24" style="stroke:var(--amber);"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="notif-body"><div class="notif-title">Announcement posted</div><div class="notif-msg">Congratulations to Anita for winning March's ₹9,200!</div><div class="notif-time">28 Mar · Friends Circle</div></div></div>
+  </div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab active"><div class="bn-icon" style="position:relative;"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="bn-badge"></div></div><div class="bn-lbl" style="color:var(--green);font-weight:500;">Alerts</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">05 — Notifications</div>
+</div>
+
+<!-- ══ SCREEN 6: COMPLETED GROUP ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast6" class="toast-m"></div>
+<div class="top-bar">
+  <div class="tb-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><div class="tb-title">Family Savings</div></div>
+  <div class="badge bg-grey">Completed</div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div class="celebrate-card">
+    <div class="cel-icon"><svg style="width:20px;height:20px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="cel-title">Cycle complete!</div>
+    <div class="cel-amt">₹80,000</div>
+    <div class="cel-sub">All 4 members received their pot<br>Jan 2025 – Apr 2025 · Fixed order</div>
+    <div class="cel-breakdown">
+      <div class="cel-row"><div class="cel-k">Total collected</div><div class="cel-v">₹80,000</div></div>
+      <div class="cel-row"><div class="cel-k">Total disbursed</div><div class="cel-v" style="color:var(--green);">₹80,000</div></div>
+      <div class="cel-row"><div class="cel-k">On-time rate</div><div class="cel-v" style="color:var(--green);">96%</div></div>
+    </div>
+    <button class="btn-app btn-approve" style="padding:8px 16px;font-size:11px;border-radius:100px;display:flex;align-items:center;gap:5px;margin:0 auto;" onclick="t6('Sharing on WhatsApp...')">Share summary</button>
+  </div>
+  <div style="font-size:13px;font-weight:500;">Payout history</div>
+  <div class="card"><div class="tl">
+    <div class="tl-item"><div class="tl-c tl-done">RK</div><div class="tl-lbl g">Jan<br>₹20K</div></div>
+    <div class="tl-item"><div class="tl-c tl-done">RD</div><div class="tl-lbl g">Feb<br>₹20K</div></div>
+    <div class="tl-item"><div class="tl-c tl-done">GR</div><div class="tl-lbl g">Mar<br>₹20K</div></div>
+    <div class="tl-item"><div class="tl-c tl-done">MD</div><div class="tl-lbl g">Apr<br>₹20K</div></div>
+  </div></div>
+  <div style="font-size:13px;font-weight:500;">Member statements</div>
+  <div class="card">
+    <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar</div><div class="mr-meta">Contributed ₹20K · Received ₹20K</div></div><div class="mr-right"><div class="badge bg-g">Settled</div></div></div>
+    <div class="member-row"><div class="av av-md av-g">RD</div><div class="mr-info"><div class="mr-name">Radha Krishnan</div><div class="mr-meta">Contributed ₹20K · Received ₹20K</div></div><div class="mr-right"><div class="badge bg-g">Settled</div></div></div>
+    <div class="member-row"><div class="av av-md av-b">GR</div><div class="mr-info"><div class="mr-name">Gopal Raju</div><div class="mr-meta">Contributed ₹20K · Received ₹20K</div></div><div class="mr-right"><div class="badge bg-g">Settled</div></div></div>
+    <div class="member-row"><div class="av av-md av-g">MD</div><div class="mr-info"><div class="mr-name">Meena Devi</div><div class="mr-meta">Contributed ₹20K · Received ₹20K</div></div><div class="mr-right"><div class="badge bg-g">Settled</div></div></div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn-o" style="flex:1;font-size:12px;" onclick="t6('Downloading PDF...')">Download PDF</button>
+    <button class="btn-p" style="flex:1;font-size:12px;" onclick="t6('Starting new cycle!')">Start new cycle</button>
+  </div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">06 — Completed group</div>
+</div>
+
+<!-- ══ SCREEN 7: CREATE GROUP WIZARD ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast7" class="toast-m"></div>
+<div class="top-bar">
+  <div class="tb-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><div class="tb-title">Create group</div></div>
+  <div style="font-size:11px;color:var(--t3);">Step <span id="wiz-n">1</span> of 4</div>
+</div>
+<div class="wiz-steps">
+  <div class="ws"><div class="ws-n act" id="ws1">1</div><div class="ws-lbl act" id="wl1">Setup</div></div>
+  <div class="ws-line" id="wl12"></div>
+  <div class="ws"><div class="ws-n todo" id="ws2">2</div><div class="ws-lbl todo" id="wl2">Terms</div></div>
+  <div class="ws-line" id="wl23"></div>
+  <div class="ws"><div class="ws-n todo" id="ws3">3</div><div class="ws-lbl todo" id="wl3">Invite</div></div>
+  <div class="ws-line" id="wl34"></div>
+  <div class="ws"><div class="ws-n todo" id="ws4">4</div><div class="ws-lbl todo" id="wl4">Confirm</div></div>
+</div>
+<div class="screen-scroll">
+  <div id="wb1" style="padding:14px;display:flex;flex-direction:column;gap:12px;">
+    <div><div class="form-lbl">Group name</div><input class="form-input" id="gname" type="text" placeholder="e.g. Friends Circle..." oninput="uprev()"/></div>
+    <div><div class="form-lbl">Payout strategy</div>
+      <div class="strategy-grid">
+        <div class="strat-card sel" onclick="sStrat(this,'Auction')"><div class="strat-name">Auction</div><div class="strat-desc">Lowest bid wins</div></div>
+        <div class="strat-card" onclick="sStrat(this,'Lottery')"><div class="strat-name">Lottery</div><div class="strat-desc">Random draw</div></div>
+        <div class="strat-card" onclick="sStrat(this,'Fixed')"><div class="strat-name">Fixed order</div><div class="strat-desc">Admin sets sequence</div></div>
+        <div class="strat-card" onclick="sStrat(this,'Consensus')"><div class="strat-name">Consensus</div><div class="strat-desc">Group votes</div></div>
+      </div>
+    </div>
+    <div><div class="form-lbl">Start date</div><input class="form-input" type="date" id="sdate" value="2026-06-01" oninput="uprev()"/></div>
+    <div class="info-box info-b" style="font-size:10px;">Group stays in "inviting" state until start date. Members can join and you can approve them before it begins.</div>
+    <div class="preview-card"><div class="form-lbl" style="margin-bottom:6px;">Preview</div>
+      <div class="prev-row"><div class="prev-k">Name</div><div class="prev-v" id="pname">—</div></div>
+      <div class="prev-row"><div class="prev-k">Strategy</div><div class="prev-v" id="pstrat">Auction</div></div>
+      <div class="prev-row"><div class="prev-k">Start</div><div class="prev-v" id="pdate">1 Jun 2026</div></div>
+    </div>
+  </div>
+  <div id="wb2" style="padding:14px;display:none;flex-direction:column;gap:12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div><div class="form-lbl">Amount (₹)</div><input class="form-input" type="number" id="contrib" value="1000" oninput="upot()"/></div>
+      <div><div class="form-lbl">Max members</div><input class="form-input" type="number" id="maxm" value="10" min="2" max="15" oninput="upot()"/></div>
+    </div>
+    <div><div class="form-lbl">Pay frequency</div>
+      <div class="freq-pills">
+        <div class="freq-pill sel" onclick="sFreq(this,'Monthly')">Monthly</div>
+        <div class="freq-pill" onclick="sFreq(this,'Quarterly')">Quarterly</div>
+        <div class="freq-pill" onclick="sFreq(this,'Half-yearly')">Half-yearly</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div><div class="form-lbl">Grace period (days)</div><input class="form-input" type="number" value="3" min="0" max="14"/></div>
+      <div><div class="form-lbl">Due day</div><input class="form-input" type="number" value="25" min="1" max="28"/></div>
+    </div>
+    <div class="preview-card"><div class="form-lbl" style="margin-bottom:6px;">Pot calculation</div>
+      <div class="prev-row"><div class="prev-k">Contribution</div><div class="prev-v" id="pc">₹1,000</div></div>
+      <div class="prev-row"><div class="prev-k">Members</div><div class="prev-v" id="pm">10</div></div>
+      <div class="prev-row"><div class="prev-k">Total pot</div><div class="prev-v" style="color:var(--green);font-family:'Newsreader',serif;font-size:18px;font-weight:300;" id="pp">₹10,000</div></div>
+    </div>
+    <div class="info-box info-g" style="font-size:10px;">Early taker (month 1) pays +₹50/month premium. Patient waiter (month 10) saves ₹50/month.</div>
+  </div>
+  <div id="wb3" style="padding:14px;display:none;flex-direction:column;gap:12px;">
+    <div><div class="form-lbl">Phone or email</div><div style="display:flex;gap:6px;"><input class="form-input" type="text" id="inv-inp" placeholder="+91 99999 99999" style="flex:1;"/><button class="btn-p" style="width:auto;padding:9px 14px;font-size:12px;" onclick="addInv()">Add</button></div></div>
+    <button class="btn-o" style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;">WhatsApp invite share</button>
+    <div><div class="form-lbl">Added <span id="inv-cnt">3 of 10 slots</span></div>
+      <div id="inv-list" style="display:flex;flex-direction:column;gap:6px;">
+        <div class="invite-chip"><div class="ic-av">SB</div><div class="ic-info"><div class="ic-name">Suresh Babu</div><div class="ic-contact">+91 99890 12345</div></div><div class="ic-tag">Sent</div></div>
+        <div class="invite-chip"><div class="ic-av">PR</div><div class="ic-info"><div class="ic-name">priya.reddy@yahoo.com</div><div class="ic-contact">Email invite</div></div><div class="ic-tag">Sent</div></div>
+        <div class="invite-chip"><div class="ic-av">VR</div><div class="ic-info"><div class="ic-name">Venkat Rao</div><div class="ic-contact">+91 96543 21098</div></div><div class="ic-tag">Sent</div></div>
+      </div>
+    </div>
+    <div class="info-box info-a" style="font-size:10px;">Every member who clicks the link needs your approval before joining.</div>
+  </div>
+  <div id="wb4" style="padding:14px;display:none;flex-direction:column;gap:10px;">
+    <div class="preview-card"><div class="form-lbl" style="margin-bottom:6px;">Group details</div>
+      <div class="prev-row"><div class="prev-k">Name</div><div class="prev-v">Friends Circle</div></div>
+      <div class="prev-row"><div class="prev-k">Strategy</div><div class="prev-v">Auction</div></div>
+      <div class="prev-row"><div class="prev-k">Start date</div><div class="prev-v">1 Jun 2026</div></div>
+    </div>
+    <div class="preview-card"><div class="form-lbl" style="margin-bottom:6px;">Financial terms</div>
+      <div class="prev-row"><div class="prev-k">Contribution</div><div class="prev-v">₹1,000/month</div></div>
+      <div class="prev-row"><div class="prev-k">Max members</div><div class="prev-v">10</div></div>
+      <div class="prev-row"><div class="prev-k">Total pot</div><div class="prev-v" style="color:var(--green);font-weight:500;">₹10,000</div></div>
+      <div class="prev-row"><div class="prev-k">Grace period</div><div class="prev-v">3 days</div></div>
+    </div>
+    <div class="preview-card"><div class="form-lbl" style="margin-bottom:6px;">Invites</div>
+      <div class="prev-row"><div class="prev-k">Invites sent</div><div class="prev-v">3 members</div></div>
+      <div class="prev-row"><div class="prev-k">Approval</div><div class="prev-v">Required</div></div>
+    </div>
+    <div class="info-box info-g" style="font-size:10px;">Once launched, members receive invites immediately. You can add more before the start date.</div>
+    <button class="btn-p" onclick="t7('Group launched! Members are being notified.')">Launch group →</button>
+  </div>
+</div>
+<div class="wiz-foot">
+  <button class="btn-o" id="wbk" style="flex:1;font-size:12px;display:none;" onclick="wprev()">← Back</button>
+  <button class="btn-p" id="wnx" style="flex:1;font-size:12px;" onclick="wnext()">Next →</button>
+</div>
+</div></div>
+<div class="device-label">07 — Create group wizard</div>
+</div>
+
+<!-- ══ SCREEN 8: PROFILE ══ -->
+<div class="device-wrap">
+<div class="device">
+<div class="device-screen">
+<div id="toast8" class="toast-m"></div>
+<div class="top-bar">
+  <div style="font-family:'Newsreader',serif;font-size:17px;font-weight:300;">Profile</div>
+  <div style="font-size:11px;color:var(--blue);cursor:pointer;" onclick="t8('Signing out...')">Sign out</div>
+</div>
+<div class="screen-scroll"><div class="scroll-pad">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0 16px;gap:10px;">
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--gbg);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;color:var(--green);">RK</div>
+    <div style="text-align:center;">
+      <div style="font-family:'Newsreader',serif;font-size:18px;font-weight:300;">Ravi Kumar</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:2px;">ravi.kumar@gmail.com</div>
+      <div style="font-size:12px;color:var(--t3);">+91 98491 23456</div>
+    </div>
+    <div class="badge bg-grey">Free plan · 2 of 3 groups</div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:500;">Account details</div><div style="font-size:11px;color:var(--blue);" onclick="t8('Opening edit...')">Edit</div></div>
+  <div class="card">
+    <div class="member-row" style="padding:12px 14px;"><div style="font-size:12px;color:var(--t2);flex:1;">Full name</div><div style="font-size:12px;font-weight:500;">Ravi Kumar</div></div>
+    <div class="member-row" style="padding:12px 14px;"><div style="font-size:12px;color:var(--t2);flex:1;">Phone</div><div style="font-size:12px;font-weight:500;">+91 98491 23456</div></div>
+    <div class="member-row" style="padding:12px 14px;"><div style="font-size:12px;color:var(--t2);flex:1;">Email</div><div style="font-size:12px;font-weight:500;">ravi.kumar@gmail.com</div></div>
+  </div>
+  <div style="font-size:13px;font-weight:500;">Preferences</div>
+  <div class="card">
+    <div class="member-row" style="padding:12px 14px;align-items:center;">
+      <div style="flex:1;"><div style="font-size:12px;font-weight:500;">Language</div><div style="font-size:10px;color:var(--t3);">App display language</div></div>
+      <select class="form-input form-select" style="width:auto;padding:6px 10px;font-size:12px;"><option>తెలుగు</option><option>English</option><option>हिन्दी</option><option>தமிழ்</option><option>ಕನ್ನಡ</option><option>മലയാളം</option></select>
+    </div>
+    <div class="member-row" style="padding:12px 14px;align-items:center;">
+      <div style="flex:1;"><div style="font-size:12px;font-weight:500;">Notifications</div><div style="font-size:10px;color:var(--t3);">Push and in-app alerts</div></div>
+      <div style="width:36px;height:20px;border-radius:100px;background:var(--green);display:flex;align-items:center;padding:2px;cursor:pointer;"><div style="width:16px;height:16px;border-radius:50%;background:#fff;margin-left:auto;"></div></div>
+    </div>
+  </div>
+  <div style="font-size:13px;font-weight:500;">Organisation</div>
+  <div class="card">
+    <div class="member-row" style="padding:12px 14px;"><div style="flex:1;"><div style="font-size:12px;font-weight:500;">Ravi's Circles</div><div style="font-size:10px;color:var(--t3);">Your organiser account</div></div><div class="badge bg-grey">Owner</div></div>
+    <div class="member-row" style="padding:12px 14px;"><div style="font-size:12px;color:var(--t2);flex:1;">Plan</div><div style="font-size:12px;font-weight:500;">Free · 2 of 3 groups</div></div>
+    <div style="padding:8px 14px 12px;">
+      <div style="height:4px;background:var(--b2);border-radius:2px;overflow:hidden;"><div class="pf pf-g" style="width:67%;"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;"><div style="font-size:9px;color:var(--t3);">2 groups used</div><div style="font-size:9px;color:var(--t3);">3 max on free</div></div>
+    </div>
+  </div>
+  <div style="font-size:13px;font-weight:500;color:var(--red);">Danger zone</div>
+  <div class="card">
+    <div class="ap-row" style="padding:12px 14px;">
+      <div class="ap-info"><div class="ap-name" style="color:var(--red);">Delete account</div><div class="ap-meta">Permanently remove your account and all groups</div></div>
+      <button class="btn-app btn-reject" onclick="t8('Delete confirmation required')">Delete</button>
+    </div>
+  </div>
+</div></div>
+<div class="bottom-nav">
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="bn-lbl">Home</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="bn-lbl">Groups</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="bn-lbl">Auction</div></div>
+  <div class="bn-tab"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bn-lbl">Approvals</div></div>
+  <div class="bn-tab active"><div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="bn-lbl" style="color:var(--green);font-weight:500;">Profile</div></div>
+</div>
+</div></div>
+<div class="device-label">08 — Profile</div>
+</div>
+
+</div><!-- /device-row -->
+
+<script>
+function showT(id,msg){const t=document.getElementById(id);if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function t1(m){showT('toast1',m);}
+function t3(m){showT('toast3',m);}
+function t4(m){showT('toast4',m);}
+function t6(m){showT('toast6',m);}
+function t7(m){showT('toast7',m);}
+function t8(m){showT('toast8',m);}
+
+let secs=130908;
+function tick(){secs=Math.max(0,secs-1);const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;const el=document.getElementById('timer-m');if(el)el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+setInterval(tick,1000);
+
+function sStrat(el,name){document.querySelectorAll('.strat-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');const e=document.getElementById('pstrat');if(e)e.textContent=name;}
+function uprev(){const n=document.getElementById('gname')?.value;const pn=document.getElementById('pname');if(pn)pn.textContent=n||'—';const d=document.getElementById('sdate')?.value;const pd=document.getElementById('pdate');if(pd&&d){const dt=new Date(d);pd.textContent=dt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}}
+function sFreq(el,name){document.querySelectorAll('.freq-pill').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');upot();}
+function upot(){const c=parseInt(document.getElementById('contrib')?.value)||1000;const m=parseInt(document.getElementById('maxm')?.value)||10;const pot=c*m;const pc=document.getElementById('pc');const pm=document.getElementById('pm');const pp=document.getElementById('pp');if(pc)pc.textContent='₹'+c.toLocaleString('en-IN');if(pm)pm.textContent=m;if(pp)pp.textContent='₹'+pot.toLocaleString('en-IN');}
+
+let wizStep=1,invCnt=3;
+function wnext(){if(wizStep<4){wizStep++;setWS(wizStep);}else{t7('Group launched!');}}
+function wprev(){if(wizStep>1){wizStep--;setWS(wizStep);}}
+function setWS(n){
+  for(let i=1;i<=4;i++){
+    const b=document.getElementById('wb'+i);
+    if(b)b.style.display=i===n?'flex':'none';
+    const ws=document.getElementById('ws'+i);const wl=document.getElementById('wl'+i);
+    if(ws&&wl){if(i<n){ws.className='ws-n done';ws.textContent='✓';wl.className='ws-lbl done';}else if(i===n){ws.className='ws-n act';ws.textContent=i;wl.className='ws-lbl act';}else{ws.className='ws-n todo';ws.textContent=i;wl.className='ws-lbl todo';}}
+    if(i<4){const line=document.getElementById('wl'+i+(i+1));if(line)line.className='ws-line'+(i<n?' done':'');}
+  }
+  document.getElementById('wiz-n').textContent=n;
+  const bk=document.getElementById('wbk');const nx=document.getElementById('wnx');
+  if(bk)bk.style.display=n>1?'block':'none';
+  if(nx)nx.textContent=n<4?'Next →':'Launch group →';
+}
+function addInv(){const f=document.getElementById('inv-inp');const v=f?.value?.trim();if(!v||invCnt>=10)return;invCnt++;const list=document.getElementById('inv-list');const chip=document.createElement('div');chip.className='invite-chip';chip.innerHTML='<div class="ic-av">'+v.substring(0,2).toUpperCase()+'</div><div class="ic-info"><div class="ic-name">'+v+'</div><div class="ic-contact">Invite pending</div></div><div class="ic-tag">Sending...</div>';list?.appendChild(chip);const cnt=document.getElementById('inv-cnt');if(cnt)cnt.textContent=invCnt+' of 10 slots';if(f)f.value='';}
+</script>
+</body>
+</html>

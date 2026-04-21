@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChitOS — Run your chit circle, your way.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --warm:#F9F7F4;--warm2:#F2EFE9;--card:#FFFFFF;
+  --t1:#1A1A1A;--t2:#6B6B6B;--t3:#A8A39A;
+  --b:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.13);
+  --green:#16A34A;--gbg:#EAF5EE;--gb:rgba(22,163,74,0.2);
+  --amber:#D97706;--abg:#FEF3C7;--ab:rgba(217,119,6,0.2);
+  --red:#DC2626;--rbg:#FEE2E2;
+  --blue:#2563EB;--bbg:#EFF6FF;--bb:rgba(37,99,235,0.2);
+  --gold:#B45309;--saffron:#E67C2A;--saffron-bg:#FEF0E6;
+  --r:12px;--rs:8px;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--t1);background:var(--warm);-webkit-font-smoothing:antialiased;}
+
+/* VIEW TABS */
+.view-tabs{display:flex;gap:0;background:var(--warm2);border-bottom:1px solid var(--b2);}
+.vtab{font-size:13px;padding:12px 24px;border:none;background:none;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all 0.15s;}
+.vtab.active{background:var(--card);color:var(--t1);font-weight:500;border-bottom:2px solid var(--green);}
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── DESKTOP ──────────────────────────────── */
+.d-nav{background:var(--card);border-bottom:0.5px solid var(--b2);padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.d-logo{font-family:'Newsreader',serif;font-size:20px;font-weight:300;color:var(--t1);letter-spacing:-0.3px;display:flex;align-items:center;gap:8px;}
+.d-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+.d-logo em{font-style:normal;color:var(--green);}
+.d-links{display:flex;gap:28px;}
+.d-links a{font-size:13px;color:var(--t2);text-decoration:none;transition:color 0.15s;}
+.d-links a:hover{color:var(--t1);}
+.d-nav-r{display:flex;gap:8px;align-items:center;}
+.btn-ghost{font-size:13px;padding:7px 16px;border-radius:var(--rs);border:0.5px solid var(--b2);background:none;color:var(--t1);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s;}
+.btn-ghost:hover{background:var(--warm);}
+.btn-cta{font-size:13px;padding:8px 18px;border-radius:var(--rs);border:none;background:var(--green);color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;}
+.btn-cta:hover{opacity:0.88;}
+
+.d-hero{padding:80px 40px 64px;display:grid;grid-template-columns:1fr 420px;gap:48px;max-width:1100px;margin:0 auto;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--gbg);border:0.5px solid var(--gb);border-radius:100px;padding:5px 14px 5px 8px;margin-bottom:24px;font-size:12px;color:var(--green);font-weight:500;}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.hero-h1{font-family:'Newsreader',serif;font-size:54px;font-weight:300;line-height:1.08;letter-spacing:-2px;margin-bottom:20px;color:var(--t1);}
+.hero-h1 .pill{display:inline-block;background:var(--saffron);color:#fff;padding:2px 16px 6px;border-radius:100px;font-style:normal;letter-spacing:-1px;line-height:1.1;}
+.hero-sub{font-size:17px;color:var(--t2);line-height:1.7;margin-bottom:32px;font-weight:300;max-width:440px;}
+.hero-btns{display:flex;gap:10px;margin-bottom:36px;}
+.btn-hero{font-size:15px;padding:13px 28px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:500;transition:all 0.15s;}
+.btn-hero-p{background:var(--t1);color:#fff;border:none;}
+.btn-hero-p:hover{opacity:0.85;transform:translateY(-1px);}
+.btn-hero-o{background:none;color:var(--t1);border:0.5px solid var(--b2);}
+.btn-hero-o:hover{background:var(--warm2);}
+.lang-chips{display:flex;gap:7px;flex-wrap:wrap;}
+.lang-chip{font-size:13px;padding:5px 13px;border-radius:100px;border:0.5px solid var(--b2);color:var(--t2);background:var(--card);transition:all 0.15s;cursor:default;}
+.lang-chip:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+
+.hero-card{background:var(--card);border:0.5px solid var(--b2);border-radius:var(--r);overflow:hidden;}
+.hc-top{background:var(--warm2);padding:10px 14px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;gap:6px;}
+.hc-dot{width:9px;height:9px;border-radius:50%;}
+.hc-url{font-size:10px;color:var(--t3);background:var(--card);border-radius:4px;padding:2px 10px;margin-left:6px;font-family:'JetBrains Mono',monospace;}
+.hc-body{padding:16px;}
+.hc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.hc-title{font-family:'Newsreader',serif;font-size:17px;font-weight:300;}
+.hc-badge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;background:var(--gbg);color:#15803D;border:0.5px solid var(--gb);}
+.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.hcs{background:var(--warm2);border-radius:var(--rs);padding:10px;}
+.hcs-v{font-family:'Newsreader',serif;font-size:20px;font-weight:300;color:var(--t1);}
+.hcs-v.g{color:var(--green);}
+.hcs-v.r{color:var(--red);}
+.hcs-l{font-size:10px;color:var(--t3);margin-top:1px;}
+.hc-group{background:var(--warm2);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px;}
+.hcg-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.hcg-ind{width:3px;height:28px;border-radius:2px;flex-shrink:0;}
+.hcg-name{font-size:12px;font-weight:500;color:var(--t1);}
+.hcg-meta{font-size:10px;color:var(--t3);}
+.hcg-prog{height:3px;background:rgba(0,0,0,0.08);border-radius:2px;overflow:hidden;}
+.hcg-fill{height:100%;border-radius:2px;}
+
+.ticker-wrap{background:var(--green);overflow:hidden;padding:12px 0;}
+.ticker-inner{display:flex;animation:scroll 20s linear infinite;white-space:nowrap;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ticker-item{font-size:13px;font-weight:500;color:#fff;display:inline-flex;align-items:center;gap:16px;padding:0 24px;}
+.ticker-sep{opacity:0.4;font-size:18px;}
+
+.d-proof{padding:48px 40px;background:var(--warm2);border-top:0.5px solid var(--b);border-bottom:0.5px solid var(--b);}
+.proof-inner{max-width:1100px;margin:0 auto;display:flex;gap:40px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.proof-stat{text-align:center;}
+.ps-val{font-family:'Newsreader',serif;font-size:36px;font-weight:300;color:var(--t1);letter-spacing:-1px;}
+.ps-lbl{font-size:13px;color:var(--t3);margin-top:2px;}
+.proof-divider{width:1px;height:48px;background:var(--b2);}
+
+.section-wrap{padding:80px 40px;max-width:1100px;margin:0 auto;}
+.eyebrow-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.eyebrow-line{width:24px;height:1px;background:var(--green);}
+.eyebrow-text{font-size:11px;color:var(--green);font-weight:500;letter-spacing:1px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.section-h2{font-family:'Newsreader',serif;font-size:40px;font-weight:300;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px;color:var(--t1);}
+.section-h2 em{font-style:italic;}
+.section-sub{font-size:15px;color:var(--t2);line-height:1.7;font-weight:300;margin-bottom:48px;max-width:480px;}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;}
+.feat-cell{padding:24px;border-right:0.5px solid var(--b);border-bottom:0.5px solid var(--b);transition:background 0.15s;}
+.feat-cell:hover{background:var(--warm2);}
+.feat-cell:nth-child(3n){border-right:none;}
+.feat-cell:nth-child(n+4){border-bottom:none;}
+.feat-num{font-size:10px;color:var(--t3);font-weight:500;font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+.feat-icon{width:36px;height:36px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.feat-icon svg{width:18px;height:18px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.fi-g{background:var(--gbg);} .fi-g svg{stroke:var(--green);}
+.fi-b{background:var(--bbg);} .fi-b svg{stroke:var(--blue);}
+.fi-a{background:var(--abg);} .fi-a svg{stroke:var(--amber);}
+.fi-s{background:var(--saffron-bg);} .fi-s svg{stroke:var(--saffron);}
+.feat-cell h3{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:7px;}
+.feat-cell p{font-size:13px;color:var(--t2);line-height:1.6;font-weight:300;}
+
+.how-section{background:var(--warm2);border-top:0.5px solid var(--b);border-bottom:0.5px solid var(--b);padding:80px 40px;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;background:var(--card);}
+.step-box{padding:24px;border-right:0.5px solid var(--b);cursor:pointer;transition:background 0.15s;}
+.step-box:hover{background:var(--warm2);}
+.step-box:last-child{border-right:none;}
+.step-n{font-size:10px;color:var(--t3);font-weight:500;font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+.step-icon-ring{width:32px;height:32px;border-radius:50%;border:0.5px solid var(--gb);background:var(--gbg);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.step-icon-ring svg{width:15px;height:15px;stroke:var(--green);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.step-box h4{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:6px;}
+.step-box p{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300;}
+
+.langs-section{padding:80px 40px;max-width:1100px;margin:0 auto;}
+.langs-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.lang-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.lang-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:16px;transition:all 0.2s;}
+.lang-card:hover{border-color:var(--gb);background:var(--gbg);}
+.lc-script{font-size:22px;color:var(--t1);margin-bottom:4px;}
+.lc-name{font-size:12px;font-weight:500;color:var(--t1);}
+.lc-region{font-size:11px;color:var(--t3);}
+.lc-sample{font-size:11px;color:var(--t2);margin-top:6px;font-style:italic;line-height:1.4;}
+
+.pricing-section{background:var(--warm2);border-top:0.5px solid var(--b);padding:80px 40px;}
+.pricing-inner{max-width:1100px;margin:0 auto;}
+.plans-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.plan{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:24px;position:relative;}
+.plan:hover{border-color:var(--b2);}
+.plan.featured{border:1.5px solid var(--green);}
+.plan-featured-badge{font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--green);color:#fff;display:inline-block;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+.plan-name{font-family:'Newsreader',serif;font-size:22px;font-weight:300;margin-bottom:4px;}
+.plan-desc{font-size:12px;color:var(--t3);margin-bottom:20px;font-weight:300;}
+.plan-price{margin-bottom:20px;padding-bottom:20px;border-bottom:0.5px solid var(--b);}
+.plan-amt{font-family:'Newsreader',serif;font-size:38px;font-weight:300;letter-spacing:-1px;color:var(--t1);}
+.plan-per{font-size:13px;color:var(--t3);}
+.plan-feats{list-style:none;margin-bottom:24px;display:flex;flex-direction:column;gap:9px;}
+.plan-feats li{font-size:13px;color:var(--t2);display:flex;gap:8px;align-items:flex-start;font-weight:300;}
+.pf-check svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:1px;}
+.btn-plan-p{width:100%;background:var(--t1);color:#fff;border:none;border-radius:var(--rs);padding:11px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;}
+.btn-plan-p:hover{opacity:0.85;}
+.btn-plan-o{width:100%;background:none;color:var(--t1);border:0.5px solid var(--b2);border-radius:var(--rs);padding:11px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-plan-o:hover{background:var(--warm);}
+
+.testi-section{padding:80px 40px;max-width:1100px;margin:0 auto;}
+.testi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.testi-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:20px;}
+.testi-quote{font-family:'Newsreader',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--t1);line-height:1.6;margin-bottom:16px;}
+.testi-by{display:flex;align-items:center;gap:10px;}
+.testi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;}
+.testi-name{font-size:13px;font-weight:500;color:var(--t1);}
+.testi-role{font-size:11px;color:var(--t3);}
+
+.cta-band{background:var(--t1);padding:80px 40px;text-align:center;}
+.cta-h{font-family:'Newsreader',serif;font-size:48px;font-weight:300;color:#fff;line-height:1.05;letter-spacing:-1.5px;margin-bottom:14px;}
+.cta-h em{font-style:italic;color:var(--green);}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.55);margin-bottom:32px;font-weight:300;}
+.btn-cta-white{font-size:16px;padding:14px 36px;border-radius:var(--rs);border:none;background:#fff;color:var(--t1);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;}
+.btn-cta-white:hover{opacity:0.9;}
+
+.d-footer{border-top:0.5px solid var(--b);padding:24px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;background:var(--card);}
+.footer-logo{font-family:'Newsreader',serif;font-size:17px;font-weight:300;}
+.footer-logo em{font-style:normal;color:var(--green);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:12px;color:var(--t3);text-decoration:none;}
+.footer-links a:hover{color:var(--t2);}
+.footer-copy{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;}
+
+/* ── MOBILE ──────────────────────────────── */
+.m-page{background:var(--warm);max-width:390px;margin:0 auto;border-left:0.5px solid var(--b2);border-right:0.5px solid var(--b2);}
+.m-nav{background:var(--card);border-bottom:0.5px solid var(--b2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.m-logo{font-family:'Newsreader',serif;font-size:18px;font-weight:300;display:flex;align-items:center;gap:7px;}
+.m-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+.m-logo em{font-style:normal;color:var(--green);}
+.m-cta-nav{font-size:12px;padding:7px 14px;border-radius:var(--rs);background:var(--t1);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;}
+.m-hero{padding:36px 16px 28px;text-align:center;}
+.m-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--gbg);border:0.5px solid var(--gb);border-radius:100px;padding:5px 12px 5px 8px;margin-bottom:20px;font-size:11px;color:var(--green);font-weight:500;}
+.m-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.8s ease-in-out infinite;}
+.m-h1{font-family:'Newsreader',serif;font-size:36px;font-weight:300;line-height:1.08;letter-spacing:-1.5px;margin-bottom:14px;color:var(--t1);}
+.m-h1 .pill-m{background:var(--saffron);color:#fff;padding:2px 12px 5px;border-radius:100px;display:inline-block;letter-spacing:-0.5px;}
+.m-sub{font-size:15px;color:var(--t2);line-height:1.7;margin-bottom:24px;font-weight:300;}
+.m-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.btn-m-p{width:100%;background:var(--t1);color:#fff;border:none;border-radius:var(--rs);padding:13px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;}
+.btn-m-o{width:100%;background:none;color:var(--t1);border:0.5px solid var(--b2);border-radius:var(--rs);padding:12px;font-size:15px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.m-lang-chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.m-lang-chip{font-size:12px;padding:5px 11px;border-radius:100px;border:0.5px solid var(--b2);color:var(--t2);background:var(--card);}
+.m-preview{padding:0 16px 28px;}
+.mpc{background:var(--card);border:0.5px solid var(--b2);border-radius:var(--r);overflow:hidden;}
+.mpc-top{background:var(--warm2);padding:8px 12px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;gap:5px;}
+.mpc-dot{width:7px;height:7px;border-radius:50%;}
+.mpc-url{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-left:5px;}
+.mpc-body{padding:12px;}
+.mpc-greet{font-size:10px;color:var(--t3);}
+.mpc-name{font-family:'Newsreader',serif;font-size:16px;font-weight:300;margin-bottom:10px;}
+.mpc-pot{background:var(--saffron);border-radius:var(--rs);padding:12px;margin-bottom:8px;position:relative;overflow:hidden;}
+.mpc-pot::after{content:'';position:absolute;top:-15px;right:-15px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.12);}
+.mpc-pot-lbl{font-size:9px;color:rgba(255,255,255,0.7);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:3px;}
+.mpc-pot-val{font-family:'Newsreader',serif;font-size:24px;font-weight:300;color:#fff;letter-spacing:-0.5px;}
+.mpc-pot-sub{font-size:10px;color:rgba(255,255,255,0.65);}
+.mpc-groups{display:flex;flex-direction:column;gap:5px;}
+.mpc-group{background:var(--warm2);border-radius:var(--rs);padding:8px 10px;display:flex;align-items:center;gap:7px;}
+.mpg-ind{width:3px;height:26px;border-radius:2px;flex-shrink:0;}
+.mpg-info{flex:1;}
+.mpg-name{font-size:11px;font-weight:500;}
+.mpg-meta{font-size:9px;color:var(--t3);}
+.mpg-amt{font-size:12px;font-weight:500;}
+.m-ticker{background:var(--green);overflow:hidden;padding:10px 0;}
+.m-ticker-inner{display:flex;animation:scroll 16s linear infinite;white-space:nowrap;}
+.m-ticker-item{font-size:12px;font-weight:500;color:#fff;padding:0 20px;display:inline-flex;align-items:center;gap:14px;}
+.m-proof{background:var(--warm2);border-top:0.5px solid var(--b);border-bottom:0.5px solid var(--b);padding:24px 16px;}
+.m-proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.m-proof-stat{text-align:center;}
+.mps-val{font-family:'Newsreader',serif;font-size:28px;font-weight:300;color:var(--t1);}
+.mps-lbl{font-size:11px;color:var(--t3);margin-top:2px;}
+.m-section{padding:32px 16px;}
+.m-eyebrow-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.m-eline{width:18px;height:1px;background:var(--green);}
+.m-etxt{font-size:10px;color:var(--green);font-weight:500;letter-spacing:0.8px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.m-h2{font-family:'Newsreader',serif;font-size:28px;font-weight:300;letter-spacing:-1px;line-height:1.1;margin-bottom:8px;color:var(--t1);}
+.m-h2 em{font-style:italic;}
+.m-h2-sub{font-size:14px;color:var(--t2);line-height:1.6;font-weight:300;margin-bottom:24px;}
+.m-feat-list{display:flex;flex-direction:column;gap:0;border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;background:var(--card);}
+.m-feat-row{padding:16px;border-bottom:0.5px solid var(--b);display:flex;gap:12px;align-items:flex-start;}
+.m-feat-row:last-child{border-bottom:none;}
+.m-feat-icon{width:32px;height:32px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.m-feat-icon svg{width:16px;height:16px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.m-feat-body h3{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:3px;}
+.m-feat-body p{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300;}
+.m-steps-list{display:flex;flex-direction:column;gap:0;border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;background:var(--card);}
+.m-step{padding:14px 16px;border-bottom:0.5px solid var(--b);display:flex;gap:12px;align-items:flex-start;}
+.m-step:last-child{border-bottom:none;}
+.m-step-n{width:24px;height:24px;border-radius:50%;background:var(--gbg);border:0.5px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--green);flex-shrink:0;}
+.m-step h4{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px;}
+.m-step p{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300;}
+.m-lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.m-lang-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;}
+.m-lang-card:hover{border-color:var(--gb);background:var(--gbg);}
+.mlc-script{font-size:20px;color:var(--t1);margin-bottom:2px;}
+.mlc-name{font-size:12px;font-weight:500;color:var(--t1);}
+.mlc-region{font-size:10px;color:var(--t3);}
+.m-plans{display:flex;flex-direction:column;gap:10px;}
+.m-plan{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:18px;}
+.m-plan.feat{border:1.5px solid var(--green);}
+.m-plan-badge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;background:var(--green);color:#fff;display:inline-block;margin-bottom:10px;}
+.m-plan-name{font-family:'Newsreader',serif;font-size:20px;font-weight:300;margin-bottom:3px;}
+.m-plan-amt{font-family:'Newsreader',serif;font-size:32px;font-weight:300;letter-spacing:-0.8px;margin-bottom:4px;}
+.m-plan-per{font-size:12px;color:var(--t3);}
+.m-plan-feats{margin:14px 0;display:flex;flex-direction:column;gap:7px;padding-top:14px;border-top:0.5px solid var(--b);}
+.m-plan-feats li{font-size:12px;color:var(--t2);display:flex;gap:7px;font-weight:300;}
+.mcheck svg{width:13px;height:13px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.m-testi{display:flex;flex-direction:column;gap:10px;}
+.m-cta-band{background:var(--t1);padding:48px 16px;text-align:center;}
+.m-cta-h{font-family:'Newsreader',serif;font-size:34px;font-weight:300;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;}
+.m-cta-h em{font-style:italic;color:var(--green);}
+.m-cta-sub{font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:24px;font-weight:300;}
+.m-cta-btn{width:100%;background:#fff;color:var(--t1);border:none;border-radius:var(--rs);padding:14px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;}
+.m-footer{background:var(--card);border-top:0.5px solid var(--b);padding:20px 16px;text-align:center;}
+.mf-logo{font-family:'Newsreader',serif;font-size:16px;font-weight:300;margin-bottom:10px;}
+.mf-logo em{font-style:normal;color:var(--green);}
+.mf-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.mf-links a{font-size:12px;color:var(--t3);text-decoration:none;}
+.mf-copy{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;}
+
+/* RESPONSIVE — desktop hides mobile view narrowing */
+@media(max-width:700px){
+  .d-hero{grid-template-columns:1fr;}
+  .d-hero>div:last-child{display:none;}
+  .plans-row{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .langs-grid{grid-template-columns:1fr;}
+  .steps-grid{grid-template-columns:1fr 1fr;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .proof-inner{gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="view-tabs">
+  <button class="vtab active" onclick="showView('desktop')">Desktop</button>
+  <button class="vtab" onclick="showView('mobile')">Mobile</button>
+</div>
+
+<!-- ══════════════ DESKTOP ══════════════ -->
+<div class="view active" id="view-desktop">
+
+<nav class="d-nav">
+  <div class="d-logo"><div class="d-logo-dot"></div>Chit<em>OS</em></div>
+  <div class="d-links">
+    <a href="#">Features</a><a href="#">How it works</a>
+    <a href="#">Languages</a><a href="#">Pricing</a>
+  </div>
+  <div class="d-nav-r">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-cta">Start free ↗</button>
+  </div>
+</nav>
+
+<div class="d-hero">
+  <div>
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div>Now in early access · chitos.app</div>
+    <h1 class="hero-h1">Run your chit<br>circle <span class="pill">your way.</span></h1>
+    <p class="hero-sub">The self-serve platform for friend groups, families, and offices across India — transparent, fair, and in your own language.</p>
+    <div class="hero-btns">
+      <button class="btn-hero btn-hero-p">Create your group</button>
+      <button class="btn-hero btn-hero-o">See how it works</button>
+    </div>
+    <div class="lang-chips">
+      <div class="lang-chip">తెలుగు</div>
+      <div class="lang-chip">हिन्दी</div>
+      <div class="lang-chip">தமிழ்</div>
+      <div class="lang-chip">ಕನ್ನಡ</div>
+      <div class="lang-chip">മലയാളം</div>
+      <div class="lang-chip">English</div>
+    </div>
+  </div>
+  <div>
+    <div class="hero-card">
+      <div class="hc-top">
+        <div class="hc-dot" style="background:#FF5F57;"></div>
+        <div class="hc-dot" style="background:#FFBD2E;"></div>
+        <div class="hc-dot" style="background:#28CA41;"></div>
+        <div class="hc-url">app.chitos.app/console</div>
+      </div>
+      <div class="hc-body">
+        <div class="hc-row">
+          <div class="hc-title">Ravi's console</div>
+          <div class="hc-badge">Pro plan</div>
+        </div>
+        <div class="hc-stats">
+          <div class="hcs"><div class="hcs-v g">3</div><div class="hcs-l">Active groups</div></div>
+          <div class="hcs"><div class="hcs-v">24</div><div class="hcs-l">Members</div></div>
+          <div class="hcs"><div class="hcs-v r">2</div><div class="hcs-l">Overdue</div></div>
+        </div>
+        <div class="hc-group">
+          <div class="hcg-top">
+            <div class="hcg-ind" style="background:var(--green);"></div>
+            <div><div class="hcg-name">Friends Circle</div><div class="hcg-meta">₹1,000/month · Month 4 of 10</div></div>
+            <div style="margin-left:auto;font-size:10px;padding:2px 7px;border-radius:100px;background:var(--bbg);color:#1D4ED8;border:0.5px solid var(--bb);">Auction</div>
+          </div>
+          <div class="hcg-prog"><div class="hcg-fill" style="width:40%;background:var(--green);"></div></div>
+        </div>
+        <div class="hc-group">
+          <div class="hcg-top">
+            <div class="hcg-ind" style="background:var(--amber);"></div>
+            <div><div class="hcg-name">Office Gang</div><div class="hcg-meta">₹2,000/month · Starts Jun 2026</div></div>
+            <div style="margin-left:auto;font-size:10px;padding:2px 7px;border-radius:100px;background:var(--gbg);color:#15803D;border:0.5px solid var(--gb);">Lottery</div>
+          </div>
+          <div class="hcg-prog"><div class="hcg-fill" style="width:75%;background:var(--amber);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item">Auction mode <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Lottery mode <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Fixed order <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">6 Indian languages <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Custom branding <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">PWA + iOS + Android <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Member approvals <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Trust scores <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">WhatsApp invites <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Cycle PDF export <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Auction mode <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Lottery mode <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Fixed order <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">6 Indian languages <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Custom branding <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">PWA + iOS + Android <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Member approvals <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Trust scores <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">WhatsApp invites <span class="ticker-sep">·</span></div>
+    <div class="ticker-item">Cycle PDF export <span class="ticker-sep">·</span></div>
+  </div>
+</div>
+
+<div class="d-proof">
+  <div class="proof-inner">
+    <div class="proof-stat"><div class="ps-val">₹2.4Cr+</div><div class="ps-lbl">managed on ChitOS</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="ps-val">1,200+</div><div class="ps-lbl">active groups</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="ps-val">14,000+</div><div class="ps-lbl">members across India</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="ps-val">6</div><div class="ps-lbl">Indian languages</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="ps-val">4.9 ★</div><div class="ps-lbl">organiser rating</div></div>
+  </div>
+</div>
+
+<section class="section-wrap">
+  <div class="eyebrow-row"><div class="eyebrow-line"></div><div class="eyebrow-text">Features</div></div>
+  <h2 class="section-h2">Built for every <em>circle.</em></h2>
+  <p class="section-sub">Everything an organiser needs — without the complexity of enterprise chit fund software.</p>
+  <div class="feat-grid">
+    <div class="feat-cell"><div class="feat-num">01</div><div class="feat-icon fi-g"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><h3>Multi-group console</h3><p>Manage friends, family, and office circles from one dashboard. Each with its own rules, members, and cycle history.</p></div>
+    <div class="feat-cell"><div class="feat-num">02</div><div class="feat-icon fi-b"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><h3>Four payout strategies</h3><p>Auction, lottery, fixed order, or consensus. You pick the strategy that fits your group — change it each cycle.</p></div>
+    <div class="feat-cell"><div class="feat-num">03</div><div class="feat-icon fi-a"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Smart interest engine</h3><p>Early takers pay a fair premium. Patient waiters earn a reward. Every calculation shown transparently to all members.</p></div>
+    <div class="feat-cell"><div class="feat-num">04</div><div class="feat-icon fi-g"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg></div><h3>Member approval flow</h3><p>Every member who clicks your invite link needs your approval before joining. No strangers, no surprises.</p></div>
+    <div class="feat-cell"><div class="feat-num">05</div><div class="feat-icon fi-s"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><h3>Mid-cycle import</h3><p>Already running a chit on paper or WhatsApp? Import your history and track going forward from any point.</p></div>
+    <div class="feat-cell"><div class="feat-num">06</div><div class="feat-icon fi-b"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Trust scores</h3><p>A 0–100 score per member based on payment consistency, auction participation, and tenure. Know who to trust.</p></div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="how-inner">
+    <div class="eyebrow-row"><div class="eyebrow-line"></div><div class="eyebrow-text">How it works</div></div>
+    <h2 class="section-h2" style="margin-bottom:32px;">Up and running <em>in minutes.</em></h2>
+    <div class="steps-grid">
+      <div class="step-box"><div class="step-n">Step 01</div><div class="step-icon-ring"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><h4>Create your group</h4><p>Set contribution amount, pay frequency, max members, and payout strategy in under 2 minutes.</p></div>
+      <div class="step-box"><div class="step-n">Step 02</div><div class="step-icon-ring"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.87 9.5 19.79 19.79 0 0 1 1.81 .82a2 2 0 0 1 1.99-1.82h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.94-1.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 14.92z"/></svg></div><h4>Invite via WhatsApp</h4><p>Share a link. Members request to join and you approve each one. Group chat is already in your pocket.</p></div>
+      <div class="step-box"><div class="step-n">Step 03</div><div class="step-icon-ring"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><h4>Run the cycle</h4><p>Track contributions, open the auction room, declare the winner, and log the payout from your phone.</p></div>
+      <div class="step-box"><div class="step-n">Step 04</div><div class="step-icon-ring"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h4>Close and repeat</h4><p>Export a one-page PDF summary, view the full ledger, and start the next cycle with one tap.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="langs-section">
+  <div class="langs-grid">
+    <div>
+      <div class="eyebrow-row"><div class="eyebrow-line"></div><div class="eyebrow-text">Languages</div></div>
+      <h2 class="section-h2"><em>Your language,</em><br>your terms.</h2>
+      <p class="section-sub">Every member sees ChitOS in their own preferred language — set individually per person. Six Indian languages supported at launch.</p>
+      <div style="font-size:13px;color:var(--t3);font-family:'JetBrains Mono',monospace;">Telugu · Hindi · Tamil · Kannada · Malayalam · English</div>
+    </div>
+    <div class="lang-cards">
+      <div class="lang-card"><div class="lc-script">తెలుగు</div><div class="lc-name">Telugu</div><div class="lc-region">Andhra Pradesh · Telangana</div><div class="lc-sample">"మీ చిట్ సర్కిల్ ని మేనేజ్ చేయండి"</div></div>
+      <div class="lang-card"><div class="lc-script">हिन्दी</div><div class="lc-name">Hindi</div><div class="lc-region">Pan-India · 500M+ speakers</div><div class="lc-sample">"अपना चिट सर्कल आसानी से चलाएं"</div></div>
+      <div class="lang-card"><div class="lc-script">தமிழ்</div><div class="lc-name">Tamil</div><div class="lc-region">Tamil Nadu · Sri Lanka</div><div class="lc-sample">"உங்கள் குழுவை நிர்வகிக்கவும்"</div></div>
+      <div class="lang-card"><div class="lc-script">ಕನ್ನಡ</div><div class="lc-name">Kannada</div><div class="lc-region">Karnataka</div><div class="lc-sample">"ನಿಮ್ಮ ಚಿಟ್ ಗ್ರೂಪ್ ನಿರ್ವಹಿಸಿ"</div></div>
+      <div class="lang-card" style="grid-column:span 2;display:flex;gap:16px;align-items:center;">
+        <div style="flex:1;"><div class="lc-script">മലയാളം</div><div class="lc-name">Malayalam</div><div class="lc-region">Kerala</div><div class="lc-sample">"നിങ്ങളുടെ ഗ്രൂപ്പ് നിയന്ത്രിക്കൂ"</div></div>
+        <div style="flex:1;border-left:0.5px solid var(--b);padding-left:16px;"><div class="lc-script" style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:300;">English</div><div class="lc-name">English</div><div class="lc-region">Pan-India default</div><div class="lc-sample">"Run your circle, your way"</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-section">
+  <div class="pricing-inner">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="eyebrow-row" style="justify-content:center;"><div class="eyebrow-line"></div><div class="eyebrow-text">Pricing</div><div class="eyebrow-line"></div></div>
+      <h2 class="section-h2">Simple, <em>honest</em> pricing.</h2>
+      <p style="font-size:15px;color:var(--t2);font-weight:300;">No hidden fees. No lock-in. Cancel any time.</p>
+    </div>
+    <div class="plans-row">
+      <div class="plan">
+        <div class="plan-name">Free</div>
+        <div class="plan-desc">Get started, no card needed</div>
+        <div class="plan-price"><div class="plan-amt">₹0</div><div class="plan-per">/ month, forever</div></div>
+        <ul class="plan-feats">
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>3 groups · 15 members each</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>All 4 payout strategies</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>WhatsApp invites</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>ChitOS branding</li>
+        </ul>
+        <button class="btn-plan-o">Get started</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-featured-badge">Most popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-desc">For serious organisers</div>
+        <div class="plan-price"><div class="plan-amt">₹499</div><div class="plan-per">/ month</div></div>
+        <ul class="plan-feats">
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited groups + members</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Custom branding</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Reports + PDF export</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>All 6 languages</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Mid-cycle import</li>
+        </ul>
+        <button class="btn-plan-p">Start Pro ↗</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Business</div>
+        <div class="plan-desc">White-label and scale</div>
+        <div class="plan-price"><div class="plan-amt">₹999</div><div class="plan-per">/ month</div></div>
+        <ul class="plan-feats">
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Everything in Pro</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Custom domain</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Remove ChitOS branding</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Trust scores + audit logs</li>
+          <li><span class="pf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Priority support</li>
+        </ul>
+        <button class="btn-plan-o">Contact us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testi-section">
+  <div style="text-align:center;margin-bottom:40px;">
+    <div class="eyebrow-row" style="justify-content:center;"><div class="eyebrow-line"></div><div class="eyebrow-text">Organisers love it</div><div class="eyebrow-line"></div></div>
+    <h2 class="section-h2">What <em>real circles</em> say.</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="testi-quote">"We were running our office chit on a WhatsApp group and an Excel sheet. ChitOS replaced both. The auction room alone is worth it — no more arguments about who bid what."</div><div class="testi-by"><div class="testi-av" style="background:var(--gbg);color:var(--green);">VR</div><div><div class="testi-name">Venkat Rao</div><div class="testi-role">Organiser · Hyderabad · 10 members</div></div></div></div>
+    <div class="testi-card"><div class="testi-quote">"Finally a chit app that works in Telugu! My group members who aren't comfortable with English can use it themselves. The language switch is seamless."</div><div class="testi-by"><div class="testi-av" style="background:var(--abg);color:var(--amber);">SR</div><div><div class="testi-name">Sravani Reddy</div><div class="testi-role">Organiser · Vijayawada · 8 members</div></div></div></div>
+    <div class="testi-card"><div class="testi-quote">"The import feature was the game-changer. We had 6 months of history in a notebook. Took 10 minutes to import and now everything is tracked properly going forward."</div><div class="testi-by"><div class="testi-av" style="background:var(--bbg);color:var(--blue);">MK</div><div><div class="testi-name">Mahesh Kumar</div><div class="testi-role">Organiser · Chennai · 12 members</div></div></div></div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="cta-h">Your chit.<br><em>Your rules.</em></div>
+  <div class="cta-sub">Join the organisers already running their circles on ChitOS. No card needed to start.</div>
+  <button class="btn-cta-white">Create your group — it's free ↗</button>
+</div>
+
+<footer class="d-footer">
+  <div class="footer-logo">Chit<em>OS</em></div>
+  <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Blog</a><a href="#">Changelog</a></div>
+  <div class="footer-copy">© 2026 ChitOS · chitos.app</div>
+</footer>
+</div>
+
+<!-- ══════════════ MOBILE ══════════════ -->
+<div class="view" id="view-mobile">
+<div class="m-page">
+  <nav class="m-nav">
+    <div class="m-logo"><div class="m-logo-dot"></div>Chit<em>OS</em></div>
+    <button class="m-cta-nav">Start free</button>
+  </nav>
+  <div class="m-hero">
+    <div class="m-eyebrow"><div class="m-eyebrow-dot"></div>Early access · chitos.app</div>
+    <h1 class="m-h1">Run your circle<br><span class="pill-m">your way.</span></h1>
+    <p class="m-sub">The self-serve chit fund platform for Indian friend groups, families, and offices — in your language.</p>
+    <div class="m-btns">
+      <button class="btn-m-p">Create your group</button>
+      <button class="btn-m-o">See how it works</button>
+    </div>
+    <div class="m-lang-chips">
+      <div class="m-lang-chip">తెలుగు</div><div class="m-lang-chip">हिन्दी</div>
+      <div class="m-lang-chip">தமிழ்</div><div class="m-lang-chip">ಕನ್ನಡ</div>
+      <div class="m-lang-chip">മലയാളം</div><div class="m-lang-chip">English</div>
+    </div>
+  </div>
+  <div class="m-preview">
+    <div class="mpc">
+      <div class="mpc-top"><div class="mpc-dot" style="background:#FF5F57;"></div><div class="mpc-dot" style="background:#FFBD2E;"></div><div class="mpc-dot" style="background:#28CA41;"></div><div class="mpc-url">app.chitos.app</div></div>
+      <div class="mpc-body">
+        <div class="mpc-greet">Good morning,</div>
+        <div class="mpc-name">Ravi Kumar</div>
+        <div class="mpc-pot"><div class="mpc-pot-lbl">Total pot value</div><div class="mpc-pot-val">₹1,20,000</div><div class="mpc-pot-sub">Across 3 active groups</div></div>
+        <div class="mpc-groups">
+          <div class="mpc-group"><div class="mpg-ind" style="background:var(--green);"></div><div class="mpg-info"><div class="mpg-name">Friends Circle</div><div class="mpg-meta">Month 4 · Auction open</div></div><div class="mpg-amt" style="color:var(--green);">₹10K</div></div>
+          <div class="mpc-group"><div class="mpg-ind" style="background:var(--amber);"></div><div class="mpg-info"><div class="mpg-name">Office Gang</div><div class="mpg-meta">Starts Jun · Lottery</div></div><div class="mpg-amt" style="color:var(--amber);">₹16K</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="m-ticker"><div class="m-ticker-inner">
+    <div class="m-ticker-item">Auction <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">Lottery <span style="opacity:0.4;">·</span></div>
+    <div class="m-ticker-item">6 languages <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">PWA + Mobile <span style="opacity:0.4;">·</span></div>
+    <div class="m-ticker-item">WhatsApp invites <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">Trust scores <span style="opacity:0.4;">·</span></div>
+    <div class="m-ticker-item">Auction <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">Lottery <span style="opacity:0.4;">·</span></div>
+    <div class="m-ticker-item">6 languages <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">PWA + Mobile <span style="opacity:0.4;">·</span></div>
+    <div class="m-ticker-item">WhatsApp invites <span style="opacity:0.4;">·</span></div><div class="m-ticker-item">Trust scores <span style="opacity:0.4;">·</span></div>
+  </div></div>
+  <div class="m-proof"><div class="m-proof-grid">
+    <div class="m-proof-stat"><div class="mps-val">₹2.4Cr+</div><div class="mps-lbl">managed</div></div>
+    <div class="m-proof-stat"><div class="mps-val">1,200+</div><div class="mps-lbl">active groups</div></div>
+    <div class="m-proof-stat"><div class="mps-val">14K+</div><div class="mps-lbl">members</div></div>
+    <div class="m-proof-stat"><div class="mps-val">4.9 ★</div><div class="mps-lbl">rating</div></div>
+  </div></div>
+  <div class="m-section">
+    <div class="m-eyebrow-row"><div class="m-eline"></div><div class="m-etxt">Features</div></div>
+    <h2 class="m-h2">Built for every <em>circle.</em></h2>
+    <p class="m-h2-sub">Everything you need to run transparent, fair chit funds — without the headache.</p>
+    <div class="m-feat-list">
+      <div class="m-feat-row"><div class="m-feat-icon fi-g"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="m-feat-body"><h3>Multi-group console</h3><p>Manage multiple chit groups from one place, each with its own members and terms.</p></div></div>
+      <div class="m-feat-row"><div class="m-feat-icon fi-b"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="m-feat-body"><h3>Four payout strategies</h3><p>Auction, lottery, fixed order, or consensus — you choose what works for your group.</p></div></div>
+      <div class="m-feat-row"><div class="m-feat-icon fi-a"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="m-feat-body"><h3>Smart interest engine</h3><p>Early takers pay a fair premium. Late takers earn a discount. Shown transparently.</p></div></div>
+      <div class="m-feat-row"><div class="m-feat-icon fi-g"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 11l2 2 4-4"/></svg></div><div class="m-feat-body"><h3>Member approvals</h3><p>Every member who joins via invite needs your approval. No gatecrashers.</p></div></div>
+      <div class="m-feat-row"><div class="m-feat-icon fi-s"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><div class="m-feat-body"><h3>Mid-cycle import</h3><p>Already running on paper? Import your history and continue tracking from any point.</p></div></div>
+      <div class="m-feat-row"><div class="m-feat-icon fi-b"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="m-feat-body"><h3>PDF cycle summary</h3><p>Download a one-page statement at end of each cycle. Share with members instantly.</p></div></div>
+    </div>
+  </div>
+  <div style="background:var(--warm2);border-top:0.5px solid var(--b);border-bottom:0.5px solid var(--b);">
+    <div class="m-section" style="padding-bottom:8px;"><div class="m-eyebrow-row"><div class="m-eline"></div><div class="m-etxt">How it works</div></div><h2 class="m-h2">Up in <em>minutes.</em></h2></div>
+    <div class="m-section" style="padding-top:0;">
+      <div class="m-steps-list">
+        <div class="m-step"><div class="m-step-n">1</div><div><h4>Create your group</h4><p>Set amount, frequency, members, and strategy in 2 minutes.</p></div></div>
+        <div class="m-step"><div class="m-step-n">2</div><div><h4>Invite via WhatsApp</h4><p>Share a link. Members request to join and you approve them.</p></div></div>
+        <div class="m-step"><div class="m-step-n">3</div><div><h4>Run the cycle</h4><p>Track contributions, run the auction, and log payouts.</p></div></div>
+        <div class="m-step"><div class="m-step-n">4</div><div><h4>Close and repeat</h4><p>Export the PDF summary and start the next cycle with one tap.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="m-section">
+    <div class="m-eyebrow-row"><div class="m-eline"></div><div class="m-etxt">Languages</div></div>
+    <h2 class="m-h2"><em>Your language,</em><br>your terms.</h2>
+    <p class="m-h2-sub">Every member picks their own language individually. Six Indian languages at launch.</p>
+    <div class="m-lang-grid">
+      <div class="m-lang-card"><div class="mlc-script">తెలుగు</div><div class="mlc-name">Telugu</div><div class="mlc-region">AP · Telangana</div></div>
+      <div class="m-lang-card"><div class="mlc-script">हिन्दी</div><div class="mlc-name">Hindi</div><div class="mlc-region">Pan-India</div></div>
+      <div class="m-lang-card"><div class="mlc-script">தமிழ்</div><div class="mlc-name">Tamil</div><div class="mlc-region">Tamil Nadu</div></div>
+      <div class="m-lang-card"><div class="mlc-script">ಕನ್ನಡ</div><div class="mlc-name">Kannada</div><div class="mlc-region">Karnataka</div></div>
+      <div class="m-lang-card"><div class="mlc-script">മലയാളം</div><div class="mlc-name">Malayalam</div><div class="mlc-region">Kerala</div></div>
+      <div class="m-lang-card"><div class="mlc-script" style="font-family:'DM Sans',sans-serif;font-size:17px;font-weight:300;">Eng</div><div class="mlc-name">English</div><div class="mlc-region">Default</div></div>
+    </div>
+  </div>
+  <div style="background:var(--warm2);border-top:0.5px solid var(--b);">
+    <div class="m-section">
+      <div class="m-eyebrow-row"><div class="m-eline"></div><div class="m-etxt">Pricing</div></div>
+      <h2 class="m-h2">Simple, <em>honest</em> pricing.</h2>
+      <p class="m-h2-sub">No hidden fees. Cancel any time.</p>
+      <div class="m-plans">
+        <div class="m-plan"><div class="m-plan-name">Free</div><div class="m-plan-amt">₹0</div><div class="m-plan-per">forever</div><ul class="m-plan-feats"><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>3 groups · 15 members each</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>All payout strategies</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>WhatsApp invites</li></ul><button class="btn-plan-o" style="width:100%;padding:10px;font-size:13px;">Get started</button></div>
+        <div class="m-plan feat"><div class="m-plan-badge">Most popular</div><div class="m-plan-name">Pro</div><div class="m-plan-amt">₹499</div><div class="m-plan-per">/ month</div><ul class="m-plan-feats"><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited groups + members</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Custom branding</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>All 6 languages + PDF export</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Mid-cycle import</li></ul><button class="btn-plan-p" style="width:100%;padding:10px;font-size:13px;">Start Pro ↗</button></div>
+        <div class="m-plan"><div class="m-plan-name">Business</div><div class="m-plan-amt">₹999</div><div class="m-plan-per">/ month</div><ul class="m-plan-feats"><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Everything in Pro</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Custom domain · white-label</li><li><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Trust scores · audit logs</li></ul><button class="btn-plan-o" style="width:100%;padding:10px;font-size:13px;">Contact us</button></div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:24px 16px;border-top:0.5px solid var(--b);">
+    <div class="m-eyebrow-row"><div class="m-eline"></div><div class="m-etxt">What organisers say</div></div>
+    <div class="m-testi">
+      <div class="testi-card"><div class="testi-quote">"We were on WhatsApp + Excel. ChitOS replaced both. The auction room alone is worth it."</div><div class="testi-by"><div class="testi-av" style="background:var(--gbg);color:var(--green);width:30px;height:30px;font-size:10px;">VR</div><div><div class="testi-name" style="font-size:12px;">Venkat Rao</div><div class="testi-role">Hyderabad · 10 members</div></div></div></div>
+      <div class="testi-card"><div class="testi-quote">"Finally a chit app in Telugu! My members who aren't comfortable with English love it."</div><div class="testi-by"><div class="testi-av" style="background:var(--abg);color:var(--amber);width:30px;height:30px;font-size:10px;">SR</div><div><div class="testi-name" style="font-size:12px;">Sravani Reddy</div><div class="testi-role">Vijayawada · 8 members</div></div></div></div>
+    </div>
+  </div>
+  <div class="m-cta-band">
+    <div class="m-cta-h">Your chit.<br><em>Your rules.</em></div>
+    <div class="m-cta-sub">Join organisers running their circles on ChitOS. No card needed.</div>
+    <button class="m-cta-btn">Create your group — free ↗</button>
+  </div>
+  <footer class="m-footer">
+    <div class="mf-logo">Chit<em>OS</em></div>
+    <div class="mf-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Blog</a></div>
+    <div class="mf-copy">© 2026 ChitOS · chitos.app</div>
+  </footer>
+</div>
+</div>
+
+<script>
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

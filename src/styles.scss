@@ -1,0 +1,381 @@
+@import "tailwindcss";
+
+// ── Google Fonts ─────────────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;500&display=swap');
+
+// ── Tailwind v4 design tokens ────────────────────────────────────────────────
+@theme {
+  // Brand colours
+  --color-warm:       #F9F7F4;
+  --color-warm-2:     #F2EFE9;
+  --color-card:       #FFFFFF;
+  --color-t1:         #1A1A1A;
+  --color-t2:         #6B6B6B;
+  --color-t3:         #A8A39A;
+  --color-green:      #16A34A;
+  --color-green-bg:   #EAF5EE;
+  --color-amber:      #D97706;
+  --color-amber-bg:   #FEF3C7;
+  --color-red:        #DC2626;
+  --color-red-bg:     #FEE2E2;
+  --color-blue:       #2563EB;
+  --color-blue-bg:    #EFF6FF;
+  --color-saffron:    #E67C2A;
+  --color-saffron-bg: #FEF0E6;
+  --color-gold:       #B45309;
+
+  // Typography
+  --font-serif:  'Newsreader', Georgia, serif;
+  --font-sans:   'DM Sans', sans-serif;
+  --font-mono:   'JetBrains Mono', monospace;
+  --font-indian: 'Noto Sans', sans-serif;
+
+  // Border radii
+  --radius-card: 12px;
+  --radius-el:   8px;
+  --radius-pill: 100px;
+}
+
+// ── CSS custom properties ────────────────────────────────────────────────────
+:root {
+  // Backgrounds
+  --warm:  #F9F7F4;
+  --warm2: #F2EFE9;
+  --card:  #FFFFFF;
+
+  // Text
+  --t1: #1A1A1A;
+  --t2: #6B6B6B;
+  --t3: #A8A39A;
+
+  // Borders (weight is always 0.5px)
+  --b:  rgba(0, 0, 0, 0.07);
+  --b2: rgba(0, 0, 0, 0.13);
+  --b3: rgba(0, 0, 0, 0.22);
+
+  // Semantic — green
+  --green: #16A34A;
+  --gbg:   #EAF5EE;
+  --gb:    rgba(22, 163, 74, 0.2);
+
+  // Semantic — amber
+  --amber: #D97706;
+  --abg:   #FEF3C7;
+  --ab:    rgba(217, 119, 6, 0.2);
+
+  // Semantic — red
+  --red: #DC2626;
+  --rbg: #FEE2E2;
+  --rb:  rgba(220, 38, 38, 0.2);
+
+  // Semantic — blue
+  --blue: #2563EB;
+  --bbg:  #EFF6FF;
+  --bb:   rgba(37, 99, 235, 0.2);
+
+  // Accent
+  --saffron: #E67C2A;
+  --sfbg:    #FEF0E6;
+  --gold:    #B45309;
+  --goldbg:  #FEF3C7;
+
+  // Border-radius shorthands (match prototype)
+  --r:  12px;   // cards
+  --rs: 8px;    // elements
+
+  // Layout
+  --sidebar-width: 220px;
+}
+
+// ── Reset ────────────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--warm);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+// ── SCSS mixins ──────────────────────────────────────────────────────────────
+
+@mixin card {
+  background: var(--card);
+  border: 0.5px solid var(--b);
+  border-radius: var(--r);
+}
+
+@mixin card-head {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--b);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin badge($bg, $color, $border) {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--r-pill, 100px);
+  display: inline-block;
+  white-space: nowrap;
+  background: $bg;
+  color: $color;
+  border: 0.5px solid $border;
+}
+
+@mixin serif($size: 16px, $weight: 300) {
+  font-family: var(--font-serif);
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: -0.3px;
+}
+
+@mixin mobile-only {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin no-overflow {
+  overflow-x: hidden;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+@mixin indian-currency {
+  font-family: var(--font-serif);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
+}
+
+// ── Global utility classes ───────────────────────────────────────────────────
+
+// Card
+.card {
+  @include card;
+}
+
+.card-head {
+  @include card-head;
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--t1);
+  }
+
+  .card-sub {
+    font-size: 11px;
+    color: var(--t3);
+    margin-top: 2px;
+  }
+}
+
+// Badges
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 100px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.badge-g    { @include badge(var(--gbg), #15803D, var(--gb)); }
+.badge-a    { @include badge(var(--abg), #92400E, var(--ab)); }
+.badge-r    { @include badge(var(--rbg), #991B1B, var(--rb)); }
+.badge-b    { @include badge(var(--bbg), #1D4ED8, var(--bb)); }
+.badge-grey { @include badge(#F1EFE8, #5F5E5A, rgba(0,0,0,0.1)); }
+
+.badge-live {
+  @include badge(var(--bbg), #1D4ED8, #93C5FD);
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+// Progress
+.prog-track {
+  height: 3px;
+  background: var(--b2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.prog-fill-g    { background: var(--green); }
+.prog-fill-a    { background: var(--amber); }
+.prog-fill-b    { background: var(--blue); }
+.prog-fill-grey { background: #B4B2A9; }
+
+// Skeleton loader
+@keyframes skel-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.skel {
+  background: var(--warm2);
+  border-radius: var(--rs);
+  animation: skel-pulse 1.6s ease-in-out infinite;
+}
+.skel-card   { height: 88px; border-radius: var(--r); }
+.skel-row    { height: 52px; }
+.skel-stat   { height: 64px; border-radius: var(--r); }
+.skel-avatar { width: 32px; height: 32px; border-radius: 50%; }
+.skel-text   { height: 14px; border-radius: 4px; width: 80%; }
+
+// Avatars
+.av {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  flex-shrink: 0;
+  font-size: 10px;
+}
+
+.av-sm { width: 26px; height: 26px; font-size: 9px; }
+.av-md { width: 32px; height: 32px; font-size: 10px; }
+.av-lg { width: 40px; height: 40px; font-size: 13px; }
+
+.av-g { background: var(--gbg); color: var(--green); border: 0.5px solid var(--gb); }
+.av-b { background: var(--bbg); color: var(--blue);  border: 0.5px solid var(--bb); }
+.av-a { background: var(--abg); color: var(--amber); border: 0.5px solid var(--ab); }
+.av-r { background: var(--rbg); color: var(--red);   border: 0.5px solid var(--rb); }
+
+// ── App shell ────────────────────────────────────────────────────────────────
+
+.app-shell {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+// Sidebar — 220px sticky on desktop, overlay on mobile
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background: var(--card);
+  border-right: 0.5px solid var(--b2);
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow-y: auto;
+  z-index: 200;
+  transition: transform 0.25s ease;
+  overscroll-behavior: contain;
+
+  @include mobile-only {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 150;
+
+  &.open {
+    display: block;
+  }
+}
+
+// Main area
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+// Scrollable page content
+.page-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overscroll-behavior: contain;
+
+  @include mobile-only {
+    padding: 14px;
+    gap: 12px;
+    padding-bottom: 80px; // clear bottom-nav
+  }
+}
+
+// Bottom nav — mobile only, 5 tabs
+.bottom-nav {
+  background: var(--card);
+  border-top: 0.5px solid var(--b2);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 6px 0 env(safe-area-inset-bottom, 10px);
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+
+  @include tablet-up {
+    display: none;
+  }
+}

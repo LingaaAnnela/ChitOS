@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ChitOS — Full Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & ROOT ───────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --warm:#F9F7F4;
+  --warm2:#F2EFE9;
+  --card:#FFFFFF;
+  --t1:#1A1A1A;
+  --t2:#6B6B6B;
+  --t3:#A8A39A;
+  --b:rgba(0,0,0,0.07);
+  --b2:rgba(0,0,0,0.13);
+  --b3:rgba(0,0,0,0.22);
+  --green:#16A34A;
+  --gbg:#EAF5EE;
+  --gborder:rgba(22,163,74,0.2);
+  --amber:#D97706;
+  --abg:#FEF3C7;
+  --aborder:rgba(217,119,6,0.2);
+  --red:#DC2626;
+  --rbg:#FEE2E2;
+  --rborder:rgba(220,38,38,0.2);
+  --blue:#2563EB;
+  --bbg:#EFF6FF;
+  --bborder:rgba(37,99,235,0.2);
+  --gold:#B45309;
+  --goldbg:#FEF3C7;
+  --r:12px;
+  --rs:8px;
+  --sidebar:220px;
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--warm);color:var(--t1);-webkit-font-smoothing:antialiased;}
+
+/* ── APP SHELL ──────────────────────────────────────── */
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* ── SIDEBAR ────────────────────────────────────────── */
+.sidebar{
+  width:var(--sidebar);min-width:var(--sidebar);
+  background:var(--card);border-right:0.5px solid var(--b2);
+  display:flex;flex-direction:column;height:100vh;overflow-y:auto;
+  transition:transform 0.25s ease;
+  z-index:200;
+}
+.sb-logo{padding:18px 16px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;gap:9px;}
+.logo-mark{width:28px;height:28px;border-radius:7px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.logo-text{font-family:'Newsreader',serif;font-size:17px;font-weight:300;letter-spacing:-0.3px;}
+.logo-text em{font-style:normal;color:var(--green);}
+
+.sb-org{padding:12px 14px;border-bottom:0.5px solid var(--b);}
+.sb-org-name{font-size:13px;font-weight:500;color:var(--t1);}
+.sb-org-plan{font-size:10px;color:var(--t3);margin-top:2px;font-family:'JetBrains Mono',monospace;}
+.plan-bar{height:3px;background:var(--b2);border-radius:2px;margin-top:6px;overflow:hidden;}
+.plan-fill{height:100%;border-radius:2px;background:var(--green);width:67%;}
+
+.sb-nav{padding:8px;flex:1;}
+.sb-sec{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:0.6px;padding:10px 8px 4px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.sb-item{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:var(--rs);
+  cursor:pointer;transition:background 0.12s;margin-bottom:1px;
+  text-decoration:none;
+}
+.sb-item:hover{background:var(--warm);}
+.sb-item.active{background:var(--gbg);}
+.sb-item.active .si-icon{stroke:var(--green);}
+.sb-item.active .si-lbl{color:var(--green);font-weight:500;}
+.si-icon{width:15px;height:15px;stroke:var(--t3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.si-lbl{font-size:13px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.si-badge{margin-left:auto;font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px;background:var(--rbg);color:var(--red);border:0.5px solid var(--rborder);flex-shrink:0;}
+
+.sb-bottom{padding:12px 14px;border-top:0.5px solid var(--b);}
+.sb-user{display:flex;align-items:center;gap:9px;}
+.sb-av{width:30px;height:30px;border-radius:50%;background:var(--gbg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--green);flex-shrink:0;border:0.5px solid var(--gborder);}
+.sb-uname{font-size:12px;font-weight:500;color:var(--t1);}
+.sb-uemail{font-size:10px;color:var(--t3);}
+
+/* ── MAIN ───────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.main-top{
+  padding:0 20px;height:52px;min-height:52px;
+  background:var(--card);border-bottom:0.5px solid var(--b2);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.mt-left{display:flex;align-items:center;gap:10px;}
+.hamburger{display:none;width:32px;height:32px;border:0.5px solid var(--b2);border-radius:var(--rs);align-items:center;justify-content:center;cursor:pointer;background:none;flex-shrink:0;}
+.hamburger svg{width:16px;height:16px;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.page-title{font-family:'Newsreader',serif;font-size:18px;font-weight:300;color:var(--t1);letter-spacing:-0.3px;white-space:nowrap;}
+.breadcrumb{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:4px;}
+.bc-sep{color:var(--b3);}
+.bc-link{color:var(--blue);cursor:pointer;}
+
+.mt-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.notif-btn{position:relative;width:32px;height:32px;border:0.5px solid var(--b2);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--card);}
+
+.btn-sm{font-size:12px;padding:6px 14px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;font-weight:400;}
+.btn-sm-p{background:var(--t1);color:#fff;border:none;font-weight:500;}
+.btn-sm-p:hover{opacity:0.85;}
+.btn-sm-o{background:none;color:var(--t1);border:0.5px solid var(--b2);}
+.btn-sm-o:hover{background:var(--warm);}
+.btn-sm-g{background:var(--gbg);color:var(--green);border:0.5px solid var(--gborder);font-weight:500;}
+.btn-sm-g:hover{background:#d4eddf;}
+.btn-sm-r{background:var(--rbg);color:var(--red);border:0.5px solid var(--rborder);}
+.btn-sm-a{background:var(--abg);color:var(--amber);border:0.5px solid var(--aborder);}
+
+.main-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;}
+
+/* ── SCREENS ────────────────────────────────────────── */
+.screen{display:none;}
+.screen.active{display:contents;}
+
+/* ── STAT CARDS ─────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.stat-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:14px 16px;}
+.sc-lbl{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;font-family:'JetBrains Mono',monospace;}
+.sc-val{font-family:'Newsreader',serif;font-size:26px;font-weight:300;color:var(--t1);letter-spacing:-0.5px;}
+.sc-val.g{color:var(--green);}
+.sc-val.r{color:var(--red);}
+.sc-val.a{color:var(--amber);}
+.sc-sub{font-size:11px;color:var(--t3);margin-top:4px;}
+
+/* ── SECTION HEADER ─────────────────────────────────── */
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;}
+.sec-title{font-size:13px;font-weight:500;color:var(--t1);}
+.sec-link{font-size:12px;color:var(--blue);cursor:pointer;font-weight:400;}
+
+/* ── CARD ────────────────────────────────────────────── */
+.card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);}
+.card-head{padding:14px 16px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:13px;font-weight:500;color:var(--t1);}
+.card-sub{font-size:11px;color:var(--t3);margin-top:2px;}
+
+/* ── BADGE ───────────────────────────────────────────── */
+.badge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;display:inline-block;white-space:nowrap;}
+.badge-g{background:var(--gbg);color:#15803D;border:0.5px solid var(--gborder);}
+.badge-a{background:var(--abg);color:#92400E;border:0.5px solid var(--aborder);}
+.badge-r{background:var(--rbg);color:#991B1B;border:0.5px solid var(--rborder);}
+.badge-b{background:var(--bbg);color:#1D4ED8;border:0.5px solid var(--bborder);}
+.badge-grey{background:#F1EFE8;color:#5F5E5A;border:0.5px solid rgba(0,0,0,0.1);}
+.badge-live{background:#EFF6FF;color:#1D4ED8;border:0.5px solid #93C5FD;animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+
+/* ── PROGRESS ────────────────────────────────────────── */
+.prog-track{height:3px;background:var(--b2);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;}
+.pf-g{background:var(--green);}
+.pf-a{background:var(--amber);}
+.pf-b{background:var(--blue);}
+.pf-grey{background:#B4B2A9;}
+
+/* ── AVATAR ──────────────────────────────────────────── */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0;font-size:10px;}
+.av-sm{width:28px;height:28px;font-size:10px;}
+.av-md{width:34px;height:34px;font-size:11px;}
+.av-lg{width:40px;height:40px;font-size:13px;}
+.av-g{background:var(--gbg);color:var(--green);border:0.5px solid var(--gborder);}
+.av-b{background:var(--bbg);color:var(--blue);border:0.5px solid var(--bborder);}
+.av-a{background:var(--abg);color:var(--amber);border:0.5px solid var(--aborder);}
+.av-r{background:var(--rbg);color:var(--red);border:0.5px solid var(--rborder);}
+
+/* ── GROUPS TABLE ────────────────────────────────────── */
+.groups-tbl{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);overflow:hidden;}
+.gt-head{display:grid;grid-template-columns:2fr 90px 100px 110px 90px;gap:0;padding:9px 16px;border-bottom:0.5px solid var(--b);background:var(--warm2);}
+.gt-hcell{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:0.4px;font-family:'JetBrains Mono',monospace;}
+.gt-row{display:grid;grid-template-columns:2fr 90px 100px 110px 90px;gap:0;padding:12px 16px;border-bottom:0.5px solid var(--b);align-items:center;cursor:pointer;transition:background 0.1s;}
+.gt-row:last-child{border-bottom:none;}
+.gt-row:hover{background:var(--warm);}
+.gr-name{font-size:13px;font-weight:500;color:var(--t1);}
+.gr-meta{font-size:11px;color:var(--t3);margin-top:2px;}
+.gr-cell{font-size:12px;color:var(--t1);}
+.prog-wrap{display:flex;align-items:center;gap:6px;}
+.prog-pct{font-size:10px;color:var(--t3);white-space:nowrap;}
+.cell-actions{display:flex;gap:5px;justify-content:flex-end;}
+
+/* ── MEMBER ROW ──────────────────────────────────────── */
+.member-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 16px;border-bottom:0.5px solid var(--b);
+  cursor:pointer;transition:background 0.1s;
+}
+.member-row:last-child{border-bottom:none;}
+.member-row:hover{background:var(--warm);}
+.mr-info{flex:1;min-width:0;}
+.mr-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mr-meta{font-size:11px;color:var(--t3);margin-top:1px;}
+.mr-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.trust-pill{font-size:10px;padding:2px 7px;border-radius:100px;font-weight:500;}
+.trust-ex{background:var(--gbg);color:#15803D;}
+.trust-re{background:#EAF5EE;color:#15803D;}
+.trust-go{background:var(--abg);color:#92400E;}
+.trust-fa{background:#FEF3C7;color:#92400E;}
+.trust-ir{background:var(--rbg);color:#991B1B;}
+
+/* ── CONTRIB STATUS ──────────────────────────────────── */
+.cs{font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;}
+.cs-paid{background:var(--gbg);color:#15803D;}
+.cs-overdue{background:var(--rbg);color:#991B1B;}
+.cs-partial{background:var(--abg);color:#92400E;}
+.cs-pending{background:#F1EFE8;color:#5F5E5A;}
+.cs-grace{background:var(--abg);color:#92400E;}
+.cs-waived{background:#F1EFE8;color:#5F5E5A;text-decoration:line-through;}
+
+/* ── TWO / THREE COL ─────────────────────────────────── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* ── ACCORDION ───────────────────────────────────────── */
+.acc-header{
+  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:background 0.1s;border-bottom:0.5px solid var(--b);
+}
+.acc-header:hover{background:var(--warm);}
+.acc-chevron{font-size:11px;color:var(--t3);transition:transform 0.2s;}
+.acc-chevron.open{transform:rotate(180deg);}
+.acc-body{display:none;}
+.acc-body.open{display:block;}
+
+/* ── CYCLE TIMELINE ──────────────────────────────────── */
+.timeline{display:flex;gap:8px;overflow-x:auto;padding:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.timeline::-webkit-scrollbar{display:none;}
+.tl-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;width:58px;}
+.tl-circle{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:500;
+}
+.tl-done{background:var(--gbg);border:1.5px solid var(--green);color:var(--green);}
+.tl-active{background:var(--bbg);border:2px solid var(--blue);color:var(--blue);}
+.tl-future{background:var(--warm2);border:1.5px dashed var(--b3);color:var(--t3);}
+.tl-label{font-size:9px;color:var(--t3);text-align:center;line-height:1.3;}
+.tl-label.active{color:var(--blue);font-weight:500;}
+.tl-label.done{color:var(--green);}
+
+/* ── ACTIVITY ────────────────────────────────────────── */
+.act-row{display:flex;gap:10px;padding:10px 16px;border-bottom:0.5px solid var(--b);align-items:flex-start;}
+.act-row:last-child{border-bottom:none;}
+.act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.act-body{flex:1;min-width:0;}
+.act-text{font-size:12px;color:var(--t1);line-height:1.4;}
+.act-time{font-size:10px;color:var(--t3);margin-top:2px;font-family:'JetBrains Mono',monospace;}
+
+/* ── BID ROW ─────────────────────────────────────────── */
+.bid-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:var(--rs);
+  background:var(--warm2);margin-bottom:6px;
+  border:0.5px solid var(--b);
+}
+.bid-rank{font-size:11px;font-weight:500;color:var(--t3);width:24px;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+.bid-rank.first{color:var(--gold);}
+.bid-name{flex:1;font-size:13px;color:var(--t1);}
+.bid-name.me{font-weight:500;}
+.bid-amt{font-size:13px;font-weight:500;color:var(--t1);}
+.bid-winner-tag{font-size:10px;padding:2px 7px;border-radius:100px;background:var(--goldbg);color:var(--gold);border:0.5px solid rgba(180,83,9,0.2);margin-left:4px;}
+
+/* ── AUCTION TIMER ───────────────────────────────────── */
+.timer-display{
+  background:var(--warm2);border-radius:var(--r);
+  padding:20px;text-align:center;border:0.5px solid var(--b);
+}
+.timer-val{font-family:'Newsreader',serif;font-size:36px;font-weight:300;color:var(--t1);letter-spacing:-1px;}
+.timer-lbl{font-size:11px;color:var(--t3);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+
+/* ── APPROVAL ROW ────────────────────────────────────── */
+.approval-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:0.5px solid var(--b);}
+.approval-row:last-child{border-bottom:none;}
+.ap-info{flex:1;min-width:0;}
+.ap-name{font-size:13px;font-weight:500;color:var(--t1);}
+.ap-meta{font-size:11px;color:var(--t3);margin-top:1px;}
+.ap-btns{display:flex;gap:6px;flex-shrink:0;}
+.btn-approve{font-size:11px;padding:5px 11px;border-radius:var(--rs);border:0.5px solid var(--gborder);color:var(--green);background:var(--gbg);cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;}
+.btn-reject{font-size:11px;padding:5px 11px;border-radius:var(--rs);border:0.5px solid var(--rborder);color:var(--red);background:var(--rbg);cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── INVITE LINK BOX ─────────────────────────────────── */
+.invite-link-box{
+  display:flex;align-items:center;gap:8px;
+  background:var(--warm2);border:0.5px solid var(--b2);
+  border-radius:var(--rs);padding:10px 12px;
+}
+.invite-url{font-size:12px;color:var(--blue);font-family:'JetBrains Mono',monospace;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.copy-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid var(--b2);background:var(--card);color:var(--t2);cursor:pointer;white-space:nowrap;}
+
+/* ── FORM ELEMENTS ───────────────────────────────────── */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:500;color:var(--t2);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.3px;font-family:'JetBrains Mono',monospace;}
+.form-input{width:100%;padding:9px 12px;border:0.5px solid var(--b2);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--t1);background:var(--card);outline:none;transition:border-color 0.15s;}
+.form-input:focus{border-color:var(--t1);}
+.form-hint{font-size:11px;color:var(--t3);margin-top:4px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-select{appearance:none;cursor:pointer;}
+
+/* ── TOAST ───────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--t1);color:#fff;padding:10px 18px;border-radius:100px;
+  font-size:13px;font-weight:400;opacity:0;transition:opacity 0.25s;
+  pointer-events:none;z-index:9999;white-space:nowrap;
+}
+.toast.show{opacity:1;}
+
+/* ── MOBILE NAV ──────────────────────────────────────── */
+.mobile-nav{
+  display:none;background:var(--card);border-top:0.5px solid var(--b2);
+  padding:8px 0 env(safe-area-inset-bottom,12px);
+  position:sticky;bottom:0;z-index:100;
+}
+.mn-inner{display:grid;grid-template-columns:repeat(5,1fr);}
+.mn-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer;}
+.mn-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+.mn-icon svg{width:20px;height:20px;stroke:var(--t3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.mn-label{font-size:9px;color:var(--t3);font-weight:400;}
+.mn-tab.active .mn-label{color:var(--green);font-weight:500;}
+.mn-tab.active .mn-icon svg{stroke:var(--green);}
+.mn-badge-wrap{position:relative;}
+.mn-dot{position:absolute;top:-3px;right:-5px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--card);}
+
+/* ── MOBILE OVERLAY ──────────────────────────────────── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:150;}
+
+/* ── CELEBRATION ─────────────────────────────────────── */
+.celebrate{
+  background:var(--gbg);border:1px solid var(--gborder);
+  border-radius:var(--r);padding:24px;text-align:center;
+}
+.cel-icon{width:56px;height:56px;border-radius:50%;background:#fff;border:1px solid var(--gborder);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.cel-title{font-family:'Newsreader',serif;font-size:20px;font-weight:300;color:var(--t1);margin-bottom:6px;}
+.cel-amount{font-family:'Newsreader',serif;font-size:34px;font-weight:300;color:var(--green);margin:8px 0;}
+.cel-sub{font-size:13px;color:var(--t2);line-height:1.6;}
+.cel-breakdown{background:#fff;border-radius:var(--rs);padding:12px;margin:16px 0;display:flex;flex-direction:column;gap:6px;}
+.cel-row{display:flex;justify-content:space-between;}
+.cel-key{font-size:12px;color:var(--t2);}
+.cel-val{font-size:12px;font-weight:500;color:var(--t1);}
+.cel-val.green{color:var(--green);}
+.wa-share-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:100px;
+  border:0.5px solid var(--gborder);background:#fff;
+  color:var(--green);font-size:13px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  margin-top:4px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:768px){
+  .sidebar{
+    position:fixed;left:0;top:0;height:100vh;
+    transform:translateX(-100%);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay.open{display:block;}
+  .hamburger{display:flex;}
+  .mobile-nav{display:block;}
+  .main-body{padding:14px;gap:12px;}
+  .stats-row{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .two-col{grid-template-columns:1fr;}
+  .three-col{grid-template-columns:1fr;}
+  .gt-head,.gt-row{grid-template-columns:1fr auto;}
+  .gt-hcell:nth-child(n+2):not(:last-child){display:none;}
+  .gr-cell:nth-child(n+2):not(:last-child){display:none;}
+  .member-row{padding:10px 14px;}
+  .stats-row .stat-card:nth-child(n+3){display:none;}
+  .bid-row{flex-wrap:wrap;}
+  .main-top{padding:0 14px;height:48px;min-height:48px;}
+}
+@media(min-width:769px){
+  .mobile-nav{display:none;}
+  .hamburger{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="toast" id="toast"></div>
+
+<div class="app">
+
+<!-- ════ SIDEBAR ════ -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="logo-text">Chit<em>OS</em></div>
+  </div>
+  <div class="sb-org">
+    <div class="sb-org-name">Ravi's Circles</div>
+    <div class="sb-org-plan">FREE · 2/3 groups</div>
+    <div class="plan-bar"><div class="plan-fill"></div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-sec">Overview</div>
+    <div class="sb-item active" onclick="goto('dashboard')">
+      <svg class="si-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="si-lbl">Dashboard</span>
+    </div>
+    <div class="sb-item" onclick="goto('members-approval')">
+      <svg class="si-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="si-lbl">Approvals</span>
+      <span class="si-badge">2</span>
+    </div>
+    <div class="sb-sec">Groups</div>
+    <div class="sb-item" onclick="goto('group-detail')">
+      <svg class="si-icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+      <span class="si-lbl">Friends Circle</span>
+    </div>
+    <div class="sb-item" onclick="goto('group-inviting')">
+      <svg class="si-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="si-lbl">Office Gang</span>
+    </div>
+    <div class="sb-item" onclick="goto('group-completed')">
+      <svg class="si-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span class="si-lbl">Family Savings</span>
+    </div>
+    <div class="sb-sec">Tools</div>
+    <div class="sb-item" onclick="goto('auction')">
+      <svg class="si-icon" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      <span class="si-lbl">Auction room</span>
+      <span class="si-badge" style="background:var(--bbg);color:var(--blue);border-color:var(--bborder);">Live</span>
+    </div>
+    <div class="sb-item" onclick="goto('import')">
+      <svg class="si-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span class="si-lbl">Import chit</span>
+    </div>
+    <div class="sb-item">
+      <svg class="si-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      <span class="si-lbl">Settings</span>
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-av">RK</div>
+      <div>
+        <div class="sb-uname">Ravi Kumar</div>
+        <div class="sb-uemail">ravi@gmail.com</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="main-top">
+    <div class="mt-left">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="page-title" id="page-title">Dashboard</div>
+    </div>
+    <div class="mt-right">
+      <div class="notif-btn" onclick="goto('dashboard')">
+        <svg style="width:15px;height:15px;stroke:var(--t2);fill:none;stroke-width:1.5;stroke-linecap:round;" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+      <button class="btn-sm btn-sm-o" onclick="goto('import')">Import chit</button>
+      <button class="btn-sm btn-sm-p" onclick="showToast('Group creation wizard coming soon!')">+ New group</button>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="main-body" id="main-body">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="screen active" id="scr-dashboard">
+      <div class="stats-row">
+        <div class="stat-card"><div class="sc-lbl">Active groups</div><div class="sc-val g">2</div><div class="sc-sub">1 completed · 1 remaining</div></div>
+        <div class="stat-card"><div class="sc-lbl">Total members</div><div class="sc-val">24</div><div class="sc-sub">Across all groups</div></div>
+        <div class="stat-card"><div class="sc-lbl">Pot this month</div><div class="sc-val">₹48K</div><div class="sc-sub">Due 25 Apr 2026</div></div>
+        <div class="stat-card"><div class="sc-lbl">Overdue</div><div class="sc-val r">2</div><div class="sc-sub">Action needed</div></div>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">Your groups</div><div class="sec-link" onclick="showToast('Opening group wizard...')">+ Create new</div></div>
+      <div class="groups-tbl">
+        <div class="gt-head">
+          <div class="gt-hcell">Group</div>
+          <div class="gt-hcell">Strategy</div>
+          <div class="gt-hcell">Progress</div>
+          <div class="gt-hcell">Contributions</div>
+          <div class="gt-hcell"></div>
+        </div>
+        <div class="gt-row" onclick="goto('group-detail')">
+          <div><div class="gr-name">Friends Circle</div><div class="gr-meta">₹1,000/mo · 10 members · Jan 2026</div></div>
+          <div><div class="badge badge-b">Auction</div></div>
+          <div><div class="prog-wrap"><div class="prog-track" style="flex:1;"><div class="prog-fill pf-g" style="width:40%"></div></div><div class="prog-pct">4/10</div></div></div>
+          <div><div style="font-size:12px;color:var(--green);font-weight:500;">8 paid</div><div style="font-size:11px;color:var(--red);">2 overdue</div></div>
+          <div class="cell-actions"><button class="btn-sm btn-sm-o" onclick="goto('group-detail');event.stopPropagation()">View</button><button class="btn-sm btn-sm-b" onclick="goto('auction');event.stopPropagation()" style="background:var(--bbg);color:var(--blue);border:0.5px solid var(--bborder);">Auction</button></div>
+        </div>
+        <div class="gt-row" onclick="goto('group-inviting')">
+          <div><div class="gr-name">Office Gang</div><div class="gr-meta">₹2,000/mo · 6 approved · Jun 2026</div></div>
+          <div><div class="badge badge-g">Lottery</div></div>
+          <div><div class="prog-wrap"><div class="prog-track" style="flex:1;"><div class="prog-fill pf-a" style="width:75%"></div></div><div class="prog-pct">6/8</div></div></div>
+          <div><div style="font-size:12px;color:var(--amber);font-weight:500;">2 pending</div><div style="font-size:11px;color:var(--t3);">Not started</div></div>
+          <div class="cell-actions"><button class="btn-sm btn-sm-a" onclick="goto('members-approval');event.stopPropagation()">Approve</button></div>
+        </div>
+        <div class="gt-row" onclick="goto('group-completed')" style="opacity:0.65;">
+          <div><div class="gr-name">Family Savings</div><div class="gr-meta">₹5,000/mo · 4 members · Apr 2025</div></div>
+          <div><div class="badge badge-grey">Fixed</div></div>
+          <div><div class="prog-wrap"><div class="prog-track" style="flex:1;"><div class="prog-fill pf-grey" style="width:100%"></div></div><div class="prog-pct">4/4</div></div></div>
+          <div><div style="font-size:12px;color:var(--t3);">Completed</div></div>
+          <div class="cell-actions"><button class="btn-sm btn-sm-o" onclick="goto('group-completed');event.stopPropagation()">History</button></div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Pending approvals</div><div class="card-sub">Members waiting to join</div></div><span class="badge badge-r">2 waiting</span></div>
+          <div class="approval-row">
+            <div class="av av-md av-a">SW</div>
+            <div class="ap-info"><div class="ap-name">Swathi Reddy</div><div class="ap-meta">Office Gang · +91 85432 10987 · 10 Apr</div></div>
+            <div class="ap-btns"><button class="btn-approve" onclick="showToast('Swathi Reddy approved!')">Approve</button><button class="btn-reject" onclick="showToast('Request rejected.')">Reject</button></div>
+          </div>
+          <div class="approval-row">
+            <div class="av av-md av-b">RG</div>
+            <div class="ap-info"><div class="ap-name">Rohit Gupta</div><div class="ap-meta">Office Gang · +91 84321 09876 · 12 Apr</div></div>
+            <div class="ap-btns"><button class="btn-approve" onclick="showToast('Rohit Gupta approved!')">Approve</button><button class="btn-reject" onclick="showToast('Request rejected.')">Reject</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Recent activity</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--blue);"></div><div class="act-body"><div class="act-text">Auction opened · Friends Circle April</div><div class="act-time">Today 8:00am · 3 bids in</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--green);"></div><div class="act-body"><div class="act-text">Sravani Patel's ₹1,000 marked paid · UPI</div><div class="act-time">Today 9:30am</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--amber);"></div><div class="act-body"><div class="act-text">Rohit Gupta requested to join Office Gang</div><div class="act-time">12 Apr · Pending approval</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--green);"></div><div class="act-body"><div class="act-text">Anita Sharma received ₹9,200 — March pot</div><div class="act-time">27 Mar · Auction winner</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GROUP DETAIL (Active) ══ -->
+    <div class="screen" id="scr-group-detail">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;">Friends Circle</div>
+            <div class="badge badge-b">Auction</div>
+            <div class="badge badge-live">Month 4 · Live</div>
+          </div>
+          <div style="font-size:12px;color:var(--t3);margin-top:3px;">₹1,000/month · 10 members · Started Jan 2026 · Due 25 Apr</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="showToast('Announcement posted!')">Post announcement</button>
+          <button class="btn-sm btn-sm-g" onclick="goto('auction')">Open auction room →</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="sc-lbl">Pot value</div><div class="sc-val">₹10,000</div><div class="sc-sub">This month</div></div>
+        <div class="stat-card"><div class="sc-lbl">Collected</div><div class="sc-val g">₹8,000</div><div class="sc-sub">8 of 10 paid</div></div>
+        <div class="stat-card"><div class="sc-lbl">Overdue</div><div class="sc-val r">2</div><div class="sc-sub">₹1,500 outstanding</div></div>
+        <div class="stat-card"><div class="sc-lbl">Auction bids</div><div class="sc-val">3</div><div class="sc-sub">7 yet to bid</div></div>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">Cycle timeline</div><div class="sec-link" onclick="showToast('All cycles view')">All cycles</div></div>
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-circle tl-done">SB</div><div class="tl-label done">M1 · ₹8.5K<br>Suresh</div></div>
+          <div class="tl-item"><div class="tl-circle tl-done">PR</div><div class="tl-label done">M2 · ₹9K<br>Priya</div></div>
+          <div class="tl-item"><div class="tl-circle tl-done">AN</div><div class="tl-label done">M3 · ₹9.2K<br>Anita</div></div>
+          <div class="tl-item"><div class="tl-circle tl-active">M4</div><div class="tl-label active">Apr · Auction<br>open now</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M5</div><div class="tl-label">May<br>—</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M6</div><div class="tl-label">Jun<br>—</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M7</div><div class="tl-label">Jul<br>—</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M8</div><div class="tl-label">Aug<br>—</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M9</div><div class="tl-label">Sep<br>—</div></div>
+          <div class="tl-item"><div class="tl-circle tl-future">M10</div><div class="tl-label">Oct<br>—</div></div>
+        </div>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">Members this month</div><div class="sec-link" onclick="showToast('Adding member...')">+ Add member</div></div>
+      <div class="card">
+        <div class="acc-header" onclick="toggleAcc('acc-paid')">
+          <div><div class="card-title" style="color:var(--green);">Paid this month</div><div class="card-sub">8 of 10 members</div></div>
+          <div class="acc-chevron open" id="chev-acc-paid">▾</div>
+        </div>
+        <div class="acc-body open" id="acc-paid">
+          <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar <span style="font-size:10px;color:var(--t3);">(you)</span></div><div class="mr-meta">UPI · 15 Apr · ref UPI123456789</div></div><div class="mr-right"><div class="trust-pill trust-re">Reliable 82</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-b">SB</div><div class="mr-info"><div class="mr-name">Suresh Babu</div><div class="mr-meta">UPI · 14 Apr · Pot winner M1</div></div><div class="mr-right"><div class="trust-pill trust-ex">Excellent 94</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-g">PR</div><div class="mr-info"><div class="mr-name">Priya Reddy</div><div class="mr-meta">Bank · 16 Apr · Pot winner M2</div></div><div class="mr-right"><div class="trust-pill trust-ex">Excellent 91</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-g">AN</div><div class="mr-info"><div class="mr-name">Anita Sharma</div><div class="mr-meta">Cash · 17 Apr · Pot winner M3</div></div><div class="mr-right"><div class="trust-pill trust-re">Reliable 88</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-b">VR</div><div class="mr-info"><div class="mr-name">Venkat Rao</div><div class="mr-meta">UPI · 18 Apr</div></div><div class="mr-right"><div class="trust-pill trust-re">Reliable 79</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-g">DN</div><div class="mr-info"><div class="mr-name">Deepika Nair</div><div class="mr-meta">UPI · 19 Apr</div></div><div class="mr-right"><div class="trust-pill trust-go">Good 71</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-b">KK</div><div class="mr-info"><div class="mr-name">Kiran Kumar</div><div class="mr-meta">UPI · 13 Apr</div></div><div class="mr-right"><div class="trust-pill trust-re">Reliable 85</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+          <div class="member-row"><div class="av av-md av-g">SP</div><div class="mr-info"><div class="mr-name">Sravani Patel</div><div class="mr-meta">UPI · 20 Apr</div></div><div class="mr-right"><div class="trust-pill trust-go">Good 74</div><div class="cs cs-paid">Paid ₹1,000</div></div></div>
+        </div>
+        <div class="acc-header" onclick="toggleAcc('acc-overdue')" style="border-top:0.5px solid var(--b);">
+          <div><div class="card-title" style="color:var(--red);">Overdue & pending</div><div class="card-sub">2 members need follow-up</div></div>
+          <div class="acc-chevron open" id="chev-acc-overdue">▾</div>
+        </div>
+        <div class="acc-body open" id="acc-overdue">
+          <div class="member-row"><div class="av av-md av-r">MI</div><div class="mr-info"><div class="mr-name">Mahesh Iyer</div><div class="mr-meta">Due 25 Apr · Penalty ₹50 applied · 3 days overdue</div></div><div class="mr-right"><div class="trust-pill trust-fa">Fair 52</div><div class="cs cs-overdue">Overdue ₹1,000</div><button class="btn-sm btn-sm-g" style="font-size:10px;padding:4px 8px;" onclick="showToast('Mark paid modal opening...')">Mark paid</button></div></div>
+          <div class="member-row"><div class="av av-md av-a">LD</div><div class="mr-info"><div class="mr-name">Lakshmi Devi</div><div class="mr-meta">Paid ₹500 on 26 Apr · ₹500 remaining · notes: "pays rest by 30th"</div></div><div class="mr-right"><div class="trust-pill trust-go">Good 68</div><div class="cs cs-partial">Partial ₹500</div><button class="btn-sm btn-sm-g" style="font-size:10px;padding:4px 8px;" onclick="showToast('Mark remaining paid...')">Mark paid</button></div></div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Announcements</div><button class="btn-sm btn-sm-o" onclick="showToast('Post announcement...')">+ Post</button></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--blue);"></div><div class="act-body"><div class="act-text">Auction is open! Bids close 22 Apr at 8am. Submit from the auction room.</div><div class="act-time">Today 8:05am · 4 reactions</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--amber);"></div><div class="act-body"><div class="act-text">Reminder: Contributions due by 25th. Pay to UPI 98491 23456.</div><div class="act-time">18 Apr · 3 reactions</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--green);"></div><div class="act-body"><div class="act-text">Congratulations to Anita for winning last month's ₹9,200 pot!</div><div class="act-time">28 Mar · 8 reactions</div></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Interest calculator</div></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:8px;">
+            <div style="background:var(--warm2);border-radius:var(--rs);padding:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:11px;color:var(--t3);">Early taker (month 1)</div><div style="font-size:12px;color:var(--red);">Pays +₹50/month premium</div></div>
+              <div style="font-size:16px;font-weight:500;color:var(--red);">₹1,050</div>
+            </div>
+            <div style="background:var(--warm2);border-radius:var(--rs);padding:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:11px;color:var(--t3);">Base contribution (month 5)</div><div style="font-size:12px;color:var(--t2);">No premium or discount</div></div>
+              <div style="font-size:16px;font-weight:500;color:var(--t1);">₹1,000</div>
+            </div>
+            <div style="background:var(--warm2);border-radius:var(--rs);padding:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:11px;color:var(--t3);">Patient waiter (month 10)</div><div style="font-size:12px;color:var(--green);">Saves ₹50/month</div></div>
+              <div style="font-size:16px;font-weight:500;color:var(--green);">₹950</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ AUCTION ROOM ══ -->
+    <div class="screen" id="scr-auction">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;">Auction Room</div><div class="badge badge-live">Live</div></div>
+          <div style="font-size:12px;color:var(--t3);margin-top:3px;">Friends Circle · April 2026 · Pot: ₹10,000</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="showToast('Auction extended by 24hrs')">Extend window</button>
+          <button class="btn-sm btn-sm-r" onclick="showToast('Closing auction and picking winner...')">Close auction</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="sc-lbl">Pot value</div><div class="sc-val">₹10,000</div><div class="sc-sub">Full pot available</div></div>
+        <div class="stat-card"><div class="sc-lbl">Bids submitted</div><div class="sc-val b" style="color:var(--blue);">3</div><div class="sc-sub">7 yet to bid</div></div>
+        <div class="stat-card"><div class="sc-lbl">Current lowest</div><div class="sc-val">₹9,100</div><div class="sc-sub">Venkat Rao</div></div>
+        <div class="stat-card"><div class="sc-lbl">Closes in</div><div class="sc-val" id="auction-timer">36:22:08</div><div class="sc-sub">22 Apr at 8:00am</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Live bids</div><div class="card-sub">3 of 10 members have bid</div></div><div class="badge badge-live">Updating live</div></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:0;">
+            <div class="bid-row" style="border:1px solid rgba(180,83,9,0.25);background:var(--goldbg);">
+              <div class="bid-rank first">1st</div>
+              <div class="av av-sm av-b" style="flex-shrink:0;">VR</div>
+              <div class="bid-name" style="flex:1;">Venkat Rao</div>
+              <div class="bid-amt">₹9,100 <span class="bid-winner-tag">Lowest</span></div>
+            </div>
+            <div class="bid-row">
+              <div class="bid-rank">2nd</div>
+              <div class="av av-sm av-g" style="flex-shrink:0;">DN</div>
+              <div class="bid-name" style="flex:1;">Deepika Nair</div>
+              <div class="bid-amt">₹9,300</div>
+            </div>
+            <div class="bid-row" style="border:1px solid var(--bborder);">
+              <div class="bid-rank">3rd</div>
+              <div class="av av-sm av-g" style="flex-shrink:0;">RK</div>
+              <div class="bid-name me" style="flex:1;">Ravi Kumar (you)</div>
+              <div class="bid-amt">₹9,400</div>
+            </div>
+            <div style="margin-top:10px;padding:10px;background:var(--warm2);border-radius:var(--rs);font-size:12px;color:var(--t2);line-height:1.5;">
+              If Venkat wins at ₹9,100 — each of the 9 other members receives a dividend of <span style="color:var(--green);font-weight:500;">₹100</span>
+            </div>
+          </div>
+          <div style="padding:0 14px 14px;">
+            <div style="font-size:11px;color:var(--t3);margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.3px;">Haven't bid yet</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="av av-sm av-g">SP</div><div class="av av-sm av-a">MI</div><div class="av av-sm av-a">LD</div>
+              <div class="av av-sm av-b">KK</div><div class="av av-sm av-g">AN</div><div class="av av-sm av-g">PR</div>
+              <div class="av av-sm av-b">SB</div>
+              <div style="font-size:11px;color:var(--t3);margin-left:4px;align-self:center;">7 members · no bid yet</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="timer-display">
+            <div class="timer-val" id="auction-timer-big">36:22:08</div>
+            <div class="timer-lbl">hrs · min · sec until close</div>
+            <div style="margin-top:14px;height:4px;background:var(--b2);border-radius:2px;overflow:hidden;">
+              <div class="prog-fill pf-b" style="width:24%;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+              <div style="font-size:10px;color:var(--t3);">Opened 20 Apr</div>
+              <div style="font-size:10px;color:var(--t3);">Closes 22 Apr 8am</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Override winner</div></div>
+            <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:12px;color:var(--t2);line-height:1.5;">You can manually pick the winner regardless of bids. Use this when there's a group consensus outside the app.</div>
+              <select class="form-input form-select" style="font-size:13px;">
+                <option>Select member...</option>
+                <option>Venkat Rao</option><option>Deepika Nair</option><option>Ravi Kumar</option>
+                <option>Sravani Patel</option><option>Mahesh Iyer</option><option>Kiran Kumar</option>
+              </select>
+              <button class="btn-sm btn-sm-p" onclick="showToast('Winner confirmed and payout recorded!')">Confirm payout →</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Post-auction dividend</div></div>
+            <div style="padding:14px;font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;"><span>Pot value</span><span style="font-weight:500;color:var(--t1);">₹10,000</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Winning bid (est.)</span><span style="font-weight:500;color:var(--t1);">₹9,100</span></div>
+              <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:0.5px solid var(--b);"><span>Discount pool</span><span style="font-weight:500;color:var(--t1);">₹900</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Per member dividend</span><span style="font-weight:500;color:var(--green);">+₹100 each</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MEMBER APPROVALS ══ -->
+    <div class="screen" id="scr-members-approval">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;">Member approvals</div><div style="font-size:12px;color:var(--t3);margin-top:3px;">Office Gang · 2 requests waiting</div></div>
+        <button class="btn-sm btn-sm-o" onclick="showToast('Copying invite link...')">Copy invite link</button>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Pending requests</div><div class="card-sub">Review and approve or reject</div></div><span class="badge badge-r">2 waiting</span></div>
+          <div class="approval-row">
+            <div class="av av-lg av-a">SW</div>
+            <div class="ap-info">
+              <div class="ap-name">Swathi Reddy</div>
+              <div class="ap-meta">+91 85432 10987 · swathi.reddy@gmail.com</div>
+              <div class="ap-meta">Requested 10 Apr · via invite link</div>
+            </div>
+            <div class="ap-btns" style="flex-direction:column;gap:5px;align-items:flex-end;">
+              <button class="btn-approve" onclick="showToast('Swathi Reddy approved! She will be notified.')">Approve</button>
+              <button class="btn-reject" onclick="showToast('Request rejected.')">Reject</button>
+            </div>
+          </div>
+          <div class="approval-row">
+            <div class="av av-lg av-b">RG</div>
+            <div class="ap-info">
+              <div class="ap-name">Rohit Gupta</div>
+              <div class="ap-meta">+91 84321 09876 · rohit.gupta@gmail.com</div>
+              <div class="ap-meta">Requested 12 Apr · via WhatsApp link</div>
+            </div>
+            <div class="ap-btns" style="flex-direction:column;gap:5px;align-items:flex-end;">
+              <button class="btn-approve" onclick="showToast('Rohit Gupta approved! He will be notified.')">Approve</button>
+              <button class="btn-reject" onclick="showToast('Request rejected.')">Reject</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Approved members</div><span class="badge badge-g">5 of 8</span></div>
+            <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar (you)</div><div class="mr-meta">Owner · Approved</div></div><div class="mr-right"><div class="badge badge-g">Organiser</div></div></div>
+            <div class="member-row"><div class="av av-md av-g">NP</div><div class="mr-info"><div class="mr-name">Naveen Prasad</div><div class="mr-meta">Approved 5 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+            <div class="member-row"><div class="av av-md av-b">TK</div><div class="mr-info"><div class="mr-name">Teja Varma</div><div class="mr-meta">Approved 6 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+            <div class="member-row"><div class="av av-md av-g">SK</div><div class="mr-info"><div class="mr-name">Sindhu Krishnan</div><div class="mr-meta">Approved 7 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+            <div class="member-row"><div class="av av-md av-b">AM</div><div class="mr-info"><div class="mr-name">Arjun Mehta</div><div class="mr-meta">Approved 8 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Invite link</div></div>
+            <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+              <div class="invite-link-box">
+                <div class="invite-url">chitos.app/join/tok-ghi789jkl</div>
+                <button class="copy-btn" onclick="showToast('Link copied!')">Copy</button>
+              </div>
+              <button class="btn-sm btn-sm-o" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;" onclick="showToast('Opening WhatsApp...')">
+                <svg style="width:14px;height:14px;fill:var(--green);" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                Share on WhatsApp
+              </button>
+              <div style="font-size:11px;color:var(--t3);">Link expires in 7 days · 2 uses remaining</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GROUP INVITING ══ -->
+    <div class="screen" id="scr-group-inviting">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;">Office Gang</div><div class="badge badge-a">Inviting</div></div>
+          <div style="font-size:12px;color:var(--t3);margin-top:3px;">₹2,000/month · Lottery · Starts 1 Jun 2026 · 42 days away</div>
+        </div>
+        <button class="btn-sm btn-sm-g" onclick="goto('members-approval')">Review requests →</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="sc-lbl">Members approved</div><div class="sc-val g">5</div><div class="sc-sub">of 8 max seats</div></div>
+        <div class="stat-card"><div class="sc-lbl">Pending approval</div><div class="sc-val a">2</div><div class="sc-sub">Action needed</div></div>
+        <div class="stat-card"><div class="sc-lbl">Seats remaining</div><div class="sc-val">1</div><div class="sc-sub">After approvals</div></div>
+        <div class="stat-card"><div class="sc-lbl">Days to start</div><div class="sc-val">42</div><div class="sc-sub">1 Jun 2026</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Getting started checklist</div><div class="card-sub">Complete before start date</div></div></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--gbg);border-radius:var(--rs);border:0.5px solid var(--gborder);">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div><div style="font-size:13px;font-weight:500;color:#15803D;">Group created</div><div style="font-size:11px;color:#16A34A;">Terms set · Lottery · ₹2,000/month</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--gbg);border-radius:var(--rs);border:0.5px solid var(--gborder);">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div><div style="font-size:13px;font-weight:500;color:#15803D;">Invites sent</div><div style="font-size:11px;color:#16A34A;">5 accepted · 2 pending</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--abg);border-radius:var(--rs);border:0.5px solid var(--aborder);">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:600;color:#fff;">!</div>
+              <div><div style="font-size:13px;font-weight:500;color:#92400E;">Approve pending members</div><div style="font-size:11px;color:#B45309;">2 requests waiting · Swathi & Rohit</div></div>
+              <button class="btn-sm btn-sm-a" onclick="goto('members-approval')">Review →</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--warm2);border-radius:var(--rs);border:0.5px solid var(--b2);">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--t3);">4</div>
+              <div><div style="font-size:13px;font-weight:500;color:var(--t2);">Lock members & approve start</div><div style="font-size:11px;color:var(--t3);">Available when all seats filled</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Invite management</div><button class="btn-sm btn-sm-o" onclick="showToast('Copy invite link...')">Copy link</button></div>
+          <div class="member-row"><div class="av av-md av-g">NP</div><div class="mr-info"><div class="mr-name">Naveen Prasad</div><div class="mr-meta">Accepted 5 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+          <div class="member-row"><div class="av av-md av-b">TK</div><div class="mr-info"><div class="mr-name">Teja Varma</div><div class="mr-meta">Accepted 6 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+          <div class="member-row"><div class="av av-md av-g">SK</div><div class="mr-info"><div class="mr-name">Sindhu Krishnan</div><div class="mr-meta">Accepted 7 Mar</div></div><div class="mr-right"><div class="badge badge-g">Approved</div></div></div>
+          <div class="member-row"><div class="av av-md av-a">SW</div><div class="mr-info"><div class="mr-name">Swathi Reddy</div><div class="mr-meta">Requested 10 Apr · awaiting approval</div></div><div class="mr-right"><div class="badge badge-a">Pending</div></div></div>
+          <div class="member-row"><div class="av av-md av-b">RG</div><div class="mr-info"><div class="mr-name">Rohit Gupta</div><div class="mr-meta">Requested 12 Apr · awaiting approval</div></div><div class="mr-right"><div class="badge badge-a">Pending</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GROUP COMPLETED ══ -->
+    <div class="screen" id="scr-group-completed">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;"><div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;">Family Savings</div><div class="badge badge-grey">Completed</div></div>
+          <div style="font-size:12px;color:var(--t3);margin-top:3px;">₹5,000/month · Fixed order · Jan–Apr 2025 · All 4 members received pot</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="showToast('Downloading PDF summary...')">Download PDF</button>
+          <button class="btn-sm btn-sm-p" onclick="showToast('Starting new cycle with same members!')">Start new cycle</button>
+        </div>
+      </div>
+      <div class="celebrate">
+        <div class="cel-icon"><svg style="width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.5;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="cel-title">Cycle complete — all 4 members received the pot</div>
+        <div class="cel-sub">Jan 2025 to Apr 2025 · ₹20,000 pot · Fixed order strategy</div>
+        <div class="cel-breakdown">
+          <div class="cel-row"><div class="cel-key">Total collected</div><div class="cel-val">₹80,000</div></div>
+          <div class="cel-row"><div class="cel-key">Total disbursed</div><div class="cel-val green">₹80,000</div></div>
+          <div class="cel-row"><div class="cel-key">On-time payment rate</div><div class="cel-val green">96%</div></div>
+        </div>
+        <button class="wa-share-btn" onclick="showToast('Sharing summary on WhatsApp!')">
+          <svg style="width:14px;height:14px;fill:var(--green);" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+          Share summary on WhatsApp
+        </button>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">Payout history</div></div>
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-circle tl-done">RK</div><div class="tl-label done">Jan · ₹20K<br>Ravi</div></div>
+          <div class="tl-item"><div class="tl-circle tl-done">RD</div><div class="tl-label done">Feb · ₹20K<br>Radha</div></div>
+          <div class="tl-item"><div class="tl-circle tl-done">GR</div><div class="tl-label done">Mar · ₹20K<br>Gopal</div></div>
+          <div class="tl-item"><div class="tl-circle tl-done">MD</div><div class="tl-label done">Apr · ₹20K<br>Meena</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Member statements</div></div>
+        <div class="member-row"><div class="av av-md av-g">RK</div><div class="mr-info"><div class="mr-name">Ravi Kumar</div><div class="mr-meta">Contributed ₹20,000 · Received ₹20,000 · Net ₹0</div></div><div class="mr-right"><div class="badge badge-g">All paid</div><button class="btn-sm btn-sm-o" style="font-size:10px;padding:4px 8px;" onclick="showToast('Statement downloaded!')">Statement</button></div></div>
+        <div class="member-row"><div class="av av-md av-g">RD</div><div class="mr-info"><div class="mr-name">Radha Krishnan</div><div class="mr-meta">Contributed ₹20,000 · Received ₹20,000 · Net ₹0</div></div><div class="mr-right"><div class="badge badge-g">All paid</div><button class="btn-sm btn-sm-o" style="font-size:10px;padding:4px 8px;" onclick="showToast('Statement downloaded!')">Statement</button></div></div>
+        <div class="member-row"><div class="av av-md av-b">GR</div><div class="mr-info"><div class="mr-name">Gopal Raju</div><div class="mr-meta">Contributed ₹20,000 · Received ₹20,000 · Net ₹0</div></div><div class="mr-right"><div class="badge badge-g">All paid</div><button class="btn-sm btn-sm-o" style="font-size:10px;padding:4px 8px;" onclick="showToast('Statement downloaded!')">Statement</button></div></div>
+        <div class="member-row"><div class="av av-md av-g">MD</div><div class="mr-info"><div class="mr-name">Meena Devi</div><div class="mr-meta">Contributed ₹20,000 · Received ₹20,000 · Net ₹0</div></div><div class="mr-right"><div class="badge badge-g">All paid</div><button class="btn-sm btn-sm-o" style="font-size:10px;padding:4px 8px;" onclick="showToast('Statement downloaded!')">Statement</button></div></div>
+      </div>
+    </div>
+
+    <!-- ══ IMPORT WIZARD ══ -->
+    <div class="screen" id="scr-import">
+      <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;margin-bottom:4px;">Import existing chit</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Already running a chit on paper or WhatsApp? Import your history and track going forward.</div>
+      <div style="display:flex;gap:0;margin-bottom:20px;">
+        <div id="imp-s1" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;border-radius:var(--rs) 0 0 var(--rs);background:var(--t1);color:#fff;cursor:pointer;" onclick="setImportStep(1)">1. Terms</div>
+        <div id="imp-s2" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--warm2);color:var(--t3);cursor:pointer;border-top:0.5px solid var(--b2);border-bottom:0.5px solid var(--b2);" onclick="setImportStep(2)">2. Past payouts</div>
+        <div id="imp-s3" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--warm2);color:var(--t3);cursor:pointer;border-top:0.5px solid var(--b2);border-bottom:0.5px solid var(--b2);" onclick="setImportStep(3)">3. Contributions</div>
+        <div id="imp-s4" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--warm2);color:var(--t3);cursor:pointer;border-top:0.5px solid var(--b2);border-bottom:0.5px solid var(--b2);" onclick="setImportStep(4)">4. Review</div>
+        <div id="imp-s5" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;background:var(--warm2);color:var(--t3);cursor:pointer;border-radius:0 var(--rs) var(--rs) 0;border:0.5px solid var(--b2);" onclick="setImportStep(5)">5. Import</div>
+      </div>
+      <div id="imp-step-1" class="card" style="padding:20px;">
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0;"><div class="form-label">Group name</div><input class="form-input" value="Colony Savings" type="text"/></div>
+          <div class="form-group" style="margin-bottom:0;"><div class="form-label">Strategy</div><select class="form-input form-select"><option>Auction</option><option>Lottery</option><option selected>Fixed order</option><option>Consensus</option></select></div>
+        </div>
+        <div style="margin-top:14px;" class="form-row">
+          <div class="form-group" style="margin-bottom:0;"><div class="form-label">Contribution (₹)</div><input class="form-input" value="2000" type="number"/></div>
+          <div class="form-group" style="margin-bottom:0;"><div class="form-label">Total members</div><input class="form-input" value="12" type="number" max="15"/></div>
+        </div>
+        <div style="margin-top:14px;background:var(--abg);border:0.5px solid var(--aborder);border-radius:var(--rs);padding:12px;">
+          <div style="font-size:12px;font-weight:500;color:#92400E;margin-bottom:4px;">How many periods have already passed?</div>
+          <input class="form-input" value="6" type="number" min="1" style="margin-top:4px;"/>
+          <div class="form-hint" style="margin-top:4px;">You'll enter past payouts and contributions in the next steps</div>
+        </div>
+        <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:8px;">
+          <button class="btn-sm btn-sm-p" onclick="setImportStep(2)">Next — Past payouts →</button>
+        </div>
+      </div>
+      <div id="imp-step-2" class="card" style="padding:20px;display:none;">
+        <div style="font-size:13px;font-weight:500;margin-bottom:12px;">Who received the pot in each past period?</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:grid;grid-template-columns:60px 1fr 120px;gap:10px;align-items:center;padding:8px 10px;background:var(--warm2);border-radius:var(--rs);">
+            <div style="font-size:12px;color:var(--t3);">Period</div><div style="font-size:12px;color:var(--t3);">Member who received pot</div><div style="font-size:12px;color:var(--t3);">Amount</div>
+          </div>
+          <div style="display:grid;grid-template-columns:60px 1fr 120px;gap:10px;align-items:center;padding:8px 10px;border:0.5px solid var(--b);border-radius:var(--rs);">
+            <div style="font-size:12px;font-weight:500;">M1</div>
+            <select class="form-input" style="padding:6px 8px;font-size:12px;"><option>Ravi Kumar</option><option>Suresh</option></select>
+            <input class="form-input" value="16000" type="number" style="padding:6px 8px;font-size:12px;"/>
+          </div>
+          <div style="display:grid;grid-template-columns:60px 1fr 120px;gap:10px;align-items:center;padding:8px 10px;border:0.5px solid var(--b);border-radius:var(--rs);">
+            <div style="font-size:12px;font-weight:500;">M2</div>
+            <select class="form-input" style="padding:6px 8px;font-size:12px;"><option>Suresh Babu</option><option>Ravi Kumar</option></select>
+            <input class="form-input" value="18500" type="number" style="padding:6px 8px;font-size:12px;"/>
+          </div>
+          <div style="font-size:11px;color:var(--t3);text-align:center;padding:6px;">... 4 more periods</div>
+        </div>
+        <div style="margin-top:16px;display:flex;justify-content:space-between;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="setImportStep(1)">← Back</button>
+          <button class="btn-sm btn-sm-p" onclick="setImportStep(3)">Next — Contributions →</button>
+        </div>
+      </div>
+      <div id="imp-step-3" class="card" style="padding:20px;display:none;">
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Historical contribution amounts</div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:12px;">Pre-filled with ₹2,000. Edit any that were different (partial, waived, etc.)</div>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px;">
+            <thead><tr style="background:var(--warm2);">
+              <th style="padding:8px 10px;text-align:left;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">Member</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M1</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M2</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M3</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M4</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M5</th>
+              <th style="padding:8px 6px;text-align:center;color:var(--t3);font-weight:500;border-bottom:0.5px solid var(--b2);">M6</th>
+            </tr></thead>
+            <tbody id="contrib-grid">
+            </tbody>
+          </table>
+        </div>
+        <button class="btn-sm btn-sm-o" style="margin-top:8px;font-size:11px;" onclick="fillAll()">Mark all as paid</button>
+        <div style="margin-top:16px;display:flex;justify-content:space-between;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="setImportStep(2)">← Back</button>
+          <button class="btn-sm btn-sm-p" onclick="setImportStep(4)">Next — Review →</button>
+        </div>
+      </div>
+      <div id="imp-step-4" class="card" style="padding:20px;display:none;">
+        <div style="font-size:13px;font-weight:500;margin-bottom:14px;">Review before importing</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--b);"><div style="font-size:12px;color:var(--t2);">Group</div><div style="font-size:12px;font-weight:500;">Colony Savings</div></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--b);"><div style="font-size:12px;color:var(--t2);">Periods imported</div><div style="font-size:12px;font-weight:500;">6 past periods</div></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--b);"><div style="font-size:12px;color:var(--t2);">Members</div><div style="font-size:12px;font-weight:500;">12 members</div></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--b);"><div style="font-size:12px;color:var(--t2);">Total collected (historical)</div><div style="font-size:12px;font-weight:500;color:var(--green);">₹1,44,000</div></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;"><div style="font-size:12px;color:var(--t2);">Tracking from</div><div style="font-size:12px;font-weight:500;">Period 7 onwards</div></div>
+        </div>
+        <div style="margin-top:14px;background:var(--gbg);border:0.5px solid var(--gborder);border-radius:var(--rs);padding:12px;font-size:12px;color:#15803D;">
+          ChitOS will backfill 6 past cycles as completed, mark 6 members as pot recipients, and create the active period 7 cycle for ongoing tracking.
+        </div>
+        <div style="margin-top:16px;display:flex;justify-content:space-between;gap:8px;">
+          <button class="btn-sm btn-sm-o" onclick="setImportStep(3)">← Back</button>
+          <button class="btn-sm btn-sm-p" onclick="setImportStep(5)">Import group →</button>
+        </div>
+      </div>
+      <div id="imp-step-5" class="card" style="padding:32px;text-align:center;display:none;">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--gbg);border:1px solid var(--gborder);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <svg style="width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.5;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:300;margin-bottom:8px;">Colony Savings imported!</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px;">6 past periods backfilled · 12 members added · Period 7 is now active and ready for tracking.</div>
+        <button class="btn-sm btn-sm-p" onclick="goto('group-detail')">Go to group dashboard →</button>
+      </div>
+    </div>
+
+  </div><!-- /main-body -->
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav">
+    <div class="mn-inner">
+      <div class="mn-tab active" onclick="goto('dashboard')">
+        <div class="mn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="mn-label">Home</div>
+      </div>
+      <div class="mn-tab" onclick="goto('group-detail')">
+        <div class="mn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div class="mn-label">Groups</div>
+      </div>
+      <div class="mn-tab" onclick="goto('auction')">
+        <div class="mn-icon mn-badge-wrap">
+          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <div class="mn-dot"></div>
+        </div>
+        <div class="mn-label">Auction</div>
+      </div>
+      <div class="mn-tab" onclick="goto('members-approval')">
+        <div class="mn-icon mn-badge-wrap">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="mn-dot"></div>
+        </div>
+        <div class="mn-label">Approvals</div>
+      </div>
+      <div class="mn-tab">
+        <div class="mn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="mn-label">Profile</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+const titles={
+  dashboard:'Dashboard',
+  'group-detail':'Friends Circle',
+  auction:'Auction Room',
+  'members-approval':'Member Approvals',
+  'group-inviting':'Office Gang',
+  'group-completed':'Family Savings',
+  import:'Import existing chit'
+};
+
+function goto(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('scr-'+id);
+  if(el) el.classList.add('active');
+  document.getElementById('page-title').textContent=titles[id]||id;
+  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.mn-tab').forEach(t=>t.classList.remove('active'));
+  closeSidebar();
+  window.scrollTo&&document.getElementById('main-body')?.scrollTo(0,0);
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function toggleAcc(id){
+  const body=document.getElementById(id);
+  const chev=document.getElementById('chev-'+id);
+  if(!body) return;
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(chev) chev.classList.toggle('open',!isOpen);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+let secs=130928;
+function tickTimer(){
+  secs=Math.max(0,secs-1);
+  const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;
+  const val=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const el1=document.getElementById('auction-timer');
+  const el2=document.getElementById('auction-timer-big');
+  if(el1) el1.textContent=val;
+  if(el2) el2.textContent=val;
+}
+setInterval(tickTimer,1000);
+
+function setImportStep(n){
+  for(let i=1;i<=5;i++){
+    const body=document.getElementById('imp-step-'+i);
+    const hdr=document.getElementById('imp-s'+i);
+    if(body) body.style.display=i===n?'block':'none';
+    if(hdr){
+      if(i<n){hdr.style.background='var(--gbg)';hdr.style.color='var(--green)';}
+      else if(i===n){hdr.style.background='var(--t1)';hdr.style.color='#fff';}
+      else{hdr.style.background='var(--warm2)';hdr.style.color='var(--t3)';}
+    }
+  }
+}
+
+function buildContribGrid(){
+  const members=['Ravi Kumar','Suresh Babu','Priya Reddy','Anita Sharma','Venkat Rao','Gopal Raju'];
+  const tbody=document.getElementById('contrib-grid');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  members.forEach(name=>{
+    const tr=document.createElement('tr');
+    tr.style.borderBottom='0.5px solid var(--b)';
+    let html='<td style="padding:7px 10px;font-size:12px;font-weight:500;white-space:nowrap;">'+name+'</td>';
+    for(let m=1;m<=6;m++){
+      html+='<td style="padding:4px;"><input type="number" value="2000" style="width:64px;padding:5px;border:0.5px solid var(--b2);border-radius:6px;font-size:11px;text-align:center;font-family:\'DM Sans\',sans-serif;" class="contrib-cell"/></td>';
+    }
+    tr.innerHTML=html;
+    tbody.appendChild(tr);
+  });
+}
+buildContribGrid();
+
+function fillAll(){
+  document.querySelectorAll('.contrib-cell').forEach(i=>i.value='2000');
+  showToast('All contributions marked as ₹2,000!');
+}
+</script>
+</body>
+</html>
