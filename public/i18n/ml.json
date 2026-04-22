@@ -388,5 +388,33 @@
     "footerBlog": "ബ്ലോഗ്",
     "footerChangelog": "മാറ്റങ്ങൾ",
     "footerCopy": "© 2026 ChitOS · chitos.app"
+  },
+
+  "auth": {
+    "signIn": "സൈൻ ഇൻ",
+    "signUp": "അക്കൗണ്ട് ഉണ്ടാക്കുക",
+    "email": "ഇമെയിൽ വിലാസം",
+    "password": "പാസ്‌വേഡ്",
+    "forgotPassword": "പാസ്‌വേഡ് മറന്നോ?",
+    "noAccount": "അക്കൗണ്ട് ഇല്ലേ?",
+    "signUpLink": "സൈൻ അപ്",
+    "signInLink": "സൈൻ ഇൻ",
+    "name": "പൂർണ്ണ നാമം",
+    "phone": "ഫോൺ (+91)",
+    "confirmPassword": "പാസ്‌വേഡ് സ്ഥിരീകരിക്കുക",
+    "alreadyAccount": "ഇതിനകം അക്കൗണ്ട് ഉണ്ടോ?",
+    "emailRequired": "ഇമെയിൽ ആവശ്യമാണ്",
+    "emailInvalid": "സാധുവായ ഇമെയിൽ വിലാസം നൽകുക",
+    "passwordRequired": "പാസ്‌വേഡ് ആവശ്യമാണ്",
+    "passwordMinLength": "പാസ്‌വേഡ് കുറഞ്ഞത് 8 അക്ഷരങ്ങൾ ഉണ്ടായിരിക്കണം",
+    "nameRequired": "പേര് ആവശ്യമാണ്",
+    "phoneRequired": "ഫോൺ നമ്പർ ആവശ്യമാണ്",
+    "phoneInvalid": "സാധുവായ ഇന്ത്യൻ മൊബൈൽ നമ്പർ നൽകുക",
+    "confirmPasswordRequired": "ദയവായി പാസ്‌വേഡ് സ്ഥിരീകരിക്കുക",
+    "passwordMismatch": "പാസ്‌വേഡുകൾ പൊരുത്തപ്പെടുന്നില്ല",
+    "invalidCredentials": "അസാധുവായ ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ്",
+    "emailTaken": "ഈ ഇമെയിലുള്ള ഒരു അക്കൗണ്ട് ഇതിനകം നിലവിലുണ്ട്",
+    "signingIn": "സൈൻ ഇൻ ആകുന്നു…",
+    "creatingAccount": "അക്കൗണ്ട് ഉണ്ടാക്കുന്നു…"
   }
 }

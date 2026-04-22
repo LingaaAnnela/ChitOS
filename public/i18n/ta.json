@@ -388,5 +388,33 @@
     "footerBlog": "வலைப்பதிவு",
     "footerChangelog": "மாற்றங்கள்",
     "footerCopy": "© 2026 ChitOS · chitos.app"
+  },
+
+  "auth": {
+    "signIn": "உள்நுழைக",
+    "signUp": "கணக்கு உருவாக்குக",
+    "email": "மின்னஞ்சல் முகவரி",
+    "password": "கடவுச்சொல்",
+    "forgotPassword": "கடவுச்சொல் மறந்துவிட்டதா?",
+    "noAccount": "கணக்கு இல்லையா?",
+    "signUpLink": "பதிவு செய்க",
+    "signInLink": "உள்நுழைக",
+    "name": "முழு பெயர்",
+    "phone": "தொலைபேசி (+91)",
+    "confirmPassword": "கடவுச்சொல்லை உறுதிப்படுத்துக",
+    "alreadyAccount": "ஏற்கெனவே கணக்கு உள்ளதா?",
+    "emailRequired": "மின்னஞ்சல் தேவை",
+    "emailInvalid": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடுக",
+    "passwordRequired": "கடவுச்சொல் தேவை",
+    "passwordMinLength": "கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும்",
+    "nameRequired": "பெயர் தேவை",
+    "phoneRequired": "தொலைபேசி எண் தேவை",
+    "phoneInvalid": "சரியான இந்திய மொபைல் எண்ணை உள்ளிடுக",
+    "confirmPasswordRequired": "கடவுச்சொல்லை உறுதிப்படுத்துக",
+    "passwordMismatch": "கடவுச்சொற்கள் பொருந்தவில்லை",
+    "invalidCredentials": "தவறான மின்னஞ்சல் அல்லது கடவுச்சொல்",
+    "emailTaken": "இந்த மின்னஞ்சலில் கணக்கு ஏற்கெனவே உள்ளது",
+    "signingIn": "உள்நுழைகிறது…",
+    "creatingAccount": "கணக்கு உருவாக்குகிறது…"
   }
 }

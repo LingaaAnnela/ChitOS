@@ -388,5 +388,33 @@
     "footerBlog": "ಬ್ಲಾಗ್",
     "footerChangelog": "ಬದಲಾವಣೆಗಳು",
     "footerCopy": "© 2026 ChitOS · chitos.app"
+  },
+
+  "auth": {
+    "signIn": "ಸೈನ್ ಇನ್",
+    "signUp": "ಖಾತೆ ರಚಿಸಿ",
+    "email": "ಇಮೇಲ್ ವಿಳಾಸ",
+    "password": "ಪಾಸ್‌ವರ್ಡ್",
+    "forgotPassword": "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರಾ?",
+    "noAccount": "ಖಾತೆ ಇಲ್ಲವೇ?",
+    "signUpLink": "ನೋಂದಾಯಿಸಿ",
+    "signInLink": "ಸೈನ್ ಇನ್",
+    "name": "ಪೂರ್ಣ ಹೆಸರು",
+    "phone": "ಫೋನ್ (+91)",
+    "confirmPassword": "ಪಾಸ್‌ವರ್ಡ್ ದೃಢಪಡಿಸಿ",
+    "alreadyAccount": "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?",
+    "emailRequired": "ಇಮೇಲ್ ಅಗತ್ಯ",
+    "emailInvalid": "ಮಾನ್ಯ ಇಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ",
+    "passwordRequired": "ಪಾಸ್‌ವರ್ಡ್ ಅಗತ್ಯ",
+    "passwordMinLength": "ಪಾಸ್‌ವರ್ಡ್ ಕನಿಷ್ಠ 8 ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿರಬೇಕು",
+    "nameRequired": "ಹೆಸರು ಅಗತ್ಯ",
+    "phoneRequired": "ಫೋನ್ ಸಂಖ್ಯೆ ಅಗತ್ಯ",
+    "phoneInvalid": "ಮಾನ್ಯ ಭಾರತೀಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ",
+    "confirmPasswordRequired": "ದಯವಿಟ್ಟು ಪಾಸ್‌ವರ್ಡ್ ದೃಢಪಡಿಸಿ",
+    "passwordMismatch": "ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ",
+    "invalidCredentials": "ಅಮಾನ್ಯ ಇಮೇಲ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್",
+    "emailTaken": "ಈ ಇಮೇಲ್‌ನೊಂದಿಗೆ ಖಾತೆ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ",
+    "signingIn": "ಸೈನ್ ಇನ್ ಆಗುತ್ತಿದೆ…",
+    "creatingAccount": "ಖಾತೆ ರಚಿಸಲಾಗುತ್ತಿದೆ…"
   }
 }

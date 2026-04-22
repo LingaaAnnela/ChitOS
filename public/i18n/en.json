@@ -388,5 +388,33 @@
     "footerBlog": "Blog",
     "footerChangelog": "Changelog",
     "footerCopy": "© 2026 ChitOS · chitos.app"
+  },
+
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "email": "Email address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "signInLink": "Sign in",
+    "name": "Full name",
+    "phone": "Phone (+91)",
+    "confirmPassword": "Confirm password",
+    "alreadyAccount": "Already have an account?",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "nameRequired": "Name is required",
+    "phoneRequired": "Phone number is required",
+    "phoneInvalid": "Enter a valid Indian mobile number",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "invalidCredentials": "Invalid email or password",
+    "emailTaken": "An account with this email already exists",
+    "signingIn": "Signing in…",
+    "creatingAccount": "Creating account…"
   }
 }

@@ -52,6 +52,52 @@ export const AuthStore = signalStore(
         if (!current) return;
         patchState(store, { profile: { ...current, ...updates } });
       },
+      async login(emailInput: string, _password: string) {
+        patchState(store, { loading: true, error: null });
+        await new Promise(r => setTimeout(r, 500));
+        const profile = MOCK_PROFILES.find(
+          p => p.email.toLowerCase() === emailInput.toLowerCase().trim(),
+        );
+        if (!profile) {
+          patchState(store, { loading: false, error: 'Invalid email or password' });
+          return;
+        }
+        patchState(store, {
+          user: { id: profile.id },
+          profile,
+          isOrganizer: profile.id === MOCK_CURRENT_USER_ID,
+          loading: false,
+          error: null,
+        });
+      },
+      async register(name: string, phone: string, emailInput: string, _password: string) {
+        patchState(store, { loading: true, error: null });
+        await new Promise(r => setTimeout(r, 500));
+        const existing = MOCK_PROFILES.find(
+          p => p.email.toLowerCase() === emailInput.toLowerCase().trim(),
+        );
+        if (existing) {
+          patchState(store, { loading: false, error: 'An account with this email already exists' });
+          return;
+        }
+        const newProfile: Profile = {
+          id: `u-new-${Date.now()}`,
+          name: name.trim(),
+          initials: name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2),
+          phone: phone.trim(),
+          email: emailInput.trim(),
+          trust_score: 0,
+          trust_label: 'Good',
+          avatar_color: 'b',
+        };
+        patchState(store, {
+          user: { id: newProfile.id },
+          profile: newProfile,
+          isOrganizer: false,
+          loading: false,
+          error: null,
+        });
+      },
       signOut() {
         patchState(store, { user: null, profile: null, tenant: null, isOrganizer: false });
       },

@@ -388,5 +388,33 @@
     "footerBlog": "ब्लॉग",
     "footerChangelog": "बदलाव",
     "footerCopy": "© 2026 ChitOS · chitos.app"
+  },
+
+  "auth": {
+    "signIn": "साइन इन",
+    "signUp": "खाता बनाएं",
+    "email": "ईमेल पता",
+    "password": "पासवर्ड",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "noAccount": "खाता नहीं है?",
+    "signUpLink": "साइन अप",
+    "signInLink": "साइन इन",
+    "name": "पूरा नाम",
+    "phone": "फोन (+91)",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "alreadyAccount": "पहले से खाता है?",
+    "emailRequired": "ईमेल आवश्यक है",
+    "emailInvalid": "एक वैध ईमेल पता दर्ज करें",
+    "passwordRequired": "पासवर्ड आवश्यक है",
+    "passwordMinLength": "पासवर्ड कम से कम 8 अक्षर का होना चाहिए",
+    "nameRequired": "नाम आवश्यक है",
+    "phoneRequired": "फोन नंबर आवश्यक है",
+    "phoneInvalid": "एक वैध भारतीय मोबाइल नंबर दर्ज करें",
+    "confirmPasswordRequired": "कृपया पासवर्ड की पुष्टि करें",
+    "passwordMismatch": "पासवर्ड मेल नहीं खाते",
+    "invalidCredentials": "अमान्य ईमेल या पासवर्ड",
+    "emailTaken": "इस ईमेल से पहले से एक खाता मौजूद है",
+    "signingIn": "साइन इन हो रहा है…",
+    "creatingAccount": "खाता बन रहा है…"
   }
 }

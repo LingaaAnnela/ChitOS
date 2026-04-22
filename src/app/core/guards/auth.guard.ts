@@ -9,12 +9,12 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (!auth.loading()) {
-    return auth.user() ? true : router.createUrlTree(['/auth']);
+    return auth.user() ? true : router.createUrlTree(['/auth/login']);
   }
 
   return toObservable(auth.loading).pipe(
     filter(loading => !loading),
     take(1),
-    map(() => auth.user() ? true : router.createUrlTree(['/auth'])),
+    map(() => auth.user() ? true : router.createUrlTree(['/auth/login'])),
   );
 };

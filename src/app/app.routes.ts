@@ -11,6 +11,17 @@ export const routes: Routes = [
     path: 'auth',
     loadComponent: () =>
       import('./features/onboarding/auth-shell').then(m => m.AuthShell),
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      {
+        path: 'login',
+        loadComponent: () => import('./features/onboarding/login/login').then(m => m.LoginPage),
+      },
+      {
+        path: 'signup',
+        loadComponent: () => import('./features/onboarding/signup/signup').then(m => m.SignupPage),
+      },
+    ],
   },
   {
     path: 'console',
