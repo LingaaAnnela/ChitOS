@@ -10,3 +10,4 @@ export * from './bottom-nav';
 export * from './whatsapp-share-btn';
 export * from './payment-method-modal';
 export * from './language-switcher';
+export * from './toast';

@@ -3,6 +3,8 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConsoleStore } from '../console.store';
+import { UIStore } from '@core/stores/ui.store';
+import { FREE_MAX_MEMBERS } from '@core/config/plan.config';
 import { RelativeTimePipe } from '@shared/pipes';
 import {
   SkeletonLoaderComponent, EmptyStateComponent, WhatsAppShareBtnComponent,
@@ -66,9 +68,8 @@ import type { EnrichedMember } from '@core/mock/seed.data';
     .modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px;
       border-top: 0.5px solid var(--b); }
 
-    .toast-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: var(--green); color: #fff; font-size: 13px; font-weight: 500;
-      padding: 10px 20px; border-radius: 100px; z-index: 300; white-space: nowrap; }
+    .plan-error { padding: 10px 14px; background: var(--rbg); border: 0.5px solid var(--rborder);
+      border-radius: var(--rs); font-size: 12px; color: var(--red); font-weight: 500; }
 
     @media (max-width: 768px) {
       :host { padding: 14px; gap: 12px; }
@@ -213,17 +214,17 @@ import type { EnrichedMember } from '@core/mock/seed.data';
         </div>
       }
 
-      <!-- Toast -->
-      @if (successMsg()) {
-        <div class="toast-bar">{{ successMsg() }}</div>
+      @if (planError()) {
+        <div class="plan-error">{{ planError() }}</div>
       }
     }
     </ng-container>
   `,
 })
 export class MemberApprovalsPage {
-  private store = inject(ConsoleStore);
+  private store  = inject(ConsoleStore);
   private route  = inject(ActivatedRoute);
+  private ui     = inject(UIStore);
 
   group   = this.store.selectedGroup;
   loading = this.store.loading;
@@ -235,7 +236,7 @@ export class MemberApprovalsPage {
 
   rejectTarget = signal<EnrichedMember | null>(null);
   rejectReason = signal('');
-  successMsg   = signal('');
+  planError    = signal('');
 
   readonly inviteUrl = 'https://chitos.app/join/tok-ghi789jkl';
 
@@ -246,8 +247,12 @@ export class MemberApprovalsPage {
   }
 
   async approve(m: EnrichedMember) {
+    if (this.approvedMembers().length >= FREE_MAX_MEMBERS) {
+      this.planError.set(`Free plan allows up to ${FREE_MAX_MEMBERS} members per group. Upgrade to add more.`);
+      return;
+    }
+    this.planError.set('');
     await this.store.approveMember(m.id);
-    this.flash(`${m.profile.name} has been approved and notified`);
   }
 
   openReject(m: EnrichedMember) {
@@ -260,16 +265,10 @@ export class MemberApprovalsPage {
     if (!m) return;
     await this.store.rejectMember(m.id, this.rejectReason());
     this.rejectTarget.set(null);
-    this.flash('Request rejected');
   }
 
   async copyLink() {
     await navigator.clipboard.writeText(this.inviteUrl);
-    this.flash('Invite link copied');
-  }
-
-  private flash(msg: string) {
-    this.successMsg.set(msg);
-    setTimeout(() => this.successMsg.set(''), 3000);
+    this.ui.addToast('Invite link copied', 'info');
   }
 }

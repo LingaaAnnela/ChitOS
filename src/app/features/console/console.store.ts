@@ -3,6 +3,7 @@ import {
   signalStore, withState, withComputed, withMethods, withHooks, patchState,
 } from '@ngrx/signals';
 import { SUPABASE_SERVICE } from '@core/supabase/supabase.token';
+import { UIStore } from '@core/stores/ui.store';
 import { MOCK_TENANT_ID } from '@core/mock/seed.data';
 import type {
   Group, GroupMember, Cycle, Contribution, Payout,
@@ -70,6 +71,7 @@ export const ConsoleStore = signalStore(
   }),
   withMethods((store) => {
     const db = inject(SUPABASE_SERVICE);
+    const ui = inject(UIStore);
 
     const refreshMembers = async (groupId: string) => {
       const members = await db.getMembers(groupId) as GroupMember[];
@@ -183,8 +185,10 @@ export const ConsoleStore = signalStore(
             const contributions = await db.getContributions(cycleId) as Contribution[];
             patchState(store, { contributions });
           }
+          ui.addToast('Contribution marked as paid', 'success');
         } catch (e: unknown) {
           patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
         }
       },
 
@@ -194,8 +198,10 @@ export const ConsoleStore = signalStore(
           const gm = store.pendingApprovals().find(m => m.id === gmId);
           const groupId = gm?.group_id ?? store.selectedGroup()?.id ?? '';
           if (groupId) await refreshMembers(groupId);
+          ui.addToast('Member approved', 'success');
         } catch (e: unknown) {
           patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
         }
       },
 
@@ -205,8 +211,10 @@ export const ConsoleStore = signalStore(
           const gm = store.pendingApprovals().find(m => m.id === gmId);
           const groupId = gm?.group_id ?? store.selectedGroup()?.id ?? '';
           if (groupId) await refreshMembers(groupId);
+          ui.addToast('Request rejected', 'info');
         } catch (e: unknown) {
           patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
         }
       },
 
