@@ -346,7 +346,7 @@
 
 ---
 
-- [ ] **TODO-014** · Effort: Medium · Deps: TODO-001, TODO-011
+- [x] **TODO-014** · Effort: Medium · Deps: TODO-001, TODO-011
   **Build console settings page (SettingsPage)**
   `src/app/console/settings/index.ts` is a stub ("Settings — coming soon"). Organisers need account, plan, and notification preferences.
   ```

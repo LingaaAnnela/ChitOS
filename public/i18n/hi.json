@@ -416,5 +416,30 @@
     "emailTaken": "इस ईमेल से पहले से एक खाता मौजूद है",
     "signingIn": "साइन इन हो रहा है…",
     "creatingAccount": "खाता बन रहा है…"
+  },
+
+  "confirm": "पुष्टि करें",
+
+  "settings": {
+    "addPhoto": "फ़ोटो जोड़ें",
+    "upgradeBtn": "प्रो में अपग्रेड करें",
+    "upgradeCta": "असीमित ग्रुप, PDF रिपोर्ट और प्राथमिकता समर्थन अनलॉक करें।",
+    "whatsappAlerts": "WhatsApp अलर्ट",
+    "whatsappAlertsDesc": "WhatsApp के ज़रिए भुगतान रिमाइंडर और नीलामी अपडेट",
+    "emailAlerts": "ईमेल अलर्ट",
+    "emailAlertsDesc": "ईमेल के ज़रिए साप्ताहिक सारांश और महत्वपूर्ण अपडेट",
+    "profileSaved": "प्रोफ़ाइल अपडेट हो गई",
+    "notifSaved": "अधिसूचना प्राथमिकताएं सहेजी गई",
+    "deleteConfirmBtn": "स्थायी रूप से हटाएं",
+    "freeFeature1": "3 ग्रुप तक",
+    "freeFeature2": "प्रति ग्रुप 15 सदस्य तक",
+    "freeFeature3": "नीलामी कक्ष",
+    "freeFeature4": "WhatsApp एकीकरण",
+    "proFeature1": "असीमित ग्रुप",
+    "proFeature2": "प्रति ग्रुप असीमित सदस्य",
+    "proFeature3": "नीलामी कक्ष",
+    "proFeature4": "WhatsApp एकीकरण",
+    "proFeature5": "PDF रिपोर्ट",
+    "proFeature6": "प्राथमिकता समर्थन"
   }
 }

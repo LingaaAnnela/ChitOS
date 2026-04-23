@@ -416,5 +416,30 @@
     "emailTaken": "ಈ ಇಮೇಲ್‌ನೊಂದಿಗೆ ಖಾತೆ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ",
     "signingIn": "ಸೈನ್ ಇನ್ ಆಗುತ್ತಿದೆ…",
     "creatingAccount": "ಖಾತೆ ರಚಿಸಲಾಗುತ್ತಿದೆ…"
+  },
+
+  "confirm": "ದೃಢಪಡಿಸು",
+
+  "settings": {
+    "addPhoto": "ಫೋಟೋ ಸೇರಿಸಿ",
+    "upgradeBtn": "Pro ಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ",
+    "upgradeCta": "ಅಪರಿಮಿತ ಗ್ರೂಪ್‌ಗಳು, PDF ವರದಿಗಳು ಮತ್ತು ಆದ್ಯತಾ ಬೆಂಬಲವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ.",
+    "whatsappAlerts": "WhatsApp ಎಚ್ಚರಿಕೆಗಳು",
+    "whatsappAlertsDesc": "WhatsApp ಮೂಲಕ ಪಾವತಿ ರಿಮೈಂಡರ್‌ಗಳು ಮತ್ತು ಹರಾಜು ನವೀಕರಣಗಳು",
+    "emailAlerts": "ಇಮೇಲ್ ಎಚ್ಚರಿಕೆಗಳು",
+    "emailAlertsDesc": "ಇಮೇಲ್ ಮೂಲಕ ವಾರದ ಸಾರಾಂಶಗಳು ಮತ್ತು ಮಹತ್ವದ ನವೀಕರಣಗಳು",
+    "profileSaved": "ಪ್ರೊಫೈಲ್ ನವೀಕರಿಸಲಾಗಿದೆ",
+    "notifSaved": "ಅಧಿಸೂಚನೆ ಆದ್ಯತೆಗಳು ಉಳಿಸಲಾಗಿದೆ",
+    "deleteConfirmBtn": "ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಿ",
+    "freeFeature1": "3 ಗ್ರೂಪ್‌ಗಳವರೆಗೆ",
+    "freeFeature2": "ಗ್ರೂಪ್‌ಗೆ 15 ಸದಸ್ಯರವರೆಗೆ",
+    "freeFeature3": "ಹರಾಜು ಕೊಠಡಿಗಳು",
+    "freeFeature4": "WhatsApp ಏಕೀಕರಣ",
+    "proFeature1": "ಅಪರಿಮಿತ ಗ್ರೂಪ್‌ಗಳು",
+    "proFeature2": "ಗ್ರೂಪ್‌ಗೆ ಅಪರಿಮಿತ ಸದಸ್ಯರು",
+    "proFeature3": "ಹರಾಜು ಕೊಠಡಿಗಳು",
+    "proFeature4": "WhatsApp ಏಕೀಕರಣ",
+    "proFeature5": "PDF ವರದಿಗಳು",
+    "proFeature6": "ಆದ್ಯತಾ ಬೆಂಬಲ"
   }
 }

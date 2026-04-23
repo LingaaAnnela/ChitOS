@@ -390,6 +390,31 @@
     "footerCopy": "© 2026 ChitOS · chitos.app"
   },
 
+  "confirm": "Confirm",
+
+  "settings": {
+    "addPhoto": "Add photo",
+    "upgradeBtn": "Upgrade to Pro",
+    "upgradeCta": "Unlock unlimited groups, PDF reports, and priority support.",
+    "whatsappAlerts": "WhatsApp alerts",
+    "whatsappAlertsDesc": "Payment reminders and auction updates via WhatsApp",
+    "emailAlerts": "Email alerts",
+    "emailAlertsDesc": "Weekly summaries and important updates via email",
+    "profileSaved": "Profile updated",
+    "notifSaved": "Notification preferences saved",
+    "deleteConfirmBtn": "Delete permanently",
+    "freeFeature1": "Up to 3 groups",
+    "freeFeature2": "Up to 15 members per group",
+    "freeFeature3": "Auction rooms",
+    "freeFeature4": "WhatsApp integration",
+    "proFeature1": "Unlimited groups",
+    "proFeature2": "Unlimited members per group",
+    "proFeature3": "Auction rooms",
+    "proFeature4": "WhatsApp integration",
+    "proFeature5": "PDF reports",
+    "proFeature6": "Priority support"
+  },
+
   "auth": {
     "signIn": "Sign in",
     "signUp": "Create account",

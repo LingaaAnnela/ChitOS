@@ -13,6 +13,8 @@ interface AuthState {
   isOrganizer: boolean;
   loading: boolean;
   error: string | null;
+  notifWhatsapp: boolean;
+  notifEmail: boolean;
 }
 
 export const AuthStore = signalStore(
@@ -24,6 +26,8 @@ export const AuthStore = signalStore(
     isOrganizer: false,
     loading: false,
     error: null,
+    notifWhatsapp: true,
+    notifEmail: true,
   }),
   withMethods((store) => {
     const db = inject(SUPABASE_SERVICE);
@@ -96,6 +100,12 @@ export const AuthStore = signalStore(
           isOrganizer: false,
           loading: false,
           error: null,
+        });
+      },
+      updateNotifications(prefs: { whatsapp?: boolean; email?: boolean }) {
+        patchState(store, {
+          ...(prefs.whatsapp !== undefined && { notifWhatsapp: prefs.whatsapp }),
+          ...(prefs.email    !== undefined && { notifEmail:    prefs.email    }),
         });
       },
       signOut() {
