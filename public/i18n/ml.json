@@ -443,6 +443,35 @@
     "proFeature6": "പ്രിയോറിറ്റി സപ്പോർട്ട്"
   },
 
+  "fixed": {
+    "heading": "നിശ്ചിത ക്രമ ഷെഡ്യൂൾ",
+    "colNum": "ചക്രം #",
+    "colDate": "നിർദ്ദിഷ്ട തീയതി",
+    "colWinner": "നിയുക്ത വിജയി",
+    "colAmount": "തുക",
+    "colStatus": "നില",
+    "cycleLabel": "ചക്രം {{ n }}",
+    "confirmPayout": "പേഔട്ട് സ്ഥിരീകരിക്കുക",
+    "unassigned": "നിയുക്തമല്ല",
+    "emptyTitle": "ഇതുവരെ ചക്രങ്ങൾ ഇല്ല",
+    "emptySub": "ഗ്രൂപ്പ് സജീവമാകുമ്പോൾ ചക്രങ്ങൾ ഇവിടെ കാണിക്കും.",
+    "totalCollected": "മൊത്തം ശേഖരിച്ചത്",
+    "totalDisbursed": "മൊത്തം വിതരണം ചെയ്തത്",
+    "remaining": "ബാക്കി",
+    "cyclesComplete": "ചക്രങ്ങൾ പൂർത്തിയായി",
+    "cyclesLeft": "ചക്രങ്ങൾ ബാക്കി",
+    "disbursedSub": "വിജയികൾക്ക് നൽകി",
+    "confirmTitle": "പേഔട്ട് സ്ഥിരീകരിക്കുക",
+    "confirmMsg": "ചക്രം {{ n }} ലെ {{ name }} ന് {{ amount }} നൽകുന്നത് രേഖപ്പെടുത്തണോ?",
+    "cancel": "റദ്ദ് ചെയ്യുക",
+    "status": {
+      "paid": "അടച്ചു",
+      "upcoming": "വരാനിരിക്കുന്നു",
+      "overdue": "കാലഹരണപ്പെട്ടു",
+      "scheduled": "നിർദ്ദേശിക്കപ്പെട്ടത്"
+    }
+  },
+
   "cycles": {
     "heading": "ചക്രങ്ങൾ",
     "colNum": "ചക്രം #",

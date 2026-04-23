@@ -443,6 +443,35 @@
     "creatingAccount": "Creating account…"
   },
 
+  "fixed": {
+    "heading": "Fixed Order Schedule",
+    "colNum": "Cycle #",
+    "colDate": "Scheduled Date",
+    "colWinner": "Assigned Winner",
+    "colAmount": "Amount",
+    "colStatus": "Status",
+    "cycleLabel": "Cycle {{ n }}",
+    "confirmPayout": "Confirm Payout",
+    "unassigned": "Unassigned",
+    "emptyTitle": "No cycles yet",
+    "emptySub": "Cycles will appear here once the group is active.",
+    "totalCollected": "Total Collected",
+    "totalDisbursed": "Total Disbursed",
+    "remaining": "Remaining",
+    "cyclesComplete": "cycles complete",
+    "cyclesLeft": "cycles left",
+    "disbursedSub": "Paid out to winners",
+    "confirmTitle": "Confirm Payout",
+    "confirmMsg": "Record payout for Cycle {{ n }} to {{ name }} of {{ amount }}?",
+    "cancel": "Cancel",
+    "status": {
+      "paid": "Paid",
+      "upcoming": "Upcoming",
+      "overdue": "Overdue",
+      "scheduled": "Scheduled"
+    }
+  },
+
   "cycles": {
     "heading": "Cycles",
     "colNum": "Cycle #",

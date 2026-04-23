@@ -443,6 +443,35 @@
     "proFeature6": "ಆದ್ಯತಾ ಬೆಂಬಲ"
   },
 
+  "fixed": {
+    "heading": "ನಿಗದಿತ ಕ್ರಮ ವೇಳಾಪಟ್ಟಿ",
+    "colNum": "ಚಕ್ರ #",
+    "colDate": "ನಿಗದಿತ ದಿನಾಂಕ",
+    "colWinner": "ನಿಯೋಜಿತ ವಿಜೇತ",
+    "colAmount": "ಮೊತ್ತ",
+    "colStatus": "ಸ್ಥಿತಿ",
+    "cycleLabel": "ಚಕ್ರ {{ n }}",
+    "confirmPayout": "ಪಾವತಿ ದೃಢಪಡಿಸಿ",
+    "unassigned": "ನಿಯೋಜಿಸಲಾಗಿಲ್ಲ",
+    "emptyTitle": "ಇನ್ನೂ ಯಾವ ಚಕ್ರಗಳೂ ಇಲ್ಲ",
+    "emptySub": "ಗುಂಪು ಸಕ್ರಿಯವಾದಾಗ ಚಕ್ರಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ.",
+    "totalCollected": "ಒಟ್ಟು ಸಂಗ್ರಹ",
+    "totalDisbursed": "ಒಟ್ಟು ವಿತರಿಸಲಾಗಿದೆ",
+    "remaining": "ಉಳಿದಿರುವುದು",
+    "cyclesComplete": "ಚಕ್ರಗಳು ಪೂರ್ಣ",
+    "cyclesLeft": "ಚಕ್ರಗಳು ಉಳಿದಿವೆ",
+    "disbursedSub": "ವಿಜೇತರಿಗೆ ಪಾವತಿಸಲಾಗಿದೆ",
+    "confirmTitle": "ಪಾವತಿ ದೃಢಪಡಿಸಿ",
+    "confirmMsg": "ಚಕ್ರ {{ n }} ಗೆ {{ name }} ಗೆ {{ amount }} ಪಾವತಿ ದಾಖಲಿಸಬೇಕೇ?",
+    "cancel": "ರದ್ದು ಮಾಡಿ",
+    "status": {
+      "paid": "ಪಾವತಿಸಲಾಗಿದೆ",
+      "upcoming": "ಮುಂಬರುವ",
+      "overdue": "ಅವಧಿ ಮೀರಿದೆ",
+      "scheduled": "ನಿಗದಿತ"
+    }
+  },
+
   "cycles": {
     "heading": "ಚಕ್ರಗಳು",
     "colNum": "ಚಕ್ರ #",

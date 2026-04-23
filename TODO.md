@@ -138,7 +138,7 @@
 
 ---
 
-- [ ] **TODO-006** · Effort: High · Deps: TODO-001, TODO-004
+- [x] **TODO-006** · Effort: High · Deps: TODO-001, TODO-004
   **Build console fixed-console sub-route (FixedConsolePage)**
   Fixed-draw chit groups have a deterministic cycle order (no auction). `src/app/console/fixed-console/index.ts` is a stub.
   ```

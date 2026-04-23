@@ -443,6 +443,35 @@
     "proFeature6": "ప్రాధాన్య మద్దతు"
   },
 
+  "fixed": {
+    "heading": "నిర్ణీత క్రమ షెడ్యూల్",
+    "colNum": "చక్రం #",
+    "colDate": "నిర్ణీత తేదీ",
+    "colWinner": "నియమిత విజేత",
+    "colAmount": "మొత్తం",
+    "colStatus": "స్థితి",
+    "cycleLabel": "చక్రం {{ n }}",
+    "confirmPayout": "చెల్లింపు నిర్ధారించు",
+    "unassigned": "నియమించబడలేదు",
+    "emptyTitle": "చక్రాలు లేవు",
+    "emptySub": "సమూహం యాక్టివ్ అయిన తర్వాత చక్రాలు ఇక్కడ కనిపిస్తాయి.",
+    "totalCollected": "మొత్తం సేకరించినది",
+    "totalDisbursed": "మొత్తం చెల్లించినది",
+    "remaining": "మిగిలినది",
+    "cyclesComplete": "చక్రాలు పూర్తయ్యాయి",
+    "cyclesLeft": "చక్రాలు మిగిలాయి",
+    "disbursedSub": "విజేతలకు చెల్లించబడింది",
+    "confirmTitle": "చెల్లింపు నిర్ధారించు",
+    "confirmMsg": "చక్రం {{ n }}కి {{ name }}కు {{ amount }} చెల్లింపు నమోదు చేయాలా?",
+    "cancel": "రద్దు చేయి",
+    "status": {
+      "paid": "చెల్లించారు",
+      "upcoming": "రాబోతోంది",
+      "overdue": "గడువు మించింది",
+      "scheduled": "నిర్ణయించబడింది"
+    }
+  },
+
   "cycles": {
     "heading": "చక్రాలు",
     "colNum": "చక్రం #",

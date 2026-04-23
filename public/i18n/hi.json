@@ -443,6 +443,35 @@
     "proFeature6": "प्राथमिकता समर्थन"
   },
 
+  "fixed": {
+    "heading": "निश्चित क्रम अनुसूची",
+    "colNum": "चक्र #",
+    "colDate": "निर्धारित तारीख",
+    "colWinner": "निर्धारित विजेता",
+    "colAmount": "राशि",
+    "colStatus": "स्थिति",
+    "cycleLabel": "चक्र {{ n }}",
+    "confirmPayout": "भुगतान की पुष्टि करें",
+    "unassigned": "अनिर्धारित",
+    "emptyTitle": "अभी तक कोई चक्र नहीं",
+    "emptySub": "समूह सक्रिय होने पर चक्र यहाँ दिखेंगे।",
+    "totalCollected": "कुल संग्रह",
+    "totalDisbursed": "कुल वितरित",
+    "remaining": "शेष",
+    "cyclesComplete": "चक्र पूर्ण",
+    "cyclesLeft": "चक्र बचे",
+    "disbursedSub": "विजेताओं को भुगतान किया गया",
+    "confirmTitle": "भुगतान की पुष्टि करें",
+    "confirmMsg": "चक्र {{ n }} का {{ name }} को {{ amount }} का भुगतान दर्ज करें?",
+    "cancel": "रद्द करें",
+    "status": {
+      "paid": "भुगतान किया",
+      "upcoming": "आने वाला",
+      "overdue": "अतिदेय",
+      "scheduled": "निर्धारित"
+    }
+  },
+
   "cycles": {
     "heading": "चक्र",
     "colNum": "चक्र #",
