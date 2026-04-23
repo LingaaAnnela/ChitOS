@@ -98,7 +98,7 @@ export const ACTIVE_CYCLE_ID      = 'c-fc-4';
 
 export const MOCK_TENANT: Tenant = {
   id: MOCK_TENANT_ID, name: "Ravi's Circles", plan: 'free',
-  group_count: 2, max_groups: 3,
+  group_count: 3, max_groups: 4,
 };
 
 // ── Profiles ───────────────────────────────────────────────────────────────
@@ -152,6 +152,14 @@ export const MOCK_GROUPS: Group[] = [
     member_count: 4, max_members: 4,
     start_date: '2025-01-01', due_day: 1, created_at: '2024-12-01',
   },
+  {
+    id: 'g-neighbours', tenant_id: MOCK_TENANT_ID,
+    name: 'Neighbours Club', strategy: 'lottery', status: 'active',
+    contribution_amount: 3000, frequency: 'monthly',
+    total_cycles: 6, current_cycle: 4,
+    member_count: 6, max_members: 6,
+    start_date: '2026-01-01', due_day: 15, created_at: '2025-12-15',
+  },
 ];
 
 // ── Group Members ──────────────────────────────────────────────────────────
@@ -181,6 +189,13 @@ const INITIAL_GROUP_MEMBERS: GroupMember[] = [
   { id: 'gm-fs-2', group_id: 'g-family',  profile_id: 'u-radha', approval_status: 'approved', role: 'member', joined_at: '2024-12-05' },
   { id: 'gm-fs-3', group_id: 'g-family',  profile_id: 'u-gopal', approval_status: 'approved', role: 'member', joined_at: '2024-12-05' },
   { id: 'gm-fs-4', group_id: 'g-family',  profile_id: 'u-meena', approval_status: 'approved', role: 'member', joined_at: '2024-12-05' },
+  // Neighbours Club — 6 approved
+  { id: 'gm-nb-1', group_id: 'g-neighbours', profile_id: 'u-ravi',   approval_status: 'approved', role: 'owner',  joined_at: '2025-12-15' },
+  { id: 'gm-nb-2', group_id: 'g-neighbours', profile_id: 'u-naveen', approval_status: 'approved', role: 'member', joined_at: '2025-12-16' },
+  { id: 'gm-nb-3', group_id: 'g-neighbours', profile_id: 'u-teja',   approval_status: 'approved', role: 'member', joined_at: '2025-12-17' },
+  { id: 'gm-nb-4', group_id: 'g-neighbours', profile_id: 'u-sindhu', approval_status: 'approved', role: 'member', joined_at: '2025-12-18' },
+  { id: 'gm-nb-5', group_id: 'g-neighbours', profile_id: 'u-arjun',  approval_status: 'approved', role: 'member', joined_at: '2025-12-19' },
+  { id: 'gm-nb-6', group_id: 'g-neighbours', profile_id: 'u-radha',  approval_status: 'approved', role: 'member', joined_at: '2025-12-20' },
 ];
 
 // ── Cycles ─────────────────────────────────────────────────────────────────
@@ -202,6 +217,13 @@ export const MOCK_CYCLES: Cycle[] = [
   { id: 'c-fs-2', group_id: 'g-family', cycle_number: 2, month_label: 'Feb 2025', status: 'completed', due_date: '2025-02-25', winner_profile_id: 'u-radha', payout_amount: 20000 },
   { id: 'c-fs-3', group_id: 'g-family', cycle_number: 3, month_label: 'Mar 2025', status: 'completed', due_date: '2025-03-25', winner_profile_id: 'u-gopal', payout_amount: 20000 },
   { id: 'c-fs-4', group_id: 'g-family', cycle_number: 4, month_label: 'Apr 2025', status: 'completed', due_date: '2025-04-25', winner_profile_id: 'u-meena', payout_amount: 20000 },
+  // Neighbours Club — 3 completed, 1 active, 2 future
+  { id: 'c-nb-1', group_id: 'g-neighbours', cycle_number: 1, month_label: 'M1 · Jan', status: 'completed', due_date: '2026-01-15', winner_profile_id: 'u-naveen', payout_amount: 18000 },
+  { id: 'c-nb-2', group_id: 'g-neighbours', cycle_number: 2, month_label: 'M2 · Feb', status: 'completed', due_date: '2026-02-15', winner_profile_id: 'u-teja',   payout_amount: 18000 },
+  { id: 'c-nb-3', group_id: 'g-neighbours', cycle_number: 3, month_label: 'M3 · Mar', status: 'completed', due_date: '2026-03-15', winner_profile_id: 'u-arjun',  payout_amount: 18000 },
+  { id: 'c-nb-4', group_id: 'g-neighbours', cycle_number: 4, month_label: 'M4 · Apr', status: 'active',    due_date: '2026-04-15' },
+  { id: 'c-nb-5', group_id: 'g-neighbours', cycle_number: 5, month_label: 'M5 · May', status: 'future',    due_date: '2026-05-15' },
+  { id: 'c-nb-6', group_id: 'g-neighbours', cycle_number: 6, month_label: 'M6 · Jun', status: 'future',    due_date: '2026-06-15' },
 ];
 
 // ── Contributions ──────────────────────────────────────────────────────────

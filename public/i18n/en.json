@@ -489,5 +489,36 @@
       "pending": "Pending",
       "overdue": "Overdue"
     }
+  },
+
+  "lottery": {
+    "heading": "Lottery Draw",
+    "potValue": "Pot Value",
+    "eligibleCount": "Eligible Members",
+    "previousDraws": "Previous Draws",
+    "previousDrawsTitle": "Previous Draws",
+    "eligibleLabel": "Eligible Members",
+    "eligibleSub": "Members who haven't won yet",
+    "noEligible": "All members have won a cycle",
+    "drawPanel": "Draw",
+    "ready": "Ready",
+    "drawing": "Drawing…",
+    "done": "Done",
+    "idleHint": "Click Start Draw to randomly pick the winner for this cycle",
+    "startDraw": "Start Draw",
+    "drawingLabel": "hrs · min · sec",
+    "winnerLabel": "Winner",
+    "confirmRecord": "Confirm & Record",
+    "redraw": "Redraw",
+    "noActiveCycle": "No active cycle",
+    "noActiveCycleSub": "There is no active cycle to draw a winner for.",
+    "noDraws": "No draws yet",
+    "noDrawsSub": "Previous draw results will appear here.",
+    "colCycle": "Cycle #",
+    "colDate": "Draw Date",
+    "colWinner": "Winner",
+    "cycleLabel": "Cycle {{ n }}",
+    "ofTotal": "of {{ total }} cycles",
+    "drawn": "Drawn"
   }
 }

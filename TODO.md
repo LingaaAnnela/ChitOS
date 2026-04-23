@@ -163,7 +163,7 @@
 
 ---
 
-- [ ] **TODO-007** · Effort: High · Deps: TODO-001, TODO-004
+- [x] **TODO-007** · Effort: High · Deps: TODO-001, TODO-004
   **Build console lottery-console sub-route (LotteryConsolePage)**
   Random-draw chit groups require a live lottery UI. `src/app/console/lottery-console/index.ts` is a stub.
   ```

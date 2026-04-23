@@ -262,6 +262,34 @@ export const ConsoleStore = signalStore(
           patchState(store, { error: errMsg(e) });
         }
       },
+
+      async recordLotteryWinner(cycleId: string, profileId: string) {
+        const cycle = store.cycles().find(c => c.id === cycleId);
+        const group = store.selectedGroup();
+        if (!cycle || !group) return;
+        try {
+          const potValue = group.contribution_amount * group.member_count;
+          await db.recordPayout({
+            cycle_id: cycle.id,
+            group_id: cycle.group_id,
+            profile_id: profileId,
+            amount: potValue,
+            payment_date: new Date().toISOString().slice(0, 10),
+            strategy: 'lottery',
+          });
+          patchState(store, {
+            cycles: store.cycles().map(c =>
+              c.id === cycleId
+                ? { ...c, status: 'completed' as const, winner_profile_id: profileId, payout_amount: potValue }
+                : c
+            ),
+          });
+          ui.addToast('Winner recorded!', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
     };
   }),
   withHooks({

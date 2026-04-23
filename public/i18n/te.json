@@ -489,5 +489,36 @@
       "pending": "పెండింగ్",
       "overdue": "గడువు మించింది"
     }
+  },
+
+  "lottery": {
+    "heading": "లాటరీ డ్రా",
+    "potValue": "పాట్ విలువ",
+    "eligibleCount": "అర్హులైన సభ్యులు",
+    "previousDraws": "మునుపటి డ్రాలు",
+    "previousDrawsTitle": "మునుపటి డ్రాలు",
+    "eligibleLabel": "అర్హులైన సభ్యులు",
+    "eligibleSub": "ఇంకా గెలవని సభ్యులు",
+    "noEligible": "అందరూ గెలిచారు",
+    "drawPanel": "డ్రా",
+    "ready": "సిద్ధంగా ఉంది",
+    "drawing": "డ్రా చేస్తున్నారు…",
+    "done": "పూర్తైంది",
+    "idleHint": "ఈ చక్రానికి విజేతను ఎంచుకోవడానికి డ్రా ప్రారంభించు నొక్కండి",
+    "startDraw": "డ్రా ప్రారంభించు",
+    "drawingLabel": "గం · నిమి · సెకు",
+    "winnerLabel": "విజేత",
+    "confirmRecord": "నిర్ధారించి నమోదు చేయండి",
+    "redraw": "మళ్ళీ డ్రా",
+    "noActiveCycle": "క్రియాశీల చక్రం లేదు",
+    "noActiveCycleSub": "విజేతను డ్రా చేయడానికి క్రియాశీల చక్రం లేదు.",
+    "noDraws": "ఇంకా డ్రాలు లేవు",
+    "noDrawsSub": "మునుపటి డ్రా ఫలితాలు ఇక్కడ కనిపిస్తాయి.",
+    "colCycle": "చక్రం #",
+    "colDate": "డ్రా తేదీ",
+    "colWinner": "విజేత",
+    "cycleLabel": "చక్రం {{ n }}",
+    "ofTotal": "{{ total }} చక్రాలలో",
+    "drawn": "డ్రా చేయబడింది"
   }
 }

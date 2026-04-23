@@ -489,5 +489,36 @@
       "pending": "लंबित",
       "overdue": "अतिदेय"
     }
+  },
+
+  "lottery": {
+    "heading": "लॉटरी ड्रा",
+    "potValue": "पॉट मूल्य",
+    "eligibleCount": "पात्र सदस्य",
+    "previousDraws": "पिछले ड्रा",
+    "previousDrawsTitle": "पिछले ड्रा",
+    "eligibleLabel": "पात्र सदस्य",
+    "eligibleSub": "जिन्होंने अभी तक नहीं जीता",
+    "noEligible": "सभी सदस्य जीत चुके हैं",
+    "drawPanel": "ड्रा",
+    "ready": "तैयार",
+    "drawing": "ड्रा हो रहा है…",
+    "done": "पूर्ण",
+    "idleHint": "इस चक्र का विजेता चुनने के लिए ड्रा शुरू करें पर क्लिक करें",
+    "startDraw": "ड्रा शुरू करें",
+    "drawingLabel": "घं · मि · से",
+    "winnerLabel": "विजेता",
+    "confirmRecord": "पुष्टि करें और दर्ज करें",
+    "redraw": "फिर से ड्रा",
+    "noActiveCycle": "कोई सक्रिय चक्र नहीं",
+    "noActiveCycleSub": "विजेता ड्रा करने के लिए कोई सक्रिय चक्र नहीं है।",
+    "noDraws": "अभी तक कोई ड्रा नहीं",
+    "noDrawsSub": "पिछले ड्रा के परिणाम यहाँ दिखेंगे।",
+    "colCycle": "चक्र #",
+    "colDate": "ड्रा तारीख",
+    "colWinner": "विजेता",
+    "cycleLabel": "चक्र {{ n }}",
+    "ofTotal": "{{ total }} चक्रों में से",
+    "drawn": "ड्रा हुआ"
   }
 }

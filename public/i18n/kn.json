@@ -489,5 +489,36 @@
       "pending": "ಬಾಕಿ ಇದೆ",
       "overdue": "ಅವಧಿ ಮೀರಿದೆ"
     }
+  },
+
+  "lottery": {
+    "heading": "ಲಾಟರಿ ಡ್ರಾ",
+    "potValue": "ಪಾಟ್ ಮೌಲ್ಯ",
+    "eligibleCount": "ಅರ್ಹ ಸದಸ್ಯರು",
+    "previousDraws": "ಹಿಂದಿನ ಡ್ರಾಗಳು",
+    "previousDrawsTitle": "ಹಿಂದಿನ ಡ್ರಾಗಳು",
+    "eligibleLabel": "ಅರ್ಹ ಸದಸ್ಯರು",
+    "eligibleSub": "ಇನ್ನೂ ಗೆಲ್ಲದವರು",
+    "noEligible": "ಎಲ್ಲರೂ ಗೆದ್ದಿದ್ದಾರೆ",
+    "drawPanel": "ಡ್ರಾ",
+    "ready": "ಸಿದ್ಧ",
+    "drawing": "ಡ್ರಾ ಆಗುತ್ತಿದೆ…",
+    "done": "ಮುಗಿದಿದೆ",
+    "idleHint": "ಈ ಚಕ್ರದ ವಿಜೇತರನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಡ್ರಾ ಪ್ರಾರಂಭಿಸಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "startDraw": "ಡ್ರಾ ಪ್ರಾರಂಭಿಸಿ",
+    "drawingLabel": "ಗಂ · ನಿ · ಸೆ",
+    "winnerLabel": "ವಿಜೇತ",
+    "confirmRecord": "ದೃಢಪಡಿಸಿ ದಾಖಲಿಸಿ",
+    "redraw": "ಮತ್ತೆ ಡ್ರಾ",
+    "noActiveCycle": "ಸಕ್ರಿಯ ಚಕ್ರ ಇಲ್ಲ",
+    "noActiveCycleSub": "ವಿಜೇತರನ್ನು ಡ್ರಾ ಮಾಡಲು ಸಕ್ರಿಯ ಚಕ್ರ ಇಲ್ಲ.",
+    "noDraws": "ಇನ್ನೂ ಡ್ರಾ ಇಲ್ಲ",
+    "noDrawsSub": "ಹಿಂದಿನ ಡ್ರಾ ಫಲಿತಾಂಶಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+    "colCycle": "ಚಕ್ರ #",
+    "colDate": "ಡ್ರಾ ದಿನಾಂಕ",
+    "colWinner": "ವಿಜೇತ",
+    "cycleLabel": "ಚಕ್ರ {{ n }}",
+    "ofTotal": "{{ total }} ಚಕ್ರಗಳಲ್ಲಿ",
+    "drawn": "ಡ್ರಾ ಮಾಡಲಾಗಿದೆ"
   }
 }
