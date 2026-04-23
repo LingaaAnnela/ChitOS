@@ -11,7 +11,7 @@
 
 ## Priority 0 — Blockers
 
-- [ ] **TODO-001** · Effort: Medium · Deps: none
+- [x] **TODO-001** · Effort: Medium · Deps: none
   **Create i18n JSON translation files for all six languages**
   The Transloco HTTP loader fetches `/assets/i18n/{lang}.json` at runtime. None of these files exist. Every screen that uses `t()` or `transloco` renders blank or throws 404s — the entire app is non-functional without them.
   ```
