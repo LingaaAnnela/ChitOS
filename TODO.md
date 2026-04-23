@@ -91,7 +91,7 @@
 
 ---
 
-- [ ] **TODO-004** · Effort: Low · Deps: none
+- [x] **TODO-004** · Effort: Low · Deps: none
   **Fix core/auth/index.ts — empty export barrel**
   `src/app/core/auth/index.ts` is empty (`export {}`). Any import from `@core/auth` resolves to nothing.
   ```
