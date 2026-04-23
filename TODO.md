@@ -68,7 +68,7 @@
 
 ---
 
-- [ ] **TODO-003** · Effort: Low · Deps: none
+- [x] **TODO-003** · Effort: Low · Deps: none
   **Wire BottomNav into member-app-shell**
   `src/app/shared/bottom-nav/bottom-nav.ts` exists and is fully implemented but has zero usages in any template — it is not rendered anywhere. The mobile shell has no navigation.
   ```

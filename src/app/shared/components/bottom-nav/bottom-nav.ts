@@ -23,6 +23,13 @@ const TABS: NavTab[] = [
   imports: [TranslocoDirective],
   styles: [`
     :host { display: contents; }
+    nav.bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card);
+      border-top: 0.5px solid var(--border);
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 6px 0 10px; z-index: 100;
+    }
     .bn-tab { display: flex; flex-direction: column; align-items: center;
               gap: 2px; cursor: pointer; position: relative; padding: 4px 0; }
     .bn-icon { width: 20px; height: 20px; display: flex; align-items: center;
@@ -32,7 +39,7 @@ const TABS: NavTab[] = [
     .bn-lbl { font-size: 9px; color: var(--t3); }
     .bn-tab.active .bn-lbl { color: var(--green); font-weight: 500; }
     .bn-tab.active .bn-icon svg { stroke: var(--green); }
-    .bn-badge { position: absolute; top: -1px; right: -4px; width: 7px; height: 7px;
+    .bn-badge { position: absolute; top: -1px; right: 22px; width: 7px; height: 7px;
                 border-radius: 50%; background: var(--red); border: 1.5px solid var(--card); }
   `],
   template: `

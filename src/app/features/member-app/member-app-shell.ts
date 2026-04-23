@@ -14,9 +14,10 @@ const TAB_ROUTES: Record<TabId, string> = {
 };
 
 function urlToTab(url: string): TabId {
-  if (url.includes('/auction'))      return 'auction';
+  if (url.includes('/auction'))       return 'auction';
   if (url.includes('/notifications')) return 'approvals';
-  if (url.includes('/profile'))      return 'profile';
+  if (url.includes('/profile'))       return 'profile';
+  if (url.includes('/groups'))        return 'groups';
   return 'home';
 }
 
@@ -26,7 +27,7 @@ function urlToTab(url: string): TabId {
   imports: [RouterOutlet, TopBarComponent, BottomNavComponent],
   styles: [`
     :host { display: flex; flex-direction: column; height: 100vh; background: var(--bg); }
-    .member-content { flex: 1; overflow-y: auto; }
+    .member-content { flex: 1; overflow-y: auto; padding-bottom: 72px; }
   `],
   template: `
     <app-top-bar [showNotif]="true" [showAvatar]="true" />
