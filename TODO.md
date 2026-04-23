@@ -109,7 +109,7 @@
 
 ## Priority 1 — Core Organiser Flows
 
-- [ ] **TODO-005** · Effort: High · Deps: TODO-001, TODO-004
+- [x] **TODO-005** · Effort: High · Deps: TODO-001, TODO-004
   **Build console cycles sub-route (CyclesPage)**
   `src/app/console/cycles/index.ts` is a 1-line stub. Recording which cycle has been paid out is a core organiser workflow.
   ```

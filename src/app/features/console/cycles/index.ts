@@ -1,1 +1,1 @@
-
+export { CyclesPage } from './cycles';

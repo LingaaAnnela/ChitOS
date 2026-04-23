@@ -441,5 +441,24 @@
     "emailTaken": "An account with this email already exists",
     "signingIn": "Signing in…",
     "creatingAccount": "Creating account…"
+  },
+
+  "cycles": {
+    "heading": "Cycles",
+    "colNum": "Cycle #",
+    "colDrawDate": "Draw Date",
+    "colWinner": "Winner",
+    "colPayout": "Payout Amount",
+    "colStatus": "Status",
+    "cycleLabel": "Cycle {{ n }}",
+    "markPaid": "Mark as Paid",
+    "noWinner": "No winner yet",
+    "emptyTitle": "No cycles yet",
+    "emptySub": "Cycles will appear here once the group is active.",
+    "status": {
+      "paid": "Paid",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    }
   }
 }

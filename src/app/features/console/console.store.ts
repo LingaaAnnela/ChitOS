@@ -218,6 +218,31 @@ export const ConsoleStore = signalStore(
         }
       },
 
+      async markCyclePaid(cycleId: string) {
+        const cycle = store.cycles().find(c => c.id === cycleId);
+        const group = store.selectedGroup();
+        if (!cycle || !group) return;
+        try {
+          await db.recordPayout({
+            cycle_id: cycle.id,
+            group_id: cycle.group_id,
+            profile_id: cycle.winner_profile_id ?? '',
+            amount: cycle.payout_amount ?? group.contribution_amount * group.member_count,
+            payment_date: new Date().toISOString().slice(0, 10),
+            strategy: group.strategy,
+          });
+          patchState(store, {
+            cycles: store.cycles().map(c =>
+              c.id === cycleId ? { ...c, status: 'completed' as const } : c
+            ),
+          });
+          ui.addToast('Payout marked as paid', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
+
       async postAnnouncement(groupId: string, text: string) {
         try {
           await db.createAnnouncement(groupId, MOCK_TENANT_ID, text);

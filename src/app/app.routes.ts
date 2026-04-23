@@ -34,6 +34,7 @@ export const routes: Routes = [
       { path: 'groups/import',    loadComponent: () => import('./features/console/import').then(m => m.ImportWizardPage) },
       { path: 'groups/:id/members', loadComponent: () => import('./features/console/members').then(m => m.MemberApprovalsPage) },
       { path: 'groups/:id/auction', loadComponent: () => import('./features/console/auction-console').then(m => m.AuctionConsolePage) },
+      { path: 'groups/:id/cycles', loadComponent: () => import('./features/console/cycles').then(m => m.CyclesPage) },
       { path: 'groups/:id',       loadComponent: () => import('./features/console/group-detail').then(m => m.GroupDetailPage) },
       { path: 'auction',          loadComponent: () => import('./features/console/auction-console').then(m => m.AuctionConsolePage) },
       { path: 'import',           loadComponent: () => import('./features/console/import').then(m => m.ImportWizardPage) },

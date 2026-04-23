@@ -441,5 +441,24 @@
     "proFeature4": "WhatsApp एकीकरण",
     "proFeature5": "PDF रिपोर्ट",
     "proFeature6": "प्राथमिकता समर्थन"
+  },
+
+  "cycles": {
+    "heading": "चक्र",
+    "colNum": "चक्र #",
+    "colDrawDate": "ड्रा तारीख",
+    "colWinner": "विजेता",
+    "colPayout": "भुगतान राशि",
+    "colStatus": "स्थिति",
+    "cycleLabel": "चक्र {{ n }}",
+    "markPaid": "भुगतान दर्ज करें",
+    "noWinner": "अभी कोई विजेता नहीं",
+    "emptyTitle": "कोई चक्र नहीं",
+    "emptySub": "समूह सक्रिय होने के बाद चक्र यहाँ दिखेंगे।",
+    "status": {
+      "paid": "भुगतान हो गया",
+      "pending": "लंबित",
+      "overdue": "अतिदेय"
+    }
   }
 }

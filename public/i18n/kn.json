@@ -441,5 +441,24 @@
     "proFeature4": "WhatsApp ಏಕೀಕರಣ",
     "proFeature5": "PDF ವರದಿಗಳು",
     "proFeature6": "ಆದ್ಯತಾ ಬೆಂಬಲ"
+  },
+
+  "cycles": {
+    "heading": "ಚಕ್ರಗಳು",
+    "colNum": "ಚಕ್ರ #",
+    "colDrawDate": "ಡ್ರಾ ದಿನಾಂಕ",
+    "colWinner": "ವಿಜೇತ",
+    "colPayout": "ಪಾವತಿ ಮೊತ್ತ",
+    "colStatus": "ಸ್ಥಿತಿ",
+    "cycleLabel": "ಚಕ್ರ {{ n }}",
+    "markPaid": "ಪಾವತಿ ದಾಖಲಿಸಿ",
+    "noWinner": "ಇನ್ನೂ ವಿಜೇತರಿಲ್ಲ",
+    "emptyTitle": "ಚಕ್ರಗಳಿಲ್ಲ",
+    "emptySub": "ಗ್ರೂಪ್ ಸಕ್ರಿಯವಾದ ನಂತರ ಚಕ್ರಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+    "status": {
+      "paid": "ಪಾವತಿಸಲಾಗಿದೆ",
+      "pending": "ಬಾಕಿ ಇದೆ",
+      "overdue": "ಅವಧಿ ಮೀರಿದೆ"
+    }
   }
 }

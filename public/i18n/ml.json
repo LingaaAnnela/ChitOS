@@ -441,5 +441,24 @@
     "proFeature4": "WhatsApp ഇന്റഗ്രേഷൻ",
     "proFeature5": "PDF റിപ്പോർട്ടുകൾ",
     "proFeature6": "പ്രിയോറിറ്റി സപ്പോർട്ട്"
+  },
+
+  "cycles": {
+    "heading": "ചക്രങ്ങൾ",
+    "colNum": "ചക്രം #",
+    "colDrawDate": "നറുക്കെടുപ്പ് തീയതി",
+    "colWinner": "വിജയി",
+    "colPayout": "പേഔട്ട് തുക",
+    "colStatus": "നില",
+    "cycleLabel": "ചക്രം {{ n }}",
+    "markPaid": "അടച്ചതായി അടയാളപ്പെടുത്തുക",
+    "noWinner": "ഇനിയും വിജയി ഇല്ല",
+    "emptyTitle": "ചക്രങ്ങൾ ഇല്ല",
+    "emptySub": "ഗ്രൂപ്പ് സജീവമായ ശേഷം ചക്രങ്ങൾ ഇവിടെ കാണിക്കും.",
+    "status": {
+      "paid": "അടച്ചു",
+      "pending": "തീർപ്പാക്കാത്തത്",
+      "overdue": "കാലഹരണപ്പെട്ടത്"
+    }
   }
 }
