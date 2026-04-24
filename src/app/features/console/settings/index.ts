@@ -362,8 +362,8 @@ export class SettingsPage {
   editName  = signal('');
   editPhone = signal('');
 
-  whatsappAlerts = signal(true);
-  emailAlerts    = signal(true);
+  whatsappAlerts = computed(() => this.authStore.notifWhatsapp());
+  emailAlerts    = computed(() => this.authStore.notifEmail());
 
   showDeleteDialog = signal(false);
 
@@ -402,16 +402,12 @@ export class SettingsPage {
   }
 
   toggleWhatsapp() {
-    const val = !this.whatsappAlerts();
-    this.whatsappAlerts.set(val);
-    this.authStore.updateNotifications({ whatsapp: val });
+    this.authStore.updateNotifications({ whatsapp: !this.authStore.notifWhatsapp() });
     this.toast.show(this.transloco.translate('settings.notifSaved'), 'success');
   }
 
   toggleEmail() {
-    const val = !this.emailAlerts();
-    this.emailAlerts.set(val);
-    this.authStore.updateNotifications({ email: val });
+    this.authStore.updateNotifications({ email: !this.authStore.notifEmail() });
     this.toast.show(this.transloco.translate('settings.notifSaved'), 'success');
   }
 
