@@ -11,6 +11,7 @@ export type NotifType      = 'join_request' | 'overdue' | 'auction_open' | 'cont
 export type ActColor       = 'green' | 'blue' | 'amber' | 'red';
 export type TrustLabel     = 'Excellent' | 'Reliable' | 'Good' | 'Fair' | 'Irregular';
 export type AvatarColor    = 'g' | 'b' | 'a' | 'r';
+export type InviteStatus   = 'pending' | 'accepted' | 'expired';
 
 export interface Tenant {
   id: string; name: string; plan: 'free' | 'pro';
@@ -30,6 +31,7 @@ export interface Group {
   total_cycles: number; current_cycle: number;
   member_count: number; max_members: number;
   start_date: string; due_day: number; created_at: string;
+  join_token?: string;
 }
 
 export interface GroupMember {
@@ -83,6 +85,12 @@ export interface ActivityLog {
 export interface Announcement {
   id: string; group_id: string; author_id: string;
   text: string; reactions: number; created_at: string;
+}
+
+export interface Invite {
+  id: string; group_id: string;
+  invitee_name: string; phone: string;
+  invited_at: string; status: InviteStatus;
 }
 
 export interface EnrichedMember extends GroupMember {
@@ -149,6 +157,7 @@ export const MOCK_GROUPS: Group[] = [
     total_cycles: 8, current_cycle: 0,
     member_count: 7, max_members: 8,
     start_date: '2026-06-01', due_day: 1, created_at: '2026-03-01',
+    join_token: 'tok-ghi789jkl',
   },
   {
     id: 'g-family', tenant_id: MOCK_TENANT_ID,
@@ -351,11 +360,20 @@ const INITIAL_CONSENSUS_VOTES: ConsensusVote[] = [
 
 // ── Mutable signal store ───────────────────────────────────────────────────
 
+export const MOCK_INVITES: Invite[] = [
+  { id: 'inv-1', group_id: 'g-office', invitee_name: 'Swathi Reddy',  phone: '+91 85432 10987', invited_at: '2026-04-05', status: 'accepted' },
+  { id: 'inv-2', group_id: 'g-office', invitee_name: 'Rohit Gupta',   phone: '+91 84321 09876', invited_at: '2026-04-08', status: 'pending'  },
+  { id: 'inv-3', group_id: 'g-office', invitee_name: 'Kavitha Nair',  phone: '+91 83210 98765', invited_at: '2026-03-20', status: 'expired'  },
+  { id: 'inv-4', group_id: 'g-friends', invitee_name: 'Arun Kumar',   phone: '+91 82109 87654', invited_at: '2026-01-10', status: 'accepted' },
+];
+
 export const mockStore = {
   contributions:  signal<Contribution[]>([...INITIAL_CONTRIBUTIONS]),
   groupMembers:   signal<GroupMember[]>([...INITIAL_GROUP_MEMBERS]),
   auctionBids:    signal<AuctionBid[]>([...INITIAL_AUCTION_BIDS]),
   consensusVotes: signal<ConsensusVote[]>([...INITIAL_CONSENSUS_VOTES]),
+  invites:        signal<Invite[]>([...MOCK_INVITES]),
+  groups:         signal<Group[]>([...MOCK_GROUPS]),
 };
 
 // ── Helper functions ───────────────────────────────────────────────────────

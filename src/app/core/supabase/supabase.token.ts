@@ -25,6 +25,9 @@ export interface ISupabaseService {
   recordPayout(data: Record<string, unknown>): Promise<any>;
   createAnnouncement(groupId: string, authorId: string, text: string): Promise<void>;
   getConsensusVotes(cycleId: string): Promise<any[]>;
+  getInvites(groupId: string): Promise<any[]>;
+  revokeInvite(inviteId: string): Promise<any>;
+  regenerateInviteToken(groupId: string): Promise<{ join_token: string }>;
 }
 
 export const SUPABASE_SERVICE = new InjectionToken<ISupabaseService>('ISupabaseService');

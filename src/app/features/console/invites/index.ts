@@ -1,1 +1,1 @@
-
+export { InvitesPage } from './invites';

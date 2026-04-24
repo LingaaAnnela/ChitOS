@@ -5,7 +5,7 @@ import {
   MOCK_NOTIFICATIONS, MOCK_ACTIVITY_LOG, MOCK_TENANT,
   MOCK_ANNOUNCEMENTS, MOCK_CURRENT_USER_ID, mockStore,
   enrichedMembers, enrichedContributions,
-  type Contribution, type AuctionBid,
+  type Contribution, type AuctionBid, type Invite,
 } from './seed.data';
 
 
@@ -164,5 +164,24 @@ export class MockSupabaseService implements ISupabaseService {
 
   async getConsensusVotes(cycleId: string) {
     return mockStore.consensusVotes().filter(v => v.cycle_id === cycleId);
+  }
+
+  async getInvites(groupId: string) {
+    return mockStore.invites().filter(i => i.group_id === groupId);
+  }
+
+  async revokeInvite(inviteId: string) {
+    await delay(300);
+    mockStore.invites.update(list => list.filter(i => i.id !== inviteId));
+    return { id: inviteId };
+  }
+
+  async regenerateInviteToken(groupId: string) {
+    await delay(400);
+    const newToken = `tok-${Math.random().toString(36).slice(2, 11)}`;
+    mockStore.groups.update(list =>
+      list.map(g => g.id === groupId ? { ...g, join_token: newToken } : g)
+    );
+    return { join_token: newToken };
   }
 }

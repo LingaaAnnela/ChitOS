@@ -39,6 +39,7 @@ export const routes: Routes = [
       { path: 'groups/:id/lottery',   loadComponent: () => import('./features/console/lottery-console').then(m => m.LotteryConsolePage) },
       { path: 'groups/:id/consensus',     loadComponent: () => import('./features/console/consensus-console').then(m => m.ConsensusConsolePage) },
       { path: 'groups/:id/announcements', loadComponent: () => import('./features/console/announcements').then(m => m.AnnouncementsPage) },
+      { path: 'groups/:id/invites',       loadComponent: () => import('./features/console/invites').then(m => m.InvitesPage) },
       { path: 'groups/:id',               loadComponent: () => import('./features/console/group-detail').then(m => m.GroupDetailPage) },
       { path: 'auction',          loadComponent: () => import('./features/console/auction-console').then(m => m.AuctionConsolePage) },
       { path: 'import',           loadComponent: () => import('./features/console/import').then(m => m.ImportWizardPage) },

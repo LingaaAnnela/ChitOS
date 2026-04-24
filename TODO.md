@@ -242,7 +242,7 @@
 
 ---
 
-- [ ] **TODO-010** · Effort: Medium · Deps: TODO-001
+- [x] **TODO-010** · Effort: Medium · Deps: TODO-001
   **Build console invites sub-route (InvitesPage)**
   `src/app/console/invites/index.ts` is a stub. Organisers invite new members via link or WhatsApp.
   ```

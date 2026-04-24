@@ -7,7 +7,7 @@ import { UIStore } from '@core/stores/ui.store';
 import { MOCK_TENANT_ID } from '@core/mock/seed.data';
 import type {
   Group, GroupMember, Cycle, Contribution, Payout,
-  Announcement, ActivityLog, AuctionBid, ConsensusVote,
+  Announcement, ActivityLog, AuctionBid, ConsensusVote, Invite,
 } from '@core/mock/seed.data';
 
 interface GroupSummary { paidCount: number; overdueCount: number; }
@@ -25,6 +25,7 @@ interface ConsoleState {
   announcements: Announcement[];
   activityLog: ActivityLog[];
   groupSummaries: Record<string, GroupSummary>;
+  invites: Invite[];
   loading: boolean;
   error: string | null;
 }
@@ -44,6 +45,7 @@ export const ConsoleStore = signalStore(
     announcements: [],
     activityLog: [],
     groupSummaries: {},
+    invites: [],
     loading: false,
     error: null,
   }),
@@ -299,6 +301,41 @@ export const ConsoleStore = signalStore(
           patchState(store, { consensusVotes });
         } catch (e: unknown) {
           patchState(store, { error: errMsg(e) });
+        }
+      },
+
+      async loadInvites(groupId: string) {
+        try {
+          const invites = await db.getInvites(groupId) as Invite[];
+          patchState(store, { invites });
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+        }
+      },
+
+      async revokeInvite(inviteId: string) {
+        try {
+          await db.revokeInvite(inviteId);
+          patchState(store, { invites: store.invites().filter(i => i.id !== inviteId) });
+          ui.addToast('Invite revoked', 'info');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
+
+      async regenerateInviteToken(groupId: string) {
+        try {
+          const { join_token } = await db.regenerateInviteToken(groupId);
+          patchState(store, {
+            selectedGroup: store.selectedGroup()
+              ? { ...store.selectedGroup()!, join_token }
+              : null,
+          });
+          ui.addToast('Invite link regenerated', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
         }
       },
 

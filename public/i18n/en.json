@@ -561,5 +561,28 @@
     "emptyTitle": "No announcements yet",
     "emptySub": "Post your first announcement to keep members informed.",
     "resendWhatsapp": "Resend via WhatsApp"
+  },
+
+  "invites": {
+    "heading": "Invites",
+    "linkTitle": "Invite link",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "regenerate": "Regenerate Link",
+    "regenConfirm": "This will invalidate the current link. Anyone with the old link won't be able to join.",
+    "regenYes": "Regenerate",
+    "regenerating": "Regenerating…",
+    "cancel": "Cancel",
+    "linkHint": "Share this link for members to request to join. All requests need your approval.",
+    "tableLabel": "{{ count }} invite(s)",
+    "colName": "Invitee",
+    "colDate": "Invited On",
+    "colStatus": "Status",
+    "status_pending": "Pending",
+    "status_accepted": "Accepted",
+    "status_expired": "Expired",
+    "revoke": "Revoke",
+    "emptyTitle": "No invites yet",
+    "emptySub": "Share your invite link or use WhatsApp to invite members."
   }
 }
