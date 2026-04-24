@@ -1,1 +1,1 @@
-
+export * from './announcements';

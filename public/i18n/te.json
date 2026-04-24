@@ -27,7 +27,6 @@
   "confirmDeletePlaceholder": "నిర్ధారించడానికి DELETE టైప్ చేయండి",
   "freePlan": "ఫ్రీ ప్లాన్",
   "owner": "యజమాని",
-
   "nav": {
     "overview": "అవలోకనం",
     "dashboard": "డాష్‌బోర్డ్",
@@ -40,7 +39,6 @@
     "settings": "సెట్టింగులు",
     "orgPlan": "ఫ్రీ ప్లాన్ · {{ used }} లో {{ max }} గ్రూపులు"
   },
-
   "bottomNav": {
     "home": "హోమ్",
     "groups": "గ్రూపులు",
@@ -48,7 +46,6 @@
     "approvals": "అనుమతులు",
     "profile": "ప్రొఫైల్"
   },
-
   "dashboard": {
     "activeGroups": "యాక్టివ్ గ్రూపులు",
     "totalMembers": "మొత్తం సభ్యులు",
@@ -91,7 +88,6 @@
     "noActivityTitle": "ఇంకా కార్యాచరణ లేదు",
     "noActivitySub": "చర్యలు మరియు ఈవెంట్లు ఇక్కడ కనిపిస్తాయి."
   },
-
   "groupDetail": {
     "notFound": "గ్రూప్ దొరకలేదు",
     "notFoundSub": "ఈ గ్రూప్ తొలగించబడి ఉండవచ్చు.",
@@ -127,7 +123,6 @@
     "cancel": "రద్దు చేయి",
     "post": "పోస్ట్ చేయి"
   },
-
   "approvals": {
     "title": "సభ్య అనుమతులు",
     "requestsWaiting": "{{ count }} అభ్యర్థన(లు) వేచి ఉన్నాయి",
@@ -151,7 +146,6 @@
     "cancel": "రద్దు చేయి",
     "confirmReject": "తిరస్కరణ నిర్ధారించు"
   },
-
   "auction": {
     "title": "వేలం గది",
     "live": "లైవ్",
@@ -186,7 +180,6 @@
     "cancel": "రద్దు చేయి",
     "confirmClose": "మూసివేయడం నిర్ధారించు"
   },
-
   "import": {
     "title": "ఉన్న చిట్ దిగుమతి చేయి",
     "subtitle": "కాగితంపై లేదా WhatsApp లో చిట్ నడుపుతున్నారా? మీ చరిత్రను దిగుమతి చేసి ముందుకు ట్రాక్ చేయండి.",
@@ -228,7 +221,6 @@
     "successSub": "{{ past }} గత పీరియడ్లు నమోదు · {{ members }} సభ్యులు చేర్చారు · {{ date }} నుండి యాక్టివ్.",
     "goToDashboard": "గ్రూప్ డాష్‌బోర్డ్‌కు వెళ్ళు →"
   },
-
   "home": {
     "morning": "శుభోదయం,",
     "afternoon": "శుభ మధ్యాహ్నం,",
@@ -251,7 +243,6 @@
     "contributionDue": "చందా చెల్లించాల్సి ఉంది",
     "auctionOpen": "వేలం తెరిచి ఉంది"
   },
-
   "notif": {
     "title": "నోటిఫికేషన్లు",
     "markAllRead": "అన్నీ చదివినట్టు గుర్తించు",
@@ -265,7 +256,6 @@
     "daysAgo": "రోజుల క్రితం",
     "yesterday": "నిన్న"
   },
-
   "shared": {
     "newTrust": "కొత్తది",
     "timerLabel": "గంటలు · నిమిషాలు · సెకన్లు మూసివేయడానికి",
@@ -285,7 +275,6 @@
     "cancel": "రద్దు చేయి",
     "markPaid": "చెల్లించినట్టు గుర్తించు"
   },
-
   "landing": {
     "navFeatures": "ఫీచర్లు",
     "navHow": "ఎలా పనిచేస్తుంది",
@@ -389,7 +378,6 @@
     "footerChangelog": "మార్పులు",
     "footerCopy": "© 2026 ChitOS · chitos.app"
   },
-
   "auth": {
     "signIn": "సైన్ ఇన్",
     "signUp": "ఖాతా సృష్టించండి",
@@ -417,9 +405,7 @@
     "signingIn": "సైన్ ఇన్ అవుతోంది…",
     "creatingAccount": "ఖాతా సృష్టిస్తోంది…"
   },
-
   "confirm": "నిర్ధారించు",
-
   "settings": {
     "addPhoto": "ఫోటో జోడించు",
     "upgradeBtn": "ప్రో కి అప్‌గ్రేడ్ చేయి",
@@ -442,7 +428,6 @@
     "proFeature5": "PDF నివేదికలు",
     "proFeature6": "ప్రాధాన్య మద్దతు"
   },
-
   "fixed": {
     "heading": "నిర్ణీత క్రమ షెడ్యూల్",
     "colNum": "చక్రం #",
@@ -471,7 +456,6 @@
       "scheduled": "నిర్ణయించబడింది"
     }
   },
-
   "cycles": {
     "heading": "చక్రాలు",
     "colNum": "చక్రం #",
@@ -490,7 +474,6 @@
       "overdue": "గడువు మించింది"
     }
   },
-
   "lottery": {
     "heading": "లాటరీ డ్రా",
     "potValue": "పాట్ విలువ",
@@ -521,7 +504,6 @@
     "ofTotal": "{{ total }} చక్రాలలో",
     "drawn": "డ్రా చేయబడింది"
   },
-
   "consensus": {
     "heading": "సమ్మతి ఓటింగ్",
     "potValue": "పాట్ విలువ",
@@ -548,5 +530,17 @@
     "colVotes": "ఓట్లు",
     "colDate": "ప్రకటించిన తేదీ",
     "declared": "ప్రకటించబడింది"
+  },
+  "announcements": {
+    "heading": "ప్రకటనలు",
+    "composeLabel": "కొత్త ప్రకటన",
+    "composePlaceholder": "మీ గ్రూప్ సభ్యులకు ప్రకటన రాయండి…",
+    "sendViaWA": "WhatsApp ద్వారా పంపండి",
+    "postBtn": "ప్రకటన పోస్ట్ చేయండి",
+    "posting": "పోస్ట్ అవుతోంది…",
+    "feedLabel": "{{ count }} ప్రకటన(లు)",
+    "emptyTitle": "ఇంకా ప్రకటనలు లేవు",
+    "emptySub": "సభ్యులకు తెలియపరచడానికి మొదటి ప్రకటన పోస్ట్ చేయండి.",
+    "resendWhatsapp": "WhatsApp ద్వారా మళ్ళీ పంపండి"
   }
 }

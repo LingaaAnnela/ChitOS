@@ -214,7 +214,7 @@
 
 ---
 
-- [ ] **TODO-009** · Effort: Medium · Deps: TODO-001, TODO-012
+- [x] **TODO-009** · Effort: Medium · Deps: TODO-001, TODO-012
   **Build console announcements sub-route (AnnouncementsPage)**
   `src/app/console/announcements/index.ts` is a stub. Organisers need to post and view group announcements.
   ```

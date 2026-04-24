@@ -548,5 +548,18 @@
     "colVotes": "Votes",
     "colDate": "Declared On",
     "declared": "Declared"
+  },
+
+  "announcements": {
+    "heading": "Announcements",
+    "composeLabel": "New Announcement",
+    "composePlaceholder": "Write an announcement for your group members…",
+    "sendViaWA": "Send via WhatsApp",
+    "postBtn": "Post Announcement",
+    "posting": "Posting…",
+    "feedLabel": "{{ count }} announcement(s)",
+    "emptyTitle": "No announcements yet",
+    "emptySub": "Post your first announcement to keep members informed.",
+    "resendWhatsapp": "Resend via WhatsApp"
   }
 }

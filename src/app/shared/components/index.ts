@@ -12,3 +12,4 @@ export * from './payment-method-modal';
 export * from './language-switcher';
 export * from './confirm-dialog';
 export * from './toast';
+export * from './announcement-card';

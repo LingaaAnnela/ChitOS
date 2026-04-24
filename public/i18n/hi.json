@@ -27,7 +27,6 @@
   "confirmDeletePlaceholder": "पुष्टि के लिए DELETE टाइप करें",
   "freePlan": "फ्री प्लान",
   "owner": "मालिक",
-
   "nav": {
     "overview": "अवलोकन",
     "dashboard": "डैशबोर्ड",
@@ -40,7 +39,6 @@
     "settings": "सेटिंग्स",
     "orgPlan": "फ्री प्लान · {{ used }} में से {{ max }} ग्रुप"
   },
-
   "bottomNav": {
     "home": "होम",
     "groups": "ग्रुप",
@@ -48,7 +46,6 @@
     "approvals": "अनुमोदन",
     "profile": "प्रोफ़ाइल"
   },
-
   "dashboard": {
     "activeGroups": "सक्रिय ग्रुप",
     "totalMembers": "कुल सदस्य",
@@ -91,7 +88,6 @@
     "noActivityTitle": "अभी कोई गतिविधि नहीं",
     "noActivitySub": "क्रियाएं और इवेंट यहाँ दिखेंगे।"
   },
-
   "groupDetail": {
     "notFound": "ग्रुप नहीं मिला",
     "notFoundSub": "यह ग्रुप हटाया जा चुका हो सकता है।",
@@ -127,7 +123,6 @@
     "cancel": "रद्द करें",
     "post": "पोस्ट करें"
   },
-
   "approvals": {
     "title": "सदस्य अनुमोदन",
     "requestsWaiting": "{{ count }} अनुरोध प्रतीक्षा में",
@@ -151,7 +146,6 @@
     "cancel": "रद्द करें",
     "confirmReject": "अस्वीकृति की पुष्टि करें"
   },
-
   "auction": {
     "title": "नीलामी कक्ष",
     "live": "लाइव",
@@ -186,7 +180,6 @@
     "cancel": "रद्द करें",
     "confirmClose": "बंद करने की पुष्टि करें"
   },
-
   "import": {
     "title": "मौजूदा चिट आयात करें",
     "subtitle": "कागज़ या WhatsApp पर चिट चला रहे हैं? अपना इतिहास आयात करें और आगे ट्रैक करें।",
@@ -228,7 +221,6 @@
     "successSub": "{{ past }} पिछली अवधियां दर्ज · {{ members }} सदस्य जोड़े · {{ date }} से सक्रिय।",
     "goToDashboard": "ग्रुप डैशबोर्ड पर जाएं →"
   },
-
   "home": {
     "morning": "सुप्रभात,",
     "afternoon": "शुभ दोपहर,",
@@ -251,7 +243,6 @@
     "contributionDue": "योगदान बकाया है",
     "auctionOpen": "नीलामी खुली है"
   },
-
   "notif": {
     "title": "सूचनाएं",
     "markAllRead": "सभी पढ़े हुए करें",
@@ -265,7 +256,6 @@
     "daysAgo": "दिन पहले",
     "yesterday": "कल"
   },
-
   "shared": {
     "newTrust": "नया",
     "timerLabel": "घंटे · मिनट · सेकंड में बंद होगा",
@@ -285,7 +275,6 @@
     "cancel": "रद्द करें",
     "markPaid": "भुगतान दर्ज करें"
   },
-
   "landing": {
     "navFeatures": "विशेषताएं",
     "navHow": "कैसे काम करता है",
@@ -389,7 +378,6 @@
     "footerChangelog": "बदलाव",
     "footerCopy": "© 2026 ChitOS · chitos.app"
   },
-
   "auth": {
     "signIn": "साइन इन",
     "signUp": "खाता बनाएं",
@@ -417,9 +405,7 @@
     "signingIn": "साइन इन हो रहा है…",
     "creatingAccount": "खाता बन रहा है…"
   },
-
   "confirm": "पुष्टि करें",
-
   "settings": {
     "addPhoto": "फ़ोटो जोड़ें",
     "upgradeBtn": "प्रो में अपग्रेड करें",
@@ -442,7 +428,6 @@
     "proFeature5": "PDF रिपोर्ट",
     "proFeature6": "प्राथमिकता समर्थन"
   },
-
   "fixed": {
     "heading": "निश्चित क्रम अनुसूची",
     "colNum": "चक्र #",
@@ -471,7 +456,6 @@
       "scheduled": "निर्धारित"
     }
   },
-
   "cycles": {
     "heading": "चक्र",
     "colNum": "चक्र #",
@@ -490,7 +474,6 @@
       "overdue": "अतिदेय"
     }
   },
-
   "lottery": {
     "heading": "लॉटरी ड्रा",
     "potValue": "पॉट मूल्य",
@@ -521,7 +504,6 @@
     "ofTotal": "{{ total }} चक्रों में से",
     "drawn": "ड्रा हुआ"
   },
-
   "consensus": {
     "heading": "सहमति मतदान",
     "potValue": "पॉट मूल्य",
@@ -548,5 +530,17 @@
     "colVotes": "वोट",
     "colDate": "घोषणा तिथि",
     "declared": "घोषित"
+  },
+  "announcements": {
+    "heading": "घोषणाएँ",
+    "composeLabel": "नई घोषणा",
+    "composePlaceholder": "अपने ग्रुप के सदस्यों के लिए घोषणा लिखें…",
+    "sendViaWA": "WhatsApp से भेजें",
+    "postBtn": "घोषणा पोस्ट करें",
+    "posting": "पोस्ट हो रहा है…",
+    "feedLabel": "{{ count }} घोषणा(एँ)",
+    "emptyTitle": "अभी कोई घोषणा नहीं",
+    "emptySub": "सदस्यों को अपडेट रखने के लिए पहली घोषणा पोस्ट करें।",
+    "resendWhatsapp": "WhatsApp से दोबारा भेजें"
   }
 }

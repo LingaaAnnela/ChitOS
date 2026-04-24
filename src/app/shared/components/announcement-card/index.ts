@@ -1,1 +1,1 @@
-
+export * from './announcement-card';

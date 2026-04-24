@@ -27,7 +27,6 @@
   "confirmDeletePlaceholder": "ದೃಢೀಕರಿಸಲು DELETE ಟೈಪ್ ಮಾಡಿ",
   "freePlan": "ಉಚಿತ ಪ್ಲಾನ್",
   "owner": "ಮಾಲೀಕ",
-
   "nav": {
     "overview": "ಅವಲೋಕನ",
     "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
@@ -40,7 +39,6 @@
     "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     "orgPlan": "ಉಚಿತ ಪ್ಲಾನ್ · {{ used }} ರಲ್ಲಿ {{ max }} ಗ್ರೂಪ್‌ಗಳು"
   },
-
   "bottomNav": {
     "home": "ಹೋಮ್",
     "groups": "ಗ್ರೂಪ್‌ಗಳು",
@@ -48,7 +46,6 @@
     "approvals": "ಅನುಮೋದನೆಗಳು",
     "profile": "ಪ್ರೊಫೈಲ್"
   },
-
   "dashboard": {
     "activeGroups": "ಸಕ್ರಿಯ ಗ್ರೂಪ್‌ಗಳು",
     "totalMembers": "ಒಟ್ಟು ಸದಸ್ಯರು",
@@ -91,7 +88,6 @@
     "noActivityTitle": "ಇನ್ನು ಚಟುವಟಿಕೆಯಿಲ್ಲ",
     "noActivitySub": "ಕ್ರಿಯೆಗಳು ಮತ್ತು ಘಟನೆಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ."
   },
-
   "groupDetail": {
     "notFound": "ಗ್ರೂಪ್ ಸಿಗಲಿಲ್ಲ",
     "notFoundSub": "ಈ ಗ್ರೂಪ್ ತೆಗೆದು ಹಾಕಲ್ಪಟ್ಟಿರಬಹುದು.",
@@ -127,7 +123,6 @@
     "cancel": "ರದ್ದು ಮಾಡು",
     "post": "ಹಾಕಿ"
   },
-
   "approvals": {
     "title": "ಸದಸ್ಯ ಅನುಮೋದನೆಗಳು",
     "requestsWaiting": "{{ count }} ವಿನಂತಿ(ಗಳು) ಕಾಯುತ್ತಿದೆ",
@@ -151,7 +146,6 @@
     "cancel": "ರದ್ದು ಮಾಡು",
     "confirmReject": "ತಿರಸ್ಕಾರ ದೃಢೀಕರಿಸಿ"
   },
-
   "auction": {
     "title": "ಹರಾಜು ಕೊಠಡಿ",
     "live": "ಲೈವ್",
@@ -186,7 +180,6 @@
     "cancel": "ರದ್ದು ಮಾಡು",
     "confirmClose": "ಮುಚ್ಚುವಿಕೆ ದೃಢೀಕರಿಸಿ"
   },
-
   "import": {
     "title": "ಇರುವ ಚಿಟ್ ಆಮದು ಮಾಡಿ",
     "subtitle": "ಕಾಗದದಲ್ಲಿ ಅಥವಾ WhatsApp ನಲ್ಲಿ ಚಿಟ್ ನಡೆಸುತ್ತಿದ್ದೀರಾ? ಇತಿಹಾಸ ಆಮದು ಮಾಡಿ ಮುಂದೆ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ.",
@@ -228,7 +221,6 @@
     "successSub": "{{ past }} ಹಿಂದಿನ ಅವಧಿಗಳು ದಾಖಲು · {{ members }} ಸದಸ್ಯರು ಸೇರ್ಪಡೆ · {{ date }} ರಿಂದ ಸಕ್ರಿಯ.",
     "goToDashboard": "ಗ್ರೂಪ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗಿ →"
   },
-
   "home": {
     "morning": "ಶುಭೋದಯ,",
     "afternoon": "ಶುಭ ಮಧ್ಯಾಹ್ನ,",
@@ -251,7 +243,6 @@
     "contributionDue": "ಕೊಡುಗೆ ಪಾವತಿಸಬೇಕು",
     "auctionOpen": "ಹರಾಜು ತೆರೆದಿದೆ"
   },
-
   "notif": {
     "title": "ಅಧಿಸೂಚನೆಗಳು",
     "markAllRead": "ಎಲ್ಲ ಓದಿದ್ದಾಗಿ ಗುರುತಿಸಿ",
@@ -265,7 +256,6 @@
     "daysAgo": "ದಿನಗಳ ಹಿಂದೆ",
     "yesterday": "ನಿನ್ನೆ"
   },
-
   "shared": {
     "newTrust": "ಹೊಸ",
     "timerLabel": "ಗಂಟೆ · ನಿಮಿಷ · ಸೆಕೆಂಡ್ ಮುಚ್ಚಲಿದೆ",
@@ -285,7 +275,6 @@
     "cancel": "ರದ್ದು ಮಾಡು",
     "markPaid": "ಪಾವತಿ ದಾಖಲಿಸು"
   },
-
   "landing": {
     "navFeatures": "ವೈಶಿಷ್ಟ್ಯಗಳು",
     "navHow": "ಹೇಗೆ ಕಾರ್ಯ ನಿರ್ವಹಿಸುತ್ತದೆ",
@@ -389,7 +378,6 @@
     "footerChangelog": "ಬದಲಾವಣೆಗಳು",
     "footerCopy": "© 2026 ChitOS · chitos.app"
   },
-
   "auth": {
     "signIn": "ಸೈನ್ ಇನ್",
     "signUp": "ಖಾತೆ ರಚಿಸಿ",
@@ -417,9 +405,7 @@
     "signingIn": "ಸೈನ್ ಇನ್ ಆಗುತ್ತಿದೆ…",
     "creatingAccount": "ಖಾತೆ ರಚಿಸಲಾಗುತ್ತಿದೆ…"
   },
-
   "confirm": "ದೃಢಪಡಿಸು",
-
   "settings": {
     "addPhoto": "ಫೋಟೋ ಸೇರಿಸಿ",
     "upgradeBtn": "Pro ಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ",
@@ -442,7 +428,6 @@
     "proFeature5": "PDF ವರದಿಗಳು",
     "proFeature6": "ಆದ್ಯತಾ ಬೆಂಬಲ"
   },
-
   "fixed": {
     "heading": "ನಿಗದಿತ ಕ್ರಮ ವೇಳಾಪಟ್ಟಿ",
     "colNum": "ಚಕ್ರ #",
@@ -471,7 +456,6 @@
       "scheduled": "ನಿಗದಿತ"
     }
   },
-
   "cycles": {
     "heading": "ಚಕ್ರಗಳು",
     "colNum": "ಚಕ್ರ #",
@@ -490,7 +474,6 @@
       "overdue": "ಅವಧಿ ಮೀರಿದೆ"
     }
   },
-
   "lottery": {
     "heading": "ಲಾಟರಿ ಡ್ರಾ",
     "potValue": "ಪಾಟ್ ಮೌಲ್ಯ",
@@ -521,7 +504,6 @@
     "ofTotal": "{{ total }} ಚಕ್ರಗಳಲ್ಲಿ",
     "drawn": "ಡ್ರಾ ಮಾಡಲಾಗಿದೆ"
   },
-
   "consensus": {
     "heading": "ಸಮ್ಮತಿ ಮತದಾನ",
     "potValue": "ಪಾಟ್ ಮೌಲ್ಯ",
@@ -548,5 +530,17 @@
     "colVotes": "ಮತಗಳು",
     "colDate": "ಘೋಷಣೆ ದಿನಾಂಕ",
     "declared": "ಘೋಷಿಸಲಾಗಿದೆ"
+  },
+  "announcements": {
+    "heading": "ಪ್ರಕಟಣೆಗಳು",
+    "composeLabel": "ಹೊಸ ಪ್ರಕಟಣೆ",
+    "composePlaceholder": "ನಿಮ್ಮ ಗ್ರೂಪ್ ಸದಸ್ಯರಿಗೆ ಪ್ರಕಟಣೆ ಬರೆಯಿರಿ…",
+    "sendViaWA": "WhatsApp ಮೂಲಕ ಕಳುಹಿಸಿ",
+    "postBtn": "ಪ್ರಕಟಣೆ ಪೋಸ್ಟ್ ಮಾಡಿ",
+    "posting": "ಪೋಸ್ಟ್ ಆಗುತ್ತಿದೆ…",
+    "feedLabel": "{{ count }} ಪ್ರಕಟಣೆ(ಗಳು)",
+    "emptyTitle": "ಇನ್ನೂ ಪ್ರಕಟಣೆಗಳಿಲ್ಲ",
+    "emptySub": "ಸದಸ್ಯರಿಗೆ ತಿಳಿಸಲು ಮೊದಲ ಪ್ರಕಟಣೆ ಪೋಸ್ಟ್ ಮಾಡಿ.",
+    "resendWhatsapp": "WhatsApp ಮೂಲಕ ಮತ್ತೆ ಕಳುಹಿಸಿ"
   }
 }
