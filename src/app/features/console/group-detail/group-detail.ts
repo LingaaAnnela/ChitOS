@@ -3,11 +3,11 @@ import { TitleCasePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConsoleStore } from '../console.store';
-import { InterestService } from '@core/services/interest.service';
 import { IndianCurrencyPipe, RelativeTimePipe } from '@shared/pipes';
 import {
   SkeletonLoaderComponent, EmptyStateComponent,
   PaymentMethodModalComponent, TrustScorePillComponent,
+  InterestCalculatorComponent,
 } from '@shared/components';
 import type { EnrichedMember, EnrichedContribution, Contribution, Cycle, Group } from '@core/mock/seed.data';
 import type { PaymentData } from '@shared/components/payment-method-modal/payment-method-modal';
@@ -20,7 +20,7 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
   imports: [
     TitleCasePipe, DecimalPipe, IndianCurrencyPipe, RelativeTimePipe, TranslocoDirective,
     SkeletonLoaderComponent, EmptyStateComponent,
-    PaymentMethodModalComponent, TrustScorePillComponent,
+    PaymentMethodModalComponent, TrustScorePillComponent, InterestCalculatorComponent,
   ],
   styles: [`
     :host { display: flex; flex-direction: column; padding: 20px; gap: 16px; }
@@ -302,17 +302,10 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
           <div class="card-head">
             <span class="card-title">{{ t('groupDetail.interestCalc') }}</span>
           </div>
-          <div class="int-rows">
-            @for (row of interestRows(); track row.position) {
-              <div class="int-row">
-                <div>
-                  <div class="int-label">{{ row.label }}</div>
-                  <div class="int-pos">{{ t('groupDetail.position', { n: row.position }) }}</div>
-                </div>
-                <div class="int-amt {{ row.color }}">{{ row.amount | indianCurrency }}</div>
-              </div>
-            }
-          </div>
+          <app-interest-calculator
+            [principal]="g.contribution_amount"
+            [annualRate]="12"
+            [durationMonths]="g.member_count" />
         </div>
 
       </div>
@@ -346,9 +339,8 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
   `,
 })
 export class GroupDetailPage {
-  store    = inject(ConsoleStore);
-  private router   = inject(Router);
-  private interest = inject(InterestService);
+  store          = inject(ConsoleStore);
+  private router = inject(Router);
 
   // Store signals
   group         = this.store.selectedGroup;
@@ -383,15 +375,6 @@ export class GroupDetailPage {
   );
   activeCycle     = computed(() => this.store.cycles().find(c => c.status === 'active') ?? null);
   recentAnnouncements = computed(() => this.store.announcements().slice(0, 3));
-  interestRows    = computed(() => {
-    const g = this.group(); if (!g) return [];
-    const n = g.member_count; const base = g.contribution_amount;
-    return [
-      { label: 'Early taker',    position: 1,             amount: this.interest.calculateAdjustedContribution(1, n, base),  color: 'r' },
-      { label: 'Base',           position: Math.ceil(n/2), amount: base,                                                    color: '' },
-      { label: 'Patient waiter', position: n,              amount: this.interest.calculateAdjustedContribution(n, n, base), color: 'g' },
-    ];
-  });
 
   constructor() {
     const id = inject(ActivatedRoute).snapshot.paramMap.get('id')!;

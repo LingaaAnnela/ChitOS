@@ -320,7 +320,7 @@
 
 ---
 
-- [ ] **TODO-013** · Effort: Medium · Deps: none
+- [x] **TODO-013** · Effort: Medium · Deps: none
   **Build InterestCalculator shared component**
   `src/app/shared/interest-calculator/index.ts` is empty. The group-detail page has an interest calculator accordion that currently renders nothing.
   ```

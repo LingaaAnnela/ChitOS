@@ -13,3 +13,4 @@ export * from './language-switcher';
 export * from './confirm-dialog';
 export * from './toast';
 export * from './announcement-card';
+export * from './interest-calculator';
