@@ -189,7 +189,7 @@
 
 ---
 
-- [ ] **TODO-008** · Effort: High · Deps: TODO-001, TODO-004
+- [x] **TODO-008** · Effort: High · Deps: TODO-001, TODO-004
   **Build console consensus-console sub-route (ConsensusConsolePage)**
   Consensus groups require member voting on who wins each cycle. `src/app/console/consensus-console/index.ts` is a stub.
   ```

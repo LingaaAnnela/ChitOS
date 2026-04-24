@@ -520,5 +520,33 @@
     "cycleLabel": "ചക്രം {{ n }}",
     "ofTotal": "{{ total }} ചക്രങ്ങളിൽ",
     "drawn": "നറുക്കെടുത്തു"
+  },
+
+  "consensus": {
+    "heading": "സമ്മതി വോട്ടെടുപ്പ്",
+    "potValue": "പോട്ട് മൂല്യം",
+    "votesCast": "ഇട്ട വോട്ടുകൾ",
+    "pastRounds": "കഴിഞ്ഞ റൗണ്ടുകൾ",
+    "pastRoundsTitle": "കഴിഞ്ഞ റൗണ്ടുകൾ",
+    "cycleLabel": "ചക്രം {{ n }}",
+    "ofMembers": "{{ total }} അംഗങ്ങളിൽ",
+    "ofTotal": "{{ total }} ചക്രങ്ങളിൽ",
+    "activeRound": "സജീവ വോട്ട് · ചക്രം {{ n }}",
+    "closes": "അവസാന തീയതി",
+    "quorumMet": "കോറം പൂർത്തി",
+    "quorumNeeded": "{{ n }} വോട്ട്(കൾ) ആവശ്യം",
+    "quorumProgress": "വോട്ടിട്ട അംഗങ്ങൾ",
+    "leading": "മുന്നിൽ",
+    "closeVoting": "വോട്ടെടുപ്പ് അവസാനിപ്പിച്ച് വിജയി പ്രഖ്യാപിക്കുക",
+    "quorumNote": "കോറത്തിന് {{ n }} വോട്ട്(കൾ) ആവശ്യം ({{ total }} ആവശ്യം)",
+    "noActiveCycle": "സജീവ വോട്ടെടുപ്പ് ഇല്ല",
+    "noActiveCycleSub": "വോട്ടിടാൻ സജീവ ചക്രം ഇല്ല.",
+    "noRounds": "കഴിഞ്ഞ റൗണ്ടുകൾ ഇല്ല",
+    "noRoundsSub": "പൂർത്തിയായ റൗണ്ടുകൾ ഇവിടെ കാണാം.",
+    "colCycle": "ചക്രം #",
+    "colWinner": "വിജയി",
+    "colVotes": "വോട്ടുകൾ",
+    "colDate": "പ്രഖ്യാപന തീയതി",
+    "declared": "പ്രഖ്യാപിച്ചു"
   }
 }

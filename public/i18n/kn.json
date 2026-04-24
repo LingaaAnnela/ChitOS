@@ -520,5 +520,33 @@
     "cycleLabel": "ಚಕ್ರ {{ n }}",
     "ofTotal": "{{ total }} ಚಕ್ರಗಳಲ್ಲಿ",
     "drawn": "ಡ್ರಾ ಮಾಡಲಾಗಿದೆ"
+  },
+
+  "consensus": {
+    "heading": "ಸಮ್ಮತಿ ಮತದಾನ",
+    "potValue": "ಪಾಟ್ ಮೌಲ್ಯ",
+    "votesCast": "ಹಾಕಿದ ಮತಗಳು",
+    "pastRounds": "ಹಿಂದಿನ ಸುತ್ತುಗಳು",
+    "pastRoundsTitle": "ಹಿಂದಿನ ಸುತ್ತುಗಳು",
+    "cycleLabel": "ಚಕ್ರ {{ n }}",
+    "ofMembers": "{{ total }} ಸದಸ್ಯರಲ್ಲಿ",
+    "ofTotal": "{{ total }} ಚಕ್ರಗಳಲ್ಲಿ",
+    "activeRound": "ಸಕ್ರಿಯ ಮತ · ಚಕ್ರ {{ n }}",
+    "closes": "ಮುಕ್ತಾಯ",
+    "quorumMet": "ಕೋರಂ ಪೂರ್ಣ",
+    "quorumNeeded": "{{ n }} ಮತ(ಗಳು) ಅಗತ್ಯ",
+    "quorumProgress": "ಮತ ಹಾಕಿದ ಸದಸ್ಯರು",
+    "leading": "ಮುಂದಿದೆ",
+    "closeVoting": "ಮತದಾನ ಮುಚ್ಚಿ ವಿಜೇತರನ್ನು ಘೋಷಿಸಿ",
+    "quorumNote": "ಕೋರಂಗೆ {{ n }} ಮತ(ಗಳು) ಅಗತ್ಯ ({{ total }} ಅಗತ್ಯ)",
+    "noActiveCycle": "ಸಕ್ರಿಯ ಮತದಾನ ಇಲ್ಲ",
+    "noActiveCycleSub": "ಮತ ಹಾಕಲು ಸಕ್ರಿಯ ಚಕ್ರ ಇಲ್ಲ.",
+    "noRounds": "ಹಿಂದಿನ ಸುತ್ತುಗಳಿಲ್ಲ",
+    "noRoundsSub": "ಪೂರ್ಣಗೊಂಡ ಸುತ್ತುಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+    "colCycle": "ಚಕ್ರ #",
+    "colWinner": "ವಿಜೇತ",
+    "colVotes": "ಮತಗಳು",
+    "colDate": "ಘೋಷಣೆ ದಿನಾಂಕ",
+    "declared": "ಘೋಷಿಸಲಾಗಿದೆ"
   }
 }

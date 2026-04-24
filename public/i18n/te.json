@@ -520,5 +520,33 @@
     "cycleLabel": "చక్రం {{ n }}",
     "ofTotal": "{{ total }} చక్రాలలో",
     "drawn": "డ్రా చేయబడింది"
+  },
+
+  "consensus": {
+    "heading": "సమ్మతి ఓటింగ్",
+    "potValue": "పాట్ విలువ",
+    "votesCast": "వేసిన ఓట్లు",
+    "pastRounds": "గత రౌండ్లు",
+    "pastRoundsTitle": "గత రౌండ్లు",
+    "cycleLabel": "చక్రం {{ n }}",
+    "ofMembers": "{{ total }} సభ్యులలో",
+    "ofTotal": "{{ total }} చక్రాలలో",
+    "activeRound": "చురుకైన ఓటు · చక్రం {{ n }}",
+    "closes": "మూసివేత",
+    "quorumMet": "కోరం పూర్తయింది",
+    "quorumNeeded": "మరో {{ n }} ఓటు(లు) అవసరం",
+    "quorumProgress": "ఓటు వేసిన సభ్యులు",
+    "leading": "ముందు",
+    "closeVoting": "ఓటింగ్ మూసివేసి విజేతను ప్రకటించండి",
+    "quorumNote": "కోరం చేరడానికి మరో {{ n }} ఓటు(లు) అవసరం ({{ total }} అవసరం)",
+    "noActiveCycle": "చురుకైన ఓటింగ్ రౌండ్ లేదు",
+    "noActiveCycleSub": "ఓటింగ్‌కు చురుకైన చక్రం లేదు.",
+    "noRounds": "గత రౌండ్లు లేవు",
+    "noRoundsSub": "పూర్తయిన రౌండ్లు ఇక్కడ కనిపిస్తాయి.",
+    "colCycle": "చక్రం #",
+    "colWinner": "విజేత",
+    "colVotes": "ఓట్లు",
+    "colDate": "ప్రకటించిన తేదీ",
+    "declared": "ప్రకటించబడింది"
   }
 }

@@ -520,5 +520,33 @@
     "cycleLabel": "Cycle {{ n }}",
     "ofTotal": "of {{ total }} cycles",
     "drawn": "Drawn"
+  },
+
+  "consensus": {
+    "heading": "Consensus Voting",
+    "potValue": "Pot Value",
+    "votesCast": "Votes Cast",
+    "pastRounds": "Past Rounds",
+    "pastRoundsTitle": "Past Rounds",
+    "cycleLabel": "Cycle {{ n }}",
+    "ofMembers": "of {{ total }} members",
+    "ofTotal": "of {{ total }} cycles",
+    "activeRound": "Active Vote · Cycle {{ n }}",
+    "closes": "Closes",
+    "quorumMet": "Quorum met",
+    "quorumNeeded": "{{ n }} more vote(s) needed",
+    "quorumProgress": "Members voted",
+    "leading": "Leading",
+    "closeVoting": "Close Voting & Declare Winner",
+    "quorumNote": "Need {{ n }} more vote(s) to reach quorum ({{ total }} of {{ total }} required)",
+    "noActiveCycle": "No active voting round",
+    "noActiveCycleSub": "There is no active cycle to vote on.",
+    "noRounds": "No past rounds",
+    "noRoundsSub": "Completed rounds will appear here.",
+    "colCycle": "Cycle #",
+    "colWinner": "Winner",
+    "colVotes": "Votes",
+    "colDate": "Declared On",
+    "declared": "Declared"
   }
 }

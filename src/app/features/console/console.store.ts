@@ -7,7 +7,7 @@ import { UIStore } from '@core/stores/ui.store';
 import { MOCK_TENANT_ID } from '@core/mock/seed.data';
 import type {
   Group, GroupMember, Cycle, Contribution, Payout,
-  Announcement, ActivityLog, AuctionBid,
+  Announcement, ActivityLog, AuctionBid, ConsensusVote,
 } from '@core/mock/seed.data';
 
 interface GroupSummary { paidCount: number; overdueCount: number; }
@@ -20,6 +20,7 @@ interface ConsoleState {
   contributions: Contribution[];
   payouts: Payout[];
   auctionBids: AuctionBid[];
+  consensusVotes: ConsensusVote[];
   pendingApprovals: GroupMember[];
   announcements: Announcement[];
   activityLog: ActivityLog[];
@@ -38,6 +39,7 @@ export const ConsoleStore = signalStore(
     contributions: [],
     payouts: [],
     auctionBids: [],
+    consensusVotes: [],
     pendingApprovals: [],
     announcements: [],
     activityLog: [],
@@ -285,6 +287,44 @@ export const ConsoleStore = signalStore(
             ),
           });
           ui.addToast('Winner recorded!', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
+
+      async loadConsensusVotes(cycleId: string) {
+        try {
+          const consensusVotes = await db.getConsensusVotes(cycleId) as ConsensusVote[];
+          patchState(store, { consensusVotes });
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+        }
+      },
+
+      async recordConsensusWinner(cycleId: string, profileId: string) {
+        const cycle = store.cycles().find(c => c.id === cycleId);
+        const group = store.selectedGroup();
+        if (!cycle || !group) return;
+        try {
+          const potValue = group.contribution_amount * group.member_count;
+          await db.recordPayout({
+            cycle_id: cycle.id,
+            group_id: cycle.group_id,
+            profile_id: profileId,
+            amount: potValue,
+            payment_date: new Date().toISOString().slice(0, 10),
+            strategy: 'consensus',
+          });
+          patchState(store, {
+            cycles: store.cycles().map(c =>
+              c.id === cycleId
+                ? { ...c, status: 'completed' as const, winner_profile_id: profileId, payout_amount: potValue }
+                : c
+            ),
+            consensusVotes: [],
+          });
+          ui.addToast('Winner declared!', 'success');
         } catch (e: unknown) {
           patchState(store, { error: errMsg(e) });
           ui.addToast(errMsg(e), 'error');

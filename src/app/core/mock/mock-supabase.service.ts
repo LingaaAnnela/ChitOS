@@ -8,6 +8,7 @@ import {
   type Contribution, type AuctionBid,
 } from './seed.data';
 
+
 const delay = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
 @Injectable({ providedIn: 'root' })
@@ -159,5 +160,9 @@ export class MockSupabaseService implements ISupabaseService {
       id: `ann-${Date.now()}`, group_id: groupId, author_id: authorId,
       text, reactions: 0, created_at: new Date().toISOString(),
     });
+  }
+
+  async getConsensusVotes(cycleId: string) {
+    return mockStore.consensusVotes().filter(v => v.cycle_id === cycleId);
   }
 }

@@ -24,6 +24,7 @@ export interface ISupabaseService {
   closeAuction(cycleId: string, winnerId: string): Promise<any>;
   recordPayout(data: Record<string, unknown>): Promise<any>;
   createAnnouncement(groupId: string, authorId: string, text: string): Promise<void>;
+  getConsensusVotes(cycleId: string): Promise<any[]>;
 }
 
 export const SUPABASE_SERVICE = new InjectionToken<ISupabaseService>('ISupabaseService');

@@ -477,6 +477,14 @@ export class GroupDetailPage {
   }
 
   openAuction(): void {
-    this.router.navigate(['/console/auction']);
+    const g = this.group();
+    if (!g) return;
+    const dest: Record<string, string[]> = {
+      auction:   ['/console/auction'],
+      lottery:   ['/console/groups', g.id, 'lottery'],
+      fixed:     ['/console/groups', g.id, 'fixed'],
+      consensus: ['/console/groups', g.id, 'consensus'],
+    };
+    this.router.navigate(dest[g.strategy] ?? ['/console/auction']);
   }
 }

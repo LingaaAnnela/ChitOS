@@ -520,5 +520,33 @@
     "cycleLabel": "चक्र {{ n }}",
     "ofTotal": "{{ total }} चक्रों में से",
     "drawn": "ड्रा हुआ"
+  },
+
+  "consensus": {
+    "heading": "सहमति मतदान",
+    "potValue": "पॉट मूल्य",
+    "votesCast": "डाले गए वोट",
+    "pastRounds": "पिछले दौर",
+    "pastRoundsTitle": "पिछले दौर",
+    "cycleLabel": "चक्र {{ n }}",
+    "ofMembers": "{{ total }} सदस्यों में से",
+    "ofTotal": "{{ total }} चक्रों में से",
+    "activeRound": "सक्रिय मतदान · चक्र {{ n }}",
+    "closes": "बंद होता है",
+    "quorumMet": "कोरम पूरा हुआ",
+    "quorumNeeded": "{{ n }} और वोट आवश्यक",
+    "quorumProgress": "मतदान करने वाले सदस्य",
+    "leading": "आगे",
+    "closeVoting": "मतदान बंद करें और विजेता घोषित करें",
+    "quorumNote": "कोरम के लिए {{ n }} और वोट आवश्यक ({{ total }} आवश्यक)",
+    "noActiveCycle": "कोई सक्रिय मतदान नहीं",
+    "noActiveCycleSub": "मतदान के लिए कोई सक्रिय चक्र नहीं है।",
+    "noRounds": "कोई पिछला दौर नहीं",
+    "noRoundsSub": "पूर्ण हुए दौर यहाँ दिखेंगे।",
+    "colCycle": "चक्र #",
+    "colWinner": "विजेता",
+    "colVotes": "वोट",
+    "colDate": "घोषणा तिथि",
+    "declared": "घोषित"
   }
 }

@@ -63,6 +63,12 @@ export interface AuctionBid {
   submitted_at: string; is_winner: boolean;
 }
 
+export interface ConsensusVote {
+  id: string; cycle_id: string; group_id: string;
+  voter_profile_id: string; candidate_profile_id: string;
+  voted_at: string;
+}
+
 export interface Notification {
   id: string; user_id: string; type: NotifType;
   title: string; message: string; read: boolean;
@@ -97,8 +103,8 @@ export const ACTIVE_CYCLE_ID      = 'c-fc-4';
 // ── Tenant ─────────────────────────────────────────────────────────────────
 
 export const MOCK_TENANT: Tenant = {
-  id: MOCK_TENANT_ID, name: "Ravi's Circles", plan: 'free',
-  group_count: 3, max_groups: 4,
+  id: MOCK_TENANT_ID, name: "Ravi's Circles", plan: 'pro',
+  group_count: 5, max_groups: 6,
 };
 
 // ── Profiles ───────────────────────────────────────────────────────────────
@@ -160,6 +166,14 @@ export const MOCK_GROUPS: Group[] = [
     member_count: 6, max_members: 6,
     start_date: '2026-01-01', due_day: 15, created_at: '2025-12-15',
   },
+  {
+    id: 'g-community', tenant_id: MOCK_TENANT_ID,
+    name: 'Community Fund', strategy: 'consensus', status: 'active',
+    contribution_amount: 2000, frequency: 'monthly',
+    total_cycles: 4, current_cycle: 2,
+    member_count: 6, max_members: 6,
+    start_date: '2026-03-01', due_day: 30, created_at: '2026-02-01',
+  },
 ];
 
 // ── Group Members ──────────────────────────────────────────────────────────
@@ -196,6 +210,13 @@ const INITIAL_GROUP_MEMBERS: GroupMember[] = [
   { id: 'gm-nb-4', group_id: 'g-neighbours', profile_id: 'u-sindhu', approval_status: 'approved', role: 'member', joined_at: '2025-12-18' },
   { id: 'gm-nb-5', group_id: 'g-neighbours', profile_id: 'u-arjun',  approval_status: 'approved', role: 'member', joined_at: '2025-12-19' },
   { id: 'gm-nb-6', group_id: 'g-neighbours', profile_id: 'u-radha',  approval_status: 'approved', role: 'member', joined_at: '2025-12-20' },
+  // Community Fund — 6 approved
+  { id: 'gm-cm-1', group_id: 'g-community', profile_id: 'u-ravi',    approval_status: 'approved', role: 'owner',  joined_at: '2026-02-01' },
+  { id: 'gm-cm-2', group_id: 'g-community', profile_id: 'u-kiran',   approval_status: 'approved', role: 'member', joined_at: '2026-02-05' },
+  { id: 'gm-cm-3', group_id: 'g-community', profile_id: 'u-sravani', approval_status: 'approved', role: 'member', joined_at: '2026-02-06' },
+  { id: 'gm-cm-4', group_id: 'g-community', profile_id: 'u-mahesh',  approval_status: 'approved', role: 'member', joined_at: '2026-02-07' },
+  { id: 'gm-cm-5', group_id: 'g-community', profile_id: 'u-lakshmi', approval_status: 'approved', role: 'member', joined_at: '2026-02-08' },
+  { id: 'gm-cm-6', group_id: 'g-community', profile_id: 'u-naveen',  approval_status: 'approved', role: 'member', joined_at: '2026-02-09' },
 ];
 
 // ── Cycles ─────────────────────────────────────────────────────────────────
@@ -224,6 +245,11 @@ export const MOCK_CYCLES: Cycle[] = [
   { id: 'c-nb-4', group_id: 'g-neighbours', cycle_number: 4, month_label: 'M4 · Apr', status: 'active',    due_date: '2026-04-15' },
   { id: 'c-nb-5', group_id: 'g-neighbours', cycle_number: 5, month_label: 'M5 · May', status: 'future',    due_date: '2026-05-15' },
   { id: 'c-nb-6', group_id: 'g-neighbours', cycle_number: 6, month_label: 'M6 · Jun', status: 'future',    due_date: '2026-06-15' },
+  // Community Fund — 1 completed, 1 active, 2 future
+  { id: 'c-cm-1', group_id: 'g-community', cycle_number: 1, month_label: 'M1 · Mar', status: 'completed', due_date: '2026-03-30', winner_profile_id: 'u-kiran',   payout_amount: 12000 },
+  { id: 'c-cm-2', group_id: 'g-community', cycle_number: 2, month_label: 'M2 · Apr', status: 'active',    due_date: '2026-04-30' },
+  { id: 'c-cm-3', group_id: 'g-community', cycle_number: 3, month_label: 'M3 · May', status: 'future',    due_date: '2026-05-30' },
+  { id: 'c-cm-4', group_id: 'g-community', cycle_number: 4, month_label: 'M4 · Jun', status: 'future',    due_date: '2026-06-30' },
 ];
 
 // ── Contributions ──────────────────────────────────────────────────────────
@@ -313,12 +339,23 @@ export const MOCK_ANNOUNCEMENTS: Announcement[] = [
   { id: 'ann-3', group_id: 'g-friends', author_id: 'u-ravi', text: "Congratulations to Anita for winning last month's ₹9,200 pot!",              reactions: 8, created_at: '2026-03-28T09:00:00' },
 ];
 
+// ── Consensus Votes ────────────────────────────────────────────────────────
+
+const INITIAL_CONSENSUS_VOTES: ConsensusVote[] = [
+  // Community Fund Cycle 2 — 4 of 6 members have voted
+  { id: 'cv-cm2-1', cycle_id: 'c-cm-2', group_id: 'g-community', voter_profile_id: 'u-ravi',    candidate_profile_id: 'u-sravani', voted_at: '2026-04-22T09:00:00' },
+  { id: 'cv-cm2-2', cycle_id: 'c-cm-2', group_id: 'g-community', voter_profile_id: 'u-kiran',   candidate_profile_id: 'u-sravani', voted_at: '2026-04-22T10:30:00' },
+  { id: 'cv-cm2-3', cycle_id: 'c-cm-2', group_id: 'g-community', voter_profile_id: 'u-sravani', candidate_profile_id: 'u-naveen',  voted_at: '2026-04-23T08:00:00' },
+  { id: 'cv-cm2-4', cycle_id: 'c-cm-2', group_id: 'g-community', voter_profile_id: 'u-mahesh',  candidate_profile_id: 'u-lakshmi', voted_at: '2026-04-23T11:15:00' },
+];
+
 // ── Mutable signal store ───────────────────────────────────────────────────
 
 export const mockStore = {
-  contributions: signal<Contribution[]>([...INITIAL_CONTRIBUTIONS]),
-  groupMembers:  signal<GroupMember[]>([...INITIAL_GROUP_MEMBERS]),
-  auctionBids:   signal<AuctionBid[]>([...INITIAL_AUCTION_BIDS]),
+  contributions:  signal<Contribution[]>([...INITIAL_CONTRIBUTIONS]),
+  groupMembers:   signal<GroupMember[]>([...INITIAL_GROUP_MEMBERS]),
+  auctionBids:    signal<AuctionBid[]>([...INITIAL_AUCTION_BIDS]),
+  consensusVotes: signal<ConsensusVote[]>([...INITIAL_CONSENSUS_VOTES]),
 };
 
 // ── Helper functions ───────────────────────────────────────────────────────
