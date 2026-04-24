@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { RelativeTimePipe } from '@shared/pipes';
 import { IndianDatePipe } from '@shared/pipes';
@@ -11,8 +11,10 @@ import { IndianDatePipe } from '@shared/pipes';
     :host { display: block; }
 
     .card {
-      background: var(--card); border: 0.5px solid var(--b);
-      border-radius: var(--r); padding: 14px;
+      background: var(--card);
+      border: 0.5px solid var(--b);
+      border-radius: var(--r);
+      padding: 14px;
     }
 
     .card-header {
@@ -25,8 +27,9 @@ import { IndianDatePipe } from '@shared/pipes';
     .av {
       width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 500;
+      font-size: 10px; font-weight: 500; overflow: hidden;
     }
+    .av img { width: 100%; height: 100%; object-fit: cover; }
     .av-g { background: var(--gbg); color: var(--green); border: 0.5px solid var(--gb); }
     .av-b { background: var(--bbg); color: var(--blue);  border: 0.5px solid var(--bb); }
     .av-a { background: var(--abg); color: var(--amber); border: 0.5px solid var(--ab); }
@@ -36,7 +39,7 @@ import { IndianDatePipe } from '@shared/pipes';
     .author-name { font-size: 13px; font-weight: 500; color: var(--t1); }
     .timestamp   { font-size: 11px; color: var(--t3); cursor: default; }
 
-    .body-text { font-size: 13px; color: var(--t1); line-height: 1.55; }
+    .body-text { font-size: 13px; color: var(--t1); line-height: 1.55; margin: 0; }
 
     .resend-btn {
       display: inline-flex; align-items: center; justify-content: center;
@@ -51,11 +54,16 @@ import { IndianDatePipe } from '@shared/pipes';
       <div class="card">
         <div class="card-header">
           <div class="author-row">
-            <div [class]="'av av-' + authorAvatarColor()">{{ authorInitials() }}</div>
+            <div [class]="'av ' + avatarColorClass()">
+              @if (authorAvatar()) {
+                <img [src]="authorAvatar()" [alt]="authorName()" />
+              } @else {
+                {{ initials() }}
+              }
+            </div>
             <div class="author-info">
               <span class="author-name">{{ authorName() }}</span>
-              <span class="timestamp"
-                    [title]="timestamp() | indianDate">
+              <span class="timestamp" [title]="timestamp() | indianDate">
                 {{ timestamp() | relativeTime }}
               </span>
             </div>
@@ -81,11 +89,24 @@ import { IndianDatePipe } from '@shared/pipes';
   `,
 })
 export class AnnouncementCardComponent {
-  authorName        = input.required<string>();
-  authorInitials    = input.required<string>();
-  authorAvatarColor = input<string>('g');
-  timestamp         = input.required<string>();
-  body              = input.required<string>();
-  showResend        = input<boolean>(false);
-  resend            = output<string>();
+  authorName   = input.required<string>();
+  authorAvatar = input<string>('');
+  timestamp    = input.required<Date>();
+  body         = input.required<string>();
+  showResend   = input<boolean>(false);
+
+  resend = output<string>();
+
+  initials = computed(() => {
+    const words = this.authorName().trim().split(/\s+/);
+    return words.length >= 2
+      ? (words[0][0] + words[1][0]).toUpperCase()
+      : this.authorName().substring(0, 2).toUpperCase();
+  });
+
+  avatarColorClass = computed(() => {
+    const colors = ['av-g', 'av-b', 'av-a', 'av-r'];
+    const code = this.authorName().charCodeAt(0) || 0;
+    return colors[code % colors.length];
+  });
 }

@@ -5,7 +5,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ConsoleStore } from '../console.store';
 import { EmptyStateComponent, SkeletonLoaderComponent } from '@shared/components';
 import { AnnouncementCardComponent } from '@shared/components/announcement-card';
-import { MOCK_CURRENT_USER_ID, MOCK_PROFILES } from '@core/mock/seed.data';
+import { MOCK_PROFILES } from '@core/mock/seed.data';
 
 @Component({
   selector: 'app-announcements-page',
@@ -140,9 +140,7 @@ import { MOCK_CURRENT_USER_ID, MOCK_PROFILES } from '@core/mock/seed.data';
             @for (ann of announcements(); track ann.id) {
               <app-announcement-card
                 [authorName]="authorName(ann.author_id)"
-                [authorInitials]="authorInitials(ann.author_id)"
-                [authorAvatarColor]="authorColor(ann.author_id)"
-                [timestamp]="ann.created_at"
+                [timestamp]="toDate(ann.created_at)"
                 [body]="ann.text"
                 [showResend]="true"
                 (resend)="shareViaWA($event)"
@@ -205,11 +203,7 @@ export class AnnouncementsPage implements OnInit {
     return MOCK_PROFILES.find(p => p.id === authorId)?.name ?? 'Organiser';
   }
 
-  authorInitials(authorId: string): string {
-    return MOCK_PROFILES.find(p => p.id === authorId)?.initials ?? 'OR';
-  }
-
-  authorColor(authorId: string): string {
-    return MOCK_PROFILES.find(p => p.id === authorId)?.avatar_color ?? 'g';
+  toDate(value: string | Date): Date {
+    return value instanceof Date ? value : new Date(value);
   }
 }

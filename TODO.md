@@ -43,7 +43,7 @@
   Read CLAUDE.md. Read TODO.md. Execute TODO-002.
 
   1. Read src/app/auth/auth-shell.ts and src/app/app.routes.ts.
-  2. Read /design/chitos_full.html for the console login panel and /design/mobile.html for the
+  2. Read /design/desktop.html for the console login panel and /design/mobile.html for the
      mobile login screen — extract exact layout, field names, and button labels.
   3. Create src/app/auth/login/login.ts — standalone component with:
        - Email + password fields using Angular Signal Forms (@angular/forms/signals)
@@ -115,7 +115,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-005.
 
-  1. Read /design/chitos_full.html — find the cycles / payment history section. Extract layout,
+  1. Read /design/desktop.html — find the cycles / payment history section. Extract layout,
      column names, badge states, and action buttons exactly.
   2. Read src/app/console/console.store.ts to understand which group/cycle data is available.
   3. Read src/app/core/mock-supabase.service.ts and src/app/core/seed.data.ts — understand cycle
@@ -144,7 +144,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-006.
 
-  1. Read /design/chitos_full.html — locate the fixed-draw console panel. Extract the cycle schedule
+  1. Read /design/desktop.html — locate the fixed-draw console panel. Extract the cycle schedule
      table, winner column (pre-assigned), payment status, and organiser action buttons.
   2. Read src/app/console/console.store.ts and seed.data.ts for fixed-group data shape.
   3. Read src/app/console/auction-console/auction-console.ts as a structural reference.
@@ -169,7 +169,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-007.
 
-  1. Read /design/chitos_full.html — find the lottery draw panel. Extract the draw animation
+  1. Read /design/desktop.html — find the lottery draw panel. Extract the draw animation
      placeholder, eligible members list, drawn winner display, and confirmation flow.
   2. Read src/app/console/console.store.ts and seed.data.ts for lottery-group cycle data.
   3. Read src/app/shared/countdown-timer/countdown-timer.ts — reuse it for draw countdown.
@@ -195,7 +195,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-008.
 
-  1. Read /design/chitos_full.html — locate the consensus voting panel. Extract vote tally display,
+  1. Read /design/desktop.html — locate the consensus voting panel. Extract vote tally display,
      member vote list, quorum indicator, and "Close Voting" action.
   2. Read console.store.ts and seed.data.ts for consensus vote data shape.
   3. Build src/app/console/consensus-console/consensus-console.ts — standalone ConsensusConsolePage:
@@ -220,7 +220,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-009.
 
-  1. Read /design/chitos_full.html — find the announcements panel. Extract the compose form,
+  1. Read /design/desktop.html — find the announcements panel. Extract the compose form,
      announcement card layout, and WhatsApp share trigger.
   2. Read src/app/shared/announcement-card/ (may be empty — if so, build the component inline in
      this task and also write the shared component file).
@@ -248,7 +248,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-010.
 
-  1. Read /design/chitos_full.html — find the invites / invite member panel. Extract invite link
+  1. Read /design/desktop.html — find the invites / invite member panel. Extract invite link
      display, copy button, WhatsApp invite flow, and pending invites list.
   2. Read src/app/shared/whatsapp-share-btn/whatsapp-share-btn.ts.
   3. Read console.store.ts for group token / invite data.
@@ -276,7 +276,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-011.
 
-  1. Read /design/chitos_full.html and /design/mobile.html for any modal/dialog patterns. Extract
+  1. Read /design/desktop.html and /design/mobile.html for any modal/dialog patterns. Extract
      overlay backdrop, card dimensions, heading, body text, and button pair layout.
   2. Build src/app/shared/confirm-dialog/confirm-dialog.ts — standalone component:
        - Signal inputs: title: string, message: string, confirmLabel: string (default "Confirm"),
@@ -295,13 +295,13 @@
 
 ---
 
-- [ ] **TODO-012** · Effort: Low · Deps: none
+- [x] **TODO-012** · Effort: Low · Deps: none
   **Build AnnouncementCard shared component**
   `src/app/shared/announcement-card/index.ts` is empty. Used by both the organiser announcements page and the member home feed.
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-012.
 
-  1. Read /design/chitos_full.html and /design/mobile.html — locate announcement card instances.
+  1. Read /design/desktop.html and /design/mobile.html — locate announcement card instances.
      Extract avatar size, timestamp format, body text style, and action icons.
   2. Build src/app/shared/announcement-card/announcement-card.ts — standalone component:
        - Signal inputs: authorName: string, authorAvatar: string (URL), timestamp: Date,
@@ -326,7 +326,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-013.
 
-  1. Read /design/chitos_full.html — find the interest calculator panel. Extract field labels,
+  1. Read /design/desktop.html — find the interest calculator panel. Extract field labels,
      formula display, and output format.
   2. Read src/app/core/interest.service.ts — understand the calculation API (principal, rate,
      duration inputs; returned maturity amount).
@@ -352,7 +352,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-014.
 
-  1. Read /design/chitos_full.html — find the settings screen. Extract sections, field labels,
+  1. Read /design/desktop.html — find the settings screen. Extract sections, field labels,
      and toggle/select patterns.
   2. Read src/app/core/auth.store.ts for current user profile data.
   3. Read src/app/core/plan.config.ts for plan tier definitions.
@@ -379,7 +379,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-015.
 
-  1. Read /design/chitos_full.html — find the "Office Gang" group card and its detail state when
+  1. Read /design/desktop.html — find the "Office Gang" group card and its detail state when
      status=inviting. Extract: member slot grid (filled vs empty avatar slots), progress text
      (e.g. "8 of 20 members joined"), "Invite Members" CTA, and "Start Group" button (disabled
      until full).
@@ -407,7 +407,7 @@
   ```
   Read CLAUDE.md. Read TODO.md. Execute TODO-016.
 
-  1. Read /design/chitos_full.html — find the "Family Savings" completed group panel. Extract:
+  1. Read /design/desktop.html — find the "Family Savings" completed group panel. Extract:
      completion banner, final stats (total collected, total disbursed, group duration), member
      payouts summary table, "Download Report" CTA, and "Archive Group" button.
   2. Read src/app/core/pdf.service.ts — understand how to trigger a PDF export.
@@ -564,7 +564,7 @@
 
   1. Read /design/mobile.html — find the onboarding / welcome flow. Extract step count,
      copy text, and CTA buttons.
-  2. Read /design/chitos_full.html for any desktop onboarding panels.
+  2. Read /design/desktop.html for any desktop onboarding panels.
   3. Read src/app/core/auth.store.ts for current user data (name available after signup).
   4. Build a 3-step onboarding flow as child components of the onboarding shell:
        Step 1 — Welcome: "Welcome, {name}!" heading (Newsreader serif, weight 300),
