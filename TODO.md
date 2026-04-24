@@ -270,7 +270,7 @@
 
 ## Priority 2 — Organiser Tools
 
-- [ ] **TODO-011** · Effort: Low · Deps: none
+- [x] **TODO-011** · Effort: Low · Deps: none
   **Build ConfirmDialog shared component**
   `src/app/shared/confirm-dialog/index.ts` is empty. Multiple flows (mark paid, close voting, regenerate link, revoke invite) need a reusable confirm modal.
   ```

@@ -1,11 +1,14 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ElementRef, afterNextRender, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [TranslocoDirective],
-  host: { '(document:keydown.escape)': 'cancelled.emit()' },
+  host: {
+    '(document:keydown.escape)': 'cancelled.emit()',
+    '(document:keydown)': 'trapFocus($event)',
+  },
   styles: [`
     .overlay {
       position: fixed; inset: 0;
@@ -77,7 +80,36 @@ export class ConfirmDialog {
   confirmed = output<void>();
   cancelled = output<void>();
 
+  private host = inject(ElementRef);
+
+  constructor() {
+    afterNextRender(() => {
+      this.focusable()[0]?.focus();
+    });
+  }
+
   onBackdrop(e: MouseEvent) {
     if (e.target === e.currentTarget) this.cancelled.emit();
+  }
+
+  trapFocus(e: KeyboardEvent) {
+    if (e.key !== 'Tab') return;
+    const els = this.focusable();
+    if (!els.length) return;
+    const first = els[0];
+    const last  = els[els.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  }
+
+  private focusable(): HTMLElement[] {
+    return Array.from(
+      this.host.nativeElement.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ) as NodeListOf<HTMLElement>
+    );
   }
 }
