@@ -215,6 +215,9 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
                (click)="goToGroup(g.id)">
             <div>
               <div class="gr-name">{{ g.name }}</div>
+              @if (g.status === 'inviting') {
+                <span class="badge badge-a" style="margin-top:3px;display:inline-block;">{{ t('dashboard.invitingBadge') }}</span>
+              }
               <div class="gr-meta">{{ groupMeta(g) }}</div>
             </div>
             <div>
@@ -279,9 +282,12 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
                 <div class="gc-name">{{ g.name }}</div>
                 <div class="gc-meta">{{ cardMeta(g) }}</div>
               </div>
-              <span class="badge badge-{{ strategyVariant(g.strategy) }}">
-                {{ g.strategy | titlecase }}
-              </span>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+                <span class="badge badge-{{ strategyVariant(g.strategy) }}">{{ g.strategy | titlecase }}</span>
+                @if (g.status === 'inviting') {
+                  <span class="badge badge-a">{{ t('dashboard.invitingBadge') }}</span>
+                }
+              </div>
             </div>
 
             @if (g.status === 'active') {

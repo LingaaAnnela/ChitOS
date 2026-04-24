@@ -373,7 +373,7 @@
 
 ---
 
-- [ ] **TODO-015** · Effort: Medium · Deps: TODO-001, TODO-010
+- [x] **TODO-015** · Effort: Medium · Deps: TODO-001, TODO-010
   **Console: inviting state for a group (Office Gang scenario)**
   When a newly created group has fewer members than required, the dashboard and group-detail should show an "Inviting" state with member slots, invite actions, and a start-group gate.
   ```

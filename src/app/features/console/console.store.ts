@@ -222,6 +222,23 @@ export const ConsoleStore = signalStore(
         }
       },
 
+      async startGroup(groupId: string) {
+        try {
+          patchState(store, {
+            groups: store.groups().map(g =>
+              g.id === groupId ? { ...g, status: 'active' as const, current_cycle: 1 } : g
+            ),
+            selectedGroup: store.selectedGroup()?.id === groupId
+              ? { ...store.selectedGroup()!, status: 'active' as const, current_cycle: 1 }
+              : store.selectedGroup(),
+          });
+          ui.addToast('Group started! Cycle 1 is now active.', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
+
       async markCyclePaid(cycleId: string) {
         const cycle = store.cycles().find(c => c.id === cycleId);
         const group = store.selectedGroup();

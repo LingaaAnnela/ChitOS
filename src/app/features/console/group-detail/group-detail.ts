@@ -7,7 +7,7 @@ import { IndianCurrencyPipe, RelativeTimePipe } from '@shared/pipes';
 import {
   SkeletonLoaderComponent, EmptyStateComponent,
   PaymentMethodModalComponent, TrustScorePillComponent,
-  InterestCalculatorComponent,
+  InterestCalculatorComponent, ProgressBarComponent,
 } from '@shared/components';
 import type { EnrichedMember, EnrichedContribution, Contribution, Cycle, Group } from '@core/mock/seed.data';
 import type { PaymentData } from '@shared/components/payment-method-modal/payment-method-modal';
@@ -20,7 +20,8 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
   imports: [
     TitleCasePipe, DecimalPipe, IndianCurrencyPipe, RelativeTimePipe, TranslocoDirective,
     SkeletonLoaderComponent, EmptyStateComponent,
-    PaymentMethodModalComponent, TrustScorePillComponent, InterestCalculatorComponent,
+    PaymentMethodModalComponent, TrustScorePillComponent,
+    InterestCalculatorComponent, ProgressBarComponent,
   ],
   styles: [`
     :host { display: flex; flex-direction: column; padding: 20px; gap: 16px; }
@@ -35,7 +36,7 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
     .stats2 .sc { flex: 1; min-width: 80px; }
     .sc-l { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
     .sc-v { font-family: Newsreader, serif; font-size: 20px; font-weight: 300; line-height: 1.1; }
-    .sc-v.g { color: var(--green); } .sc-v.r { color: var(--red); }
+    .sc-v.g { color: var(--green); } .sc-v.r { color: var(--red); } .sc-v.a { color: var(--amber); }
     .sc-s { font-size: 10px; color: var(--t3); margin-top: 2px; }
 
     .sec-hdr { display: flex; justify-content: space-between; align-items: center; }
@@ -96,6 +97,30 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
     .modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px;
       border-top: 0.5px solid var(--b); }
 
+    /* ── Inviting view ─────────────────────────────────────── */
+    .check-item { display:flex; align-items:center; gap:10px; padding:10px; border-radius:var(--rs); }
+    .check-item.ci-done { background:var(--gbg); border:0.5px solid var(--gborder); }
+    .check-item.ci-warn { background:var(--abg); border:0.5px solid var(--aborder); }
+    .check-item.ci-todo { background:var(--warm2); border:0.5px solid var(--b2); }
+    .check-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0; font-size:11px; font-weight:600; }
+    .ci-icon-done { background:var(--green); }
+    .ci-icon-warn { background:var(--amber); color:#fff; }
+    .ci-icon-num  { background:var(--b2); color:var(--t3); font-size:10px; }
+    .ci-title-done { font-size:13px; font-weight:500; color:#15803D; }
+    .ci-title-warn { font-size:13px; font-weight:500; color:#92400E; }
+    .ci-title-todo { font-size:13px; font-weight:500; color:var(--t2); }
+    .ci-sub-done { font-size:11px; color:#16A34A; margin-top:2px; }
+    .ci-sub-warn { font-size:11px; color:#B45309; margin-top:2px; }
+    .ci-sub-todo { font-size:11px; color:var(--t3); margin-top:2px; }
+    .ci-body { flex:1; min-width:0; }
+
+    .slot-empty { width:32px; height:32px; border-radius:50%; border:1.5px dashed var(--b3);
+      flex-shrink:0; background:var(--warm2); }
+    .slot-empty-name { font-size:13px; color:var(--t3); font-style:italic; }
+
+    .prog-label { font-size:12px; color:var(--t2); white-space:nowrap; }
+
     @media (max-width: 768px) {
       :host { padding: 14px; gap: 12px; }
       .grp-title { font-size: 18px; }
@@ -134,181 +159,373 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
           <p class="grp-meta">{{ groupMeta(g) }}</p>
         </div>
         <div class="hdr-btns">
-          <button class="btn-sm btn-sm-o" (click)="postingAnnouncement.set(true)">{{ t('groupDetail.postAnnouncement') }}</button>
-          <button class="btn-sm btn-sm-g" (click)="openAuction()">{{ actionLabel(g.strategy) }}</button>
-        </div>
-      </div>
-
-      <!-- Stat cards — desktop -->
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="sc-lbl">{{ t('groupDetail.potThisMonth') }}</div>
-          <div class="sc-val">{{ potValue() | indianCurrency }}</div>
-          <div class="sc-sub">{{ g.member_count }} × ₹{{ g.contribution_amount | number:'1.0-0' }}</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-lbl">{{ t('groupDetail.collected') }}</div>
-          <div class="sc-val g">{{ collectedAmount() | indianCurrency }}</div>
-          <div class="sc-sub">{{ paidMembers().length }} {{ t('groupDetail.paidSub') }}</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-lbl">{{ t('groupDetail.overdue') }}</div>
-          <div class="sc-val r">{{ overdueAmount() | indianCurrency }}</div>
-          <div class="sc-sub">{{ overdueMembers().length }} {{ t('groupDetail.membersSub') }}</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-lbl">{{ g.strategy === 'auction' ? t('groupDetail.auctionBids') : t('groupDetail.payouts') }}</div>
-          <div class="sc-val">{{ g.strategy === 'auction' ? auctionBids().length : store.payouts().length }}</div>
-          <div class="sc-sub">{{ g.strategy === 'auction' ? t('groupDetail.thisCycle') : t('groupDetail.recorded') }}</div>
-        </div>
-      </div>
-
-      <!-- Stat cards — mobile -->
-      <div class="card stats2">
-        <div class="sc" style="padding:12px 16px;">
-          <div class="sc-l">{{ t('groupDetail.potThisMonth') }}</div>
-          <div class="sc-v">{{ potValue() | indianCurrency }}</div>
-        </div>
-        <div class="sc" style="padding:12px 0;">
-          <div class="sc-l">{{ t('groupDetail.collected') }}</div>
-          <div class="sc-v g">{{ collectedAmount() | indianCurrency }}</div>
-        </div>
-        <div class="sc" style="padding:12px 0;">
-          <div class="sc-l">{{ t('groupDetail.overdue') }}</div>
-          <div class="sc-v r">{{ overdueAmount() | indianCurrency }}</div>
-        </div>
-        <div class="sc" style="padding:12px 16px;">
-          <div class="sc-l">{{ t('groupDetail.auctionBids') }}</div>
-          <div class="sc-v">{{ auctionBids().length }}</div>
-        </div>
-      </div>
-
-      <!-- Cycle timeline -->
-      <div class="sec-hdr">
-        <span class="sec-title">{{ t('groupDetail.cycleTimeline') }}</span>
-        <span class="sec-link">{{ t('groupDetail.allCycles') }}</span>
-      </div>
-      <div class="card">
-        <div class="timeline">
-          @for (c of cycles(); track c.id) {
-            <div class="tl-item">
-              <div class="tl-circle {{ cycleCircleClass(c) }}">{{ cycleContent(c) }}</div>
-              <div class="tl-label {{ cycleLabelClass(c) }}">{{ cycleSubLabel(c) }}</div>
-            </div>
+          @if (g.status === 'inviting') {
+            <button class="btn-sm btn-sm-o" (click)="navigateToInvites()">{{ t('groupDetail.inviting.inviteMembers') }}</button>
+            <button class="btn-sm btn-sm-g"
+              [disabled]="!isFull()"
+              [attr.title]="isFull() ? null : t('groupDetail.inviting.startGroupTooltip', { needed: seatsRemaining() })"
+              [style.opacity]="isFull() ? '1' : '0.5'"
+              [style.cursor]="isFull() ? 'pointer' : 'not-allowed'"
+              (click)="startGroup()">{{ t('groupDetail.inviting.startGroup') }}</button>
+          } @else {
+            <button class="btn-sm btn-sm-o" (click)="postingAnnouncement.set(true)">{{ t('groupDetail.postAnnouncement') }}</button>
+            <button class="btn-sm btn-sm-g" (click)="openAuction()">{{ actionLabel(g.strategy) }}</button>
           }
         </div>
       </div>
 
-      <!-- Members accordion -->
-      <div class="sec-hdr">
-        <span class="sec-title">{{ t('groupDetail.membersThisMonth') }}</span>
-      </div>
-      <div class="card">
-        <!-- Paid section -->
-        <div class="acc-header" (click)="paidOpen.update(v => !v)">
-          <div>
-            <div class="card-title" style="color:var(--green)">{{ t('groupDetail.paidThisMonth') }}</div>
-            <div class="card-sub">{{ paidMembers().length }} {{ t('groupDetail.membersSub') }}</div>
+      @if (g.status === 'inviting') {
+
+        <!-- Inviting: Stats row — desktop -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.inviting.membersApproved') }}</div>
+            <div class="sc-val g">{{ approvedMembers().length }}</div>
+            <div class="sc-sub">{{ t('groupDetail.inviting.ofMaxSeats', { max: g.max_members }) }}</div>
           </div>
-          <svg class="chev" [class.open]="paidOpen()" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="acc-body" [class.open]="paidOpen()">
-          @if (paidMembers().length === 0) {
-            <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.noPaidYet') }}</div>
-          }
-          @for (m of paidMembers(); track m.id) {
-            <div class="member-row">
-              <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
-              <div class="mr-info">
-                <div class="mr-name">{{ m.profile.name }}</div>
-                <div class="mr-meta">{{ memberMeta(m) }}</div>
-              </div>
-              <div class="mr-right">
-                <app-trust-score-pill [memberId]="m.profile_id" [groupId]="g.id" />
-                @if (m.contribution) {
-                  <span class="cs cs-paid">{{ t('groupDetail.paidBadge') }}</span>
-                } @else {
-                  <span class="cs cs-partial">{{ t('groupDetail.partial') }}</span>
-                }
-              </div>
-            </div>
-          }
-        </div>
-
-        <!-- Overdue section -->
-        <div class="acc-header" (click)="overdueOpen.update(v => !v)">
-          <div>
-            <div class="card-title" style="color:var(--red)">{{ t('groupDetail.overdueAndPending') }}</div>
-            <div class="card-sub">{{ overdueMembers().length }} {{ t('groupDetail.membersSub') }}</div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.inviting.pendingApproval') }}</div>
+            <div class="sc-val a">{{ pendingMembers().length }}</div>
+            <div class="sc-sub">{{ t('groupDetail.inviting.actionNeeded') }}</div>
           </div>
-          <svg class="chev" [class.open]="overdueOpen()" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.inviting.seatsRemaining') }}</div>
+            <div class="sc-val">{{ seatsRemaining() }}</div>
+            <div class="sc-sub">{{ t('groupDetail.inviting.afterApprovals') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.inviting.daysToStart') }}</div>
+            <div class="sc-val">{{ daysToStart() }}</div>
+            <div class="sc-sub">{{ startDateLabel(g) }}</div>
+          </div>
         </div>
-        <div class="acc-body" [class.open]="overdueOpen()">
-          @if (overdueMembers().length === 0) {
-            <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.allPaidUp') }}</div>
-          }
-          @for (m of overdueMembers(); track m.id) {
-            <div class="member-row">
-              <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
-              <div class="mr-info">
-                <div class="mr-name">{{ m.profile.name }}</div>
-                <div class="mr-meta">{{ memberMeta(m) }}</div>
-              </div>
-              <div class="mr-right">
-                <app-trust-score-pill [memberId]="m.profile_id" [groupId]="g.id" />
-                @if (m.contribution?.status === 'overdue') {
-                  <span class="cs cs-over">{{ t('groupDetail.overdueBadge') }}</span>
-                } @else {
-                  <span class="cs cs-pending">{{ t('groupDetail.pendingBadge') }}</span>
-                }
-                @if (m.contribution) {
-                  <button class="btn-sm btn-sm-g" (click)="markPaid(m.contribution)">{{ t('groupDetail.markPaid') }}</button>
-                }
+
+        <!-- Inviting: Stats — mobile -->
+        <div class="card stats2">
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.inviting.membersApproved') }}</div>
+            <div class="sc-v g">{{ approvedMembers().length }}</div>
+          </div>
+          <div class="sc" style="padding:12px 0;">
+            <div class="sc-l">{{ t('groupDetail.inviting.pendingApproval') }}</div>
+            <div class="sc-v a">{{ pendingMembers().length }}</div>
+          </div>
+          <div class="sc" style="padding:12px 0;">
+            <div class="sc-l">{{ t('groupDetail.inviting.seatsRemaining') }}</div>
+            <div class="sc-v">{{ seatsRemaining() }}</div>
+          </div>
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.inviting.daysToStart') }}</div>
+            <div class="sc-v">{{ daysToStart() }}</div>
+          </div>
+        </div>
+
+        <!-- Inviting: Progress bar -->
+        <div style="display:flex; align-items:center; gap:10px;">
+          <app-progress-bar [value]="memberPct()" color="a" style="flex:1;" />
+          <span class="prog-label">{{ approvedMembers().length }}/{{ g.max_members }} {{ t('groupDetail.inviting.membersJoined') }}</span>
+        </div>
+
+        <!-- Inviting: Two-col layout -->
+        <div class="two-col">
+
+          <!-- Getting started checklist -->
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">{{ t('groupDetail.inviting.checklist') }}</div>
+                <div class="card-sub">{{ t('groupDetail.inviting.checklistSub') }}</div>
               </div>
             </div>
-          }
+            <div style="padding:14px; display:flex; flex-direction:column; gap:10px;">
+
+              <!-- Step 1: Group created (always done) -->
+              <div class="check-item ci-done">
+                <div class="check-icon ci-icon-done">
+                  <svg style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="ci-body">
+                  <div class="ci-title-done">{{ t('groupDetail.inviting.step1') }}</div>
+                  <div class="ci-sub-done">{{ g.strategy | titlecase }} · ₹{{ g.contribution_amount | number:'1.0-0' }}/month</div>
+                </div>
+              </div>
+
+              <!-- Step 2: Invites sent (done if any approved members beyond owner) -->
+              @if (approvedMembers().length > 1) {
+                <div class="check-item ci-done">
+                  <div class="check-icon ci-icon-done">
+                    <svg style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="ci-body">
+                    <div class="ci-title-done">{{ t('groupDetail.inviting.step2') }}</div>
+                    <div class="ci-sub-done">{{ approvedMembers().length - 1 }} {{ t('groupDetail.inviting.step2Sub') }}{{ pendingMembers().length > 0 ? ' · ' + pendingMembers().length + ' ' + t('groupDetail.inviting.pending') : '' }}</div>
+                  </div>
+                </div>
+              } @else {
+                <div class="check-item ci-todo">
+                  <div class="check-icon ci-icon-num">2</div>
+                  <div class="ci-body">
+                    <div class="ci-title-todo">{{ t('groupDetail.inviting.step2') }}</div>
+                    <div class="ci-sub-todo">{{ t('groupDetail.inviting.step2NotDone') }}</div>
+                  </div>
+                </div>
+              }
+
+              <!-- Step 3: Approve pending members -->
+              @if (pendingMembers().length > 0) {
+                <div class="check-item ci-warn">
+                  <div class="check-icon ci-icon-warn">!</div>
+                  <div class="ci-body">
+                    <div class="ci-title-warn">{{ t('groupDetail.inviting.step3') }}</div>
+                    <div class="ci-sub-warn">{{ pendingMembers().length }} {{ t('groupDetail.inviting.step3Sub') }}</div>
+                  </div>
+                  <button class="btn-sm btn-sm-a" (click)="goToApprovals()">{{ t('groupDetail.inviting.review') }} →</button>
+                </div>
+              } @else {
+                <div class="check-item ci-done">
+                  <div class="check-icon ci-icon-done">
+                    <svg style="width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="ci-body">
+                    <div class="ci-title-done">{{ t('groupDetail.inviting.step3Done') }}</div>
+                  </div>
+                </div>
+              }
+
+              <!-- Step 4: Lock members & start (todo until full) -->
+              <div class="check-item ci-todo">
+                <div class="check-icon ci-icon-num">4</div>
+                <div class="ci-body">
+                  <div class="ci-title-todo">{{ t('groupDetail.inviting.step4') }}</div>
+                  <div class="ci-sub-todo">{{ isFull() ? t('groupDetail.inviting.step4Ready') : t('groupDetail.inviting.step4NotReady') }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Invite management: member slots -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">{{ t('groupDetail.inviting.memberSlots') }}</span>
+              <button class="btn-sm btn-sm-o" (click)="navigateToInvites()">{{ t('groupDetail.inviting.copyLink') }}</button>
+            </div>
+
+            <!-- Approved members -->
+            @for (m of approvedMembers(); track m.id) {
+              <div class="member-row">
+                <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
+                <div class="mr-info">
+                  <div class="mr-name">{{ m.profile.name }}</div>
+                  <div class="mr-meta">{{ t('groupDetail.inviting.acceptedDate', { date: formatJoinDate(m.joined_at) }) }}</div>
+                </div>
+                <div class="mr-right">
+                  <span class="badge badge-g">{{ t('groupDetail.inviting.approvedBadge') }}</span>
+                </div>
+              </div>
+            }
+
+            <!-- Pending members -->
+            @for (m of pendingMembers(); track m.id) {
+              <div class="member-row">
+                <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
+                <div class="mr-info">
+                  <div class="mr-name">{{ m.profile.name }}</div>
+                  <div class="mr-meta">{{ t('groupDetail.inviting.requestedDate', { date: formatJoinDate(m.joined_at) }) }}</div>
+                </div>
+                <div class="mr-right">
+                  <span class="badge badge-a">{{ t('groupDetail.inviting.pendingBadge') }}</span>
+                </div>
+              </div>
+            }
+
+            <!-- Empty slots -->
+            @for (slot of emptySlots(); track slot) {
+              <div class="member-row" style="cursor:default;">
+                <div class="slot-empty"></div>
+                <div class="mr-info">
+                  <div class="slot-empty-name">{{ t('groupDetail.inviting.emptySlot') }}</div>
+                </div>
+              </div>
+            }
+          </div>
+
         </div>
-      </div>
 
-      <!-- Two-col: Announcements + Interest calc -->
-      <div class="two-col">
+      } @else {
 
-        <!-- Announcements -->
+        <!-- Active / completed: Stat cards — desktop -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.potThisMonth') }}</div>
+            <div class="sc-val">{{ potValue() | indianCurrency }}</div>
+            <div class="sc-sub">{{ g.member_count }} × ₹{{ g.contribution_amount | number:'1.0-0' }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.collected') }}</div>
+            <div class="sc-val g">{{ collectedAmount() | indianCurrency }}</div>
+            <div class="sc-sub">{{ paidMembers().length }} {{ t('groupDetail.paidSub') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.overdue') }}</div>
+            <div class="sc-val r">{{ overdueAmount() | indianCurrency }}</div>
+            <div class="sc-sub">{{ overdueMembers().length }} {{ t('groupDetail.membersSub') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ g.strategy === 'auction' ? t('groupDetail.auctionBids') : t('groupDetail.payouts') }}</div>
+            <div class="sc-val">{{ g.strategy === 'auction' ? auctionBids().length : store.payouts().length }}</div>
+            <div class="sc-sub">{{ g.strategy === 'auction' ? t('groupDetail.thisCycle') : t('groupDetail.recorded') }}</div>
+          </div>
+        </div>
+
+        <!-- Active / completed: Stat cards — mobile -->
+        <div class="card stats2">
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.potThisMonth') }}</div>
+            <div class="sc-v">{{ potValue() | indianCurrency }}</div>
+          </div>
+          <div class="sc" style="padding:12px 0;">
+            <div class="sc-l">{{ t('groupDetail.collected') }}</div>
+            <div class="sc-v g">{{ collectedAmount() | indianCurrency }}</div>
+          </div>
+          <div class="sc" style="padding:12px 0;">
+            <div class="sc-l">{{ t('groupDetail.overdue') }}</div>
+            <div class="sc-v r">{{ overdueAmount() | indianCurrency }}</div>
+          </div>
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.auctionBids') }}</div>
+            <div class="sc-v">{{ auctionBids().length }}</div>
+          </div>
+        </div>
+
+        <!-- Cycle timeline -->
+        <div class="sec-hdr">
+          <span class="sec-title">{{ t('groupDetail.cycleTimeline') }}</span>
+          <span class="sec-link">{{ t('groupDetail.allCycles') }}</span>
+        </div>
         <div class="card">
-          <div class="card-head">
-            <span class="card-title">{{ t('groupDetail.announcements') }}</span>
-            <button class="btn-sm btn-sm-o" (click)="postingAnnouncement.set(true)">{{ t('groupDetail.postShort') }}</button>
-          </div>
-          @if (recentAnnouncements().length === 0) {
-            <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.noAnnouncements') }}</div>
-          }
-          @for (a of recentAnnouncements(); track a.id) {
-            <div class="act-row">
-              <div class="act-dot"></div>
-              <div class="act-body">
-                <div class="act-text">{{ a.text }}</div>
-                <div class="act-meta">{{ a.created_at | relativeTime }} · {{ a.reactions }} {{ t('groupDetail.reactions') }}</div>
+          <div class="timeline">
+            @for (c of cycles(); track c.id) {
+              <div class="tl-item">
+                <div class="tl-circle {{ cycleCircleClass(c) }}">{{ cycleContent(c) }}</div>
+                <div class="tl-label {{ cycleLabelClass(c) }}">{{ cycleSubLabel(c) }}</div>
               </div>
-            </div>
-          }
-        </div>
-
-        <!-- Interest calculator -->
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title">{{ t('groupDetail.interestCalc') }}</span>
+            }
           </div>
-          <app-interest-calculator
-            [principal]="g.contribution_amount"
-            [annualRate]="12"
-            [durationMonths]="g.member_count" />
         </div>
 
-      </div>
+        <!-- Members accordion -->
+        <div class="sec-hdr">
+          <span class="sec-title">{{ t('groupDetail.membersThisMonth') }}</span>
+        </div>
+        <div class="card">
+          <!-- Paid section -->
+          <div class="acc-header" (click)="paidOpen.update(v => !v)">
+            <div>
+              <div class="card-title" style="color:var(--green)">{{ t('groupDetail.paidThisMonth') }}</div>
+              <div class="card-sub">{{ paidMembers().length }} {{ t('groupDetail.membersSub') }}</div>
+            </div>
+            <svg class="chev" [class.open]="paidOpen()" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="acc-body" [class.open]="paidOpen()">
+            @if (paidMembers().length === 0) {
+              <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.noPaidYet') }}</div>
+            }
+            @for (m of paidMembers(); track m.id) {
+              <div class="member-row">
+                <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
+                <div class="mr-info">
+                  <div class="mr-name">{{ m.profile.name }}</div>
+                  <div class="mr-meta">{{ memberMeta(m) }}</div>
+                </div>
+                <div class="mr-right">
+                  <app-trust-score-pill [memberId]="m.profile_id" [groupId]="g.id" />
+                  @if (m.contribution) {
+                    <span class="cs cs-paid">{{ t('groupDetail.paidBadge') }}</span>
+                  } @else {
+                    <span class="cs cs-partial">{{ t('groupDetail.partial') }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Overdue section -->
+          <div class="acc-header" (click)="overdueOpen.update(v => !v)">
+            <div>
+              <div class="card-title" style="color:var(--red)">{{ t('groupDetail.overdueAndPending') }}</div>
+              <div class="card-sub">{{ overdueMembers().length }} {{ t('groupDetail.membersSub') }}</div>
+            </div>
+            <svg class="chev" [class.open]="overdueOpen()" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="acc-body" [class.open]="overdueOpen()">
+            @if (overdueMembers().length === 0) {
+              <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.allPaidUp') }}</div>
+            }
+            @for (m of overdueMembers(); track m.id) {
+              <div class="member-row">
+                <div class="av av-md av-{{ m.profile.avatar_color }}">{{ m.profile.initials }}</div>
+                <div class="mr-info">
+                  <div class="mr-name">{{ m.profile.name }}</div>
+                  <div class="mr-meta">{{ memberMeta(m) }}</div>
+                </div>
+                <div class="mr-right">
+                  <app-trust-score-pill [memberId]="m.profile_id" [groupId]="g.id" />
+                  @if (m.contribution?.status === 'overdue') {
+                    <span class="cs cs-over">{{ t('groupDetail.overdueBadge') }}</span>
+                  } @else {
+                    <span class="cs cs-pending">{{ t('groupDetail.pendingBadge') }}</span>
+                  }
+                  @if (m.contribution) {
+                    <button class="btn-sm btn-sm-g" (click)="markPaid(m.contribution)">{{ t('groupDetail.markPaid') }}</button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Two-col: Announcements + Interest calc -->
+        <div class="two-col">
+
+          <!-- Announcements -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">{{ t('groupDetail.announcements') }}</span>
+              <button class="btn-sm btn-sm-o" (click)="postingAnnouncement.set(true)">{{ t('groupDetail.postShort') }}</button>
+            </div>
+            @if (recentAnnouncements().length === 0) {
+              <div style="padding:16px;font-size:13px;color:var(--t3);">{{ t('groupDetail.noAnnouncements') }}</div>
+            }
+            @for (a of recentAnnouncements(); track a.id) {
+              <div class="act-row">
+                <div class="act-dot"></div>
+                <div class="act-body">
+                  <div class="act-text">{{ a.text }}</div>
+                  <div class="act-meta">{{ a.created_at | relativeTime }} · {{ a.reactions }} {{ t('groupDetail.reactions') }}</div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Interest calculator -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">{{ t('groupDetail.interestCalc') }}</span>
+            </div>
+            <app-interest-calculator
+              [principal]="g.contribution_amount"
+              [annualRate]="12"
+              [durationMonths]="g.member_count" />
+          </div>
+
+        </div>
+
+      }
     }
 
     <!-- Payment modal -->
@@ -341,6 +558,7 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 export class GroupDetailPage {
   store          = inject(ConsoleStore);
   private router = inject(Router);
+  private route  = inject(ActivatedRoute);
 
   // Store signals
   group         = this.store.selectedGroup;
@@ -363,6 +581,34 @@ export class GroupDetailPage {
   overdueMembers  = computed(() => this.enrichedMembers().filter(
     m => !m.contribution || m.contribution.status === 'overdue' || m.contribution.status === 'pending'
   ));
+  approvedMembers = computed(() => this.enrichedMembers().filter(m => m.approval_status === 'approved'));
+  pendingMembers  = computed(() => this.enrichedMembers().filter(m => m.approval_status === 'pending'));
+  seatsRemaining  = computed(() => {
+    const g = this.group();
+    return g ? Math.max(0, g.max_members - this.approvedMembers().length - this.pendingMembers().length) : 0;
+  });
+  isFull          = computed(() => {
+    const g = this.group();
+    return g ? this.approvedMembers().length >= g.max_members : false;
+  });
+  memberPct       = computed(() => {
+    const g = this.group();
+    return g ? Math.round((this.approvedMembers().length / g.max_members) * 100) : 0;
+  });
+  daysToStart     = computed(() => {
+    const g = this.group();
+    if (!g) return 0;
+    const now   = new Date();
+    const start = new Date(g.start_date);
+    return Math.max(0, Math.ceil((start.getTime() - now.getTime()) / 86_400_000));
+  });
+  emptySlots      = computed(() => {
+    const g = this.group();
+    if (!g) return [];
+    const taken = this.approvedMembers().length + this.pendingMembers().length;
+    return Array.from({ length: Math.max(0, g.max_members - taken) }, (_, i) => i);
+  });
+
   potValue        = computed(() => {
     const g = this.group(); return g ? g.contribution_amount * g.member_count : 0;
   });
@@ -377,7 +623,7 @@ export class GroupDetailPage {
   recentAnnouncements = computed(() => this.store.announcements().slice(0, 3));
 
   constructor() {
-    const id = inject(ActivatedRoute).snapshot.paramMap.get('id')!;
+    const id = this.route.snapshot.paramMap.get('id')!;
     this.store.loadGroup(id);
     this.store.loadMembers(id);
   }
@@ -398,6 +644,9 @@ export class GroupDetailPage {
     const [yr, mo] = g.start_date.split('-');
     const freq = ({ monthly: 'month', weekly: 'week', fortnightly: 'fortnight' } as Record<string, string>)[g.frequency] ?? g.frequency;
     const started = `${MONTHS[+mo - 1]} ${yr}`;
+    if (g.status === 'inviting') {
+      return `₹${new Intl.NumberFormat('en-IN').format(g.contribution_amount)}/${freq} · ${g.strategy} · Starts ${started}`;
+    }
     const ac = this.activeCycle();
     const dueStr = ac
       ? `${+ac.due_date.split('-')[2]} ${MONTHS[+ac.due_date.split('-')[1] - 1]}`
@@ -405,9 +654,19 @@ export class GroupDetailPage {
     return `₹${new Intl.NumberFormat('en-IN').format(g.contribution_amount)}/${freq} · ${g.member_count} members · Started ${started} · Due ${dueStr}`;
   }
 
+  startDateLabel(g: Group): string {
+    const [yr, mo, dy] = g.start_date.split('-');
+    return `${+dy} ${MONTHS[+mo - 1]} ${yr}`;
+  }
+
   memberMeta(m: EnrichedMember): string {
     const p = m.profile.phone;
     return p.length === 10 ? `+91 ${p.slice(0,5)} ${p.slice(5)}` : p;
+  }
+
+  formatJoinDate(dateStr: string): string {
+    const [, mo, dy] = dateStr.split('-');
+    return `${+dy} ${MONTHS[+mo - 1]}`;
   }
 
   cycleCircleClass(c: Cycle): string {
@@ -469,5 +728,23 @@ export class GroupDetailPage {
       consensus: ['/console/groups', g.id, 'consensus'],
     };
     this.router.navigate(dest[g.strategy] ?? ['/console/auction']);
+  }
+
+  navigateToInvites(): void {
+    const g = this.group();
+    if (!g) return;
+    this.router.navigate(['/console/groups', g.id, 'invites']);
+  }
+
+  goToApprovals(): void {
+    const g = this.group();
+    if (!g) return;
+    this.router.navigate(['/console/groups', g.id, 'members']);
+  }
+
+  startGroup(): void {
+    const g = this.group();
+    if (!g || !this.isFull()) return;
+    this.store.startGroup(g.id);
   }
 }
