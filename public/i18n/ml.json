@@ -79,6 +79,7 @@
     "reviewArrow": "അവലോകനം →",
     "viewArrow": "കാണുക →",
     "invitingBadge": "ക്ഷണിക്കുന്നു",
+    "completedBadge": "പൂർത്തിയായി",
     "pendingApprovals": "തീർപ്പാകാത്ത അംഗീകാരങ്ങൾ",
     "membersWaiting": "ചേരാൻ കാത്തിരിക്കുന്ന അംഗങ്ങൾ",
     "waiting": "കാത്തിരിക്കുന്നു",
@@ -156,6 +157,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "എല്ലാ ചക്രങ്ങളും പൂർത്തിയായി",
+      "ended": "അവസാനിച്ചു",
+      "cycles": "ചക്രങ്ങൾ",
+      "totalCollected": "ആകെ ശേഖരിച്ചത്",
+      "totalDisbursed": "ആകെ വിതരണം",
+      "paidToWinners": "ജേതാക്കൾക്ക് നൽകി",
+      "duration": "കാലാവധി",
+      "months": "മാസങ്ങൾ",
+      "members": "അംഗങ്ങൾ",
+      "allReceived": "എല്ലാവർക്കും പോട്ട് കിട്ടി",
+      "payoutHistory": "പേഔട്ട് ചരിത്രം",
+      "memberPayouts": "അംഗ പേഔട്ടുകൾ",
+      "colMember": "അംഗം",
+      "colCycle": "ചക്രം",
+      "colAmount": "ലഭിച്ച തുക",
+      "colDate": "തീയതി",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "ചക്രങ്ങൾ",
+      "downloadPdf": "PDF റിപ്പോർട്ട് ഡൗൺലോഡ്",
+      "archive": "ഗ്രൂപ്പ് ആർക്കൈവ് ചെയ്യുക"
     }
   },
   "approvals": {

@@ -79,6 +79,7 @@
     "reviewArrow": "மதிப்பாய்வு →",
     "viewArrow": "பார் →",
     "invitingBadge": "அழைக்கிறது",
+    "completedBadge": "முடிந்தது",
     "pendingApprovals": "நிலுவையில் உள்ள அனுமதிகள்",
     "membersWaiting": "சேர காத்திருக்கும் உறுப்பினர்கள்",
     "waiting": "காத்திருக்கிறார்கள்",
@@ -156,6 +157,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "அனைத்து சுழற்சிகளும் முடிந்தன",
+      "ended": "முடிந்தது",
+      "cycles": "சுழற்சிகள்",
+      "totalCollected": "மொத்த சேகரிப்பு",
+      "totalDisbursed": "மொத்த வழங்கல்",
+      "paidToWinners": "வெற்றியாளர்களுக்கு செலுத்தப்பட்டது",
+      "duration": "கால அளவு",
+      "months": "மாதங்கள்",
+      "members": "உறுப்பினர்கள்",
+      "allReceived": "அனைவரும் பாட் பெற்றனர்",
+      "payoutHistory": "கட்டண வரலாறு",
+      "memberPayouts": "உறுப்பினர் கட்டணங்கள்",
+      "colMember": "உறுப்பினர்",
+      "colCycle": "சுழற்சி",
+      "colAmount": "பெற்ற தொகை",
+      "colDate": "தேதி",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "சுழற்சிகள்",
+      "downloadPdf": "PDF அறிக்கை பதிவிறக்கம்",
+      "archive": "குழுவை காப்பகப்படுத்து"
     }
   },
   "approvals": {

@@ -3,6 +3,8 @@ import { TitleCasePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ConsoleStore } from '../console.store';
+import { UIStore } from '@core/stores/ui.store';
+import { PdfService } from '@core/services/pdf.service';
 import { IndianCurrencyPipe, RelativeTimePipe } from '@shared/pipes';
 import {
   SkeletonLoaderComponent, EmptyStateComponent,
@@ -97,6 +99,49 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
     .modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px;
       border-top: 0.5px solid var(--b); }
 
+    /* ── Completed view ────────────────────────────────────── */
+    .comp-banner {
+      background: var(--sfbg); border: 0.5px solid rgba(230,124,42,0.25);
+      border-radius: var(--r); padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .comp-icon {
+      width: 44px; height: 44px; border-radius: 50%; background: #fff;
+      border: 0.5px solid rgba(230,124,42,0.2); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+    }
+    .comp-title { font-family: Newsreader, serif; font-size: 18px; font-weight: 300; color: var(--saffron); }
+    .comp-meta  { font-size: 12px; color: var(--t2); margin-top: 3px; }
+
+    .payout-tbl {
+      background: var(--card); border: 0.5px solid var(--b);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .pt-head {
+      display: grid; grid-template-columns: 2fr 70px 110px 110px;
+      padding: 9px 16px; border-bottom: 0.5px solid var(--b); background: var(--warm2);
+    }
+    .pt-hcell {
+      font-size: 10px; color: var(--t3); font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.4px; font-family: var(--font-mono);
+    }
+    .pt-row {
+      display: grid; grid-template-columns: 2fr 70px 110px 110px;
+      padding: 11px 16px; border-bottom: 0.5px solid var(--b); align-items: center;
+    }
+    .pt-row:last-child { border-bottom: none; }
+    .pt-cell { font-size: 12px; color: var(--t1); }
+    .pt-cycle { font-family: var(--font-mono); font-size: 11px; color: var(--t3); }
+
+    @media (max-width: 768px) {
+      .pt-head { grid-template-columns: 1fr 60px 90px; }
+      .pt-row  { grid-template-columns: 1fr 60px 90px; }
+      .pt-hcell:last-child { display: none; }
+      .pt-row > *:last-child { display: none; }
+      .comp-banner { padding: 14px 16px; gap: 12px; }
+      .comp-title  { font-size: 16px; }
+    }
+
     /* ── Inviting view ─────────────────────────────────────── */
     .check-item { display:flex; align-items:center; gap:10px; padding:10px; border-radius:var(--rs); }
     .check-item.ci-done { background:var(--gbg); border:0.5px solid var(--gborder); }
@@ -167,6 +212,9 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
               [style.opacity]="isFull() ? '1' : '0.5'"
               [style.cursor]="isFull() ? 'pointer' : 'not-allowed'"
               (click)="startGroup()">{{ t('groupDetail.inviting.startGroup') }}</button>
+          } @else if (g.status === 'completed') {
+            <button class="btn-sm btn-sm-o" (click)="downloadPdf()">{{ t('groupDetail.completed.downloadPdf') }}</button>
+            <button class="btn-sm btn-sm-o" (click)="archiveGroup()">{{ t('groupDetail.completed.archive') }}</button>
           } @else {
             <button class="btn-sm btn-sm-o" (click)="postingAnnouncement.set(true)">{{ t('groupDetail.postAnnouncement') }}</button>
             <button class="btn-sm btn-sm-g" (click)="openAuction()">{{ actionLabel(g.strategy) }}</button>
@@ -352,9 +400,105 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 
         </div>
 
+      } @else if (g.status === 'completed') {
+
+        <!-- ── COMPLETED VIEW ─────────────────────────────────── -->
+
+        <!-- Completion banner -->
+        <div class="comp-banner">
+          <div class="comp-icon">
+            <svg style="width:20px;height:20px;stroke:var(--saffron);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div>
+            <div class="comp-title">{{ t('groupDetail.completed.allCyclesComplete') }}</div>
+            <div class="comp-meta">{{ g.name }} · {{ t('groupDetail.completed.ended') }} {{ endDateLabel() }} · {{ g.total_cycles }} {{ t('groupDetail.completed.cycles') }}</div>
+          </div>
+        </div>
+
+        <!-- Completed: Stats — desktop -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.completed.totalCollected') }}</div>
+            <div class="sc-val">{{ totalCollected() | indianCurrency }}</div>
+            <div class="sc-sub">{{ g.member_count }} × ₹{{ g.contribution_amount | number:'1.0-0' }} × {{ g.total_cycles }} {{ t('groupDetail.completed.cyclesSub') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.completed.totalDisbursed') }}</div>
+            <div class="sc-val g">{{ totalDisbursed() | indianCurrency }}</div>
+            <div class="sc-sub">{{ t('groupDetail.completed.paidToWinners') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.completed.duration') }}</div>
+            <div class="sc-val">{{ g.total_cycles }}</div>
+            <div class="sc-sub">{{ t('groupDetail.completed.months') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-lbl">{{ t('groupDetail.completed.members') }}</div>
+            <div class="sc-val">{{ g.member_count }}</div>
+            <div class="sc-sub">{{ t('groupDetail.completed.allReceived') }}</div>
+          </div>
+        </div>
+
+        <!-- Completed: Stats — mobile -->
+        <div class="card stats2">
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.completed.totalCollected') }}</div>
+            <div class="sc-v">{{ totalCollected() | indianCurrency }}</div>
+          </div>
+          <div class="sc" style="padding:12px 0;">
+            <div class="sc-l">{{ t('groupDetail.completed.totalDisbursed') }}</div>
+            <div class="sc-v g">{{ totalDisbursed() | indianCurrency }}</div>
+          </div>
+          <div class="sc" style="padding:12px 16px;">
+            <div class="sc-l">{{ t('groupDetail.completed.duration') }}</div>
+            <div class="sc-v">{{ g.total_cycles }}</div>
+          </div>
+        </div>
+
+        <!-- Payout history timeline -->
+        <div class="sec-hdr">
+          <span class="sec-title">{{ t('groupDetail.completed.payoutHistory') }}</span>
+        </div>
+        <div class="card">
+          <div class="timeline">
+            @for (c of cycles(); track c.id) {
+              <div class="tl-item">
+                <div class="tl-circle tl-done">{{ completedCycleInitials(c) }}</div>
+                <div class="tl-label g">{{ completedCycleLabel(c) }}</div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Member payouts table -->
+        <div class="sec-hdr">
+          <span class="sec-title">{{ t('groupDetail.completed.memberPayouts') }}</span>
+        </div>
+        <div class="payout-tbl">
+          <div class="pt-head">
+            <div class="pt-hcell">{{ t('groupDetail.completed.colMember') }}</div>
+            <div class="pt-hcell">{{ t('groupDetail.completed.colCycle') }}</div>
+            <div class="pt-hcell">{{ t('groupDetail.completed.colAmount') }}</div>
+            <div class="pt-hcell">{{ t('groupDetail.completed.colDate') }}</div>
+          </div>
+          @for (row of completedPayoutRows(); track row.cycleNumber) {
+            <div class="pt-row">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="av av-sm av-{{ row.avatarColor }}">{{ row.memberInitials }}</div>
+                <span class="pt-cell">{{ row.memberName }}</span>
+              </div>
+              <div class="pt-cycle">{{ t('groupDetail.completed.cycleLabel', { n: row.cycleNumber }) }}</div>
+              <div class="pt-cell" style="color:var(--green);font-weight:500;">{{ row.amount | indianCurrency }}</div>
+              <div class="pt-cell" style="color:var(--t3);">{{ row.date }}</div>
+            </div>
+          }
+        </div>
+
       } @else {
 
-        <!-- Active / completed: Stat cards — desktop -->
+        <!-- Active: Stat cards — desktop -->
         <div class="stats-row">
           <div class="stat-card">
             <div class="sc-lbl">{{ t('groupDetail.potThisMonth') }}</div>
@@ -559,6 +703,8 @@ export class GroupDetailPage {
   store          = inject(ConsoleStore);
   private router = inject(Router);
   private route  = inject(ActivatedRoute);
+  private ui     = inject(UIStore);
+  private pdf    = inject(PdfService);
 
   // Store signals
   group         = this.store.selectedGroup;
@@ -621,6 +767,48 @@ export class GroupDetailPage {
   );
   activeCycle     = computed(() => this.store.cycles().find(c => c.status === 'active') ?? null);
   recentAnnouncements = computed(() => this.store.announcements().slice(0, 3));
+
+  // ── Completed-state computeds ─────────────────────────────────────────────
+  totalCollected = computed(() => {
+    const g = this.group();
+    return g ? g.contribution_amount * g.member_count * g.total_cycles : 0;
+  });
+
+  totalDisbursed = computed(() =>
+    this.store.cycles()
+      .filter(c => c.status === 'completed')
+      .reduce((sum, c) => sum + (c.payout_amount ?? 0), 0)
+  );
+
+  endDateLabel = computed(() => {
+    const completed = this.store.cycles()
+      .filter(c => c.status === 'completed')
+      .sort((a, b) => a.cycle_number - b.cycle_number);
+    const last = completed[completed.length - 1];
+    if (!last) return '';
+    const payouts = this.store.payouts();
+    const payout  = payouts.find(p => p.cycle_id === last.id);
+    return this.formatFullDate(payout?.payment_date ?? last.due_date);
+  });
+
+  completedPayoutRows = computed(() => {
+    const payouts = this.store.payouts();
+    return this.store.cycles()
+      .filter(c => c.status === 'completed' && c.winner_profile_id)
+      .sort((a, b) => a.cycle_number - b.cycle_number)
+      .map(c => {
+        const member = this.enrichedMembers().find(m => m.profile_id === c.winner_profile_id);
+        const payout = payouts.find(p => p.cycle_id === c.id);
+        return {
+          memberName:     member?.profile.name     ?? '—',
+          memberInitials: member?.profile.initials ?? '?',
+          avatarColor:    member?.profile.avatar_color ?? 'g',
+          cycleNumber:    c.cycle_number,
+          amount:         c.payout_amount ?? payout?.amount ?? 0,
+          date:           this.formatFullDate(payout?.payment_date ?? c.due_date),
+        };
+      });
+  });
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -746,5 +934,47 @@ export class GroupDetailPage {
     const g = this.group();
     if (!g || !this.isFull()) return;
     this.store.startGroup(g.id);
+  }
+
+  // ── Completed-state helpers ───────────────────────────────────────────────
+
+  formatFullDate(dateStr: string): string {
+    const [yr, mo, dy] = dateStr.split('-');
+    return `${+dy} ${MONTHS[+mo - 1]} ${yr}`;
+  }
+
+  completedCycleInitials(c: Cycle): string {
+    const member = this.enrichedMembers().find(m => m.profile_id === c.winner_profile_id);
+    return member?.profile.initials ?? `M${c.cycle_number}`;
+  }
+
+  completedCycleLabel(c: Cycle): string {
+    const parts = c.month_label.split(' · ');
+    const month = parts[0] ?? c.month_label;
+    const amt   = c.payout_amount ? ` · ₹${Math.round(c.payout_amount / 1000)}K` : '';
+    return `${month}${amt}`;
+  }
+
+  downloadPdf(): void {
+    const g = this.group();
+    if (!g) return;
+    this.pdf.downloadGroupReport({
+      groupName:       g.name,
+      strategy:        g.strategy,
+      endDate:         this.endDateLabel(),
+      totalCollected:  this.totalCollected(),
+      totalDisbursed:  this.totalDisbursed(),
+      durationMonths:  g.total_cycles,
+      memberCount:     g.member_count,
+      payouts:         this.completedPayoutRows(),
+    });
+    this.ui.addToast('PDF report downloaded', 'success');
+  }
+
+  archiveGroup(): void {
+    const g = this.group();
+    if (!g) return;
+    this.store.archiveGroup(g.id);
+    this.router.navigate(['/console/dashboard']);
   }
 }

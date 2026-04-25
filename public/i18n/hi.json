@@ -79,6 +79,7 @@
     "reviewArrow": "समीक्षा →",
     "viewArrow": "देखें →",
     "invitingBadge": "आमंत्रित",
+    "completedBadge": "पूर्ण",
     "pendingApprovals": "लंबित अनुमोदन",
     "membersWaiting": "शामिल होने की प्रतीक्षा में सदस्य",
     "waiting": "प्रतीक्षा में",
@@ -156,6 +157,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "सभी चक्र पूर्ण",
+      "ended": "समाप्त",
+      "cycles": "चक्र",
+      "totalCollected": "कुल संग्रह",
+      "totalDisbursed": "कुल वितरण",
+      "paidToWinners": "विजेताओं को भुगतान",
+      "duration": "अवधि",
+      "months": "महीने",
+      "members": "सदस्य",
+      "allReceived": "सभी ने पॉट प्राप्त किया",
+      "payoutHistory": "भुगतान इतिहास",
+      "memberPayouts": "सदस्य भुगतान",
+      "colMember": "सदस्य",
+      "colCycle": "चक्र",
+      "colAmount": "प्राप्त राशि",
+      "colDate": "तारीख",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "चक्र",
+      "downloadPdf": "PDF रिपोर्ट डाउनलोड करें",
+      "archive": "समूह संग्रहीत करें"
     }
   },
   "approvals": {

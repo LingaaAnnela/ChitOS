@@ -217,6 +217,8 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
               <div class="gr-name">{{ g.name }}</div>
               @if (g.status === 'inviting') {
                 <span class="badge badge-a" style="margin-top:3px;display:inline-block;">{{ t('dashboard.invitingBadge') }}</span>
+              } @else if (g.status === 'completed') {
+                <span class="badge badge-g" style="margin-top:3px;display:inline-block;">{{ t('dashboard.completedBadge') }}</span>
               }
               <div class="gr-meta">{{ groupMeta(g) }}</div>
             </div>
@@ -286,6 +288,8 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
                 <span class="badge badge-{{ strategyVariant(g.strategy) }}">{{ g.strategy | titlecase }}</span>
                 @if (g.status === 'inviting') {
                   <span class="badge badge-a">{{ t('dashboard.invitingBadge') }}</span>
+                } @else if (g.status === 'completed') {
+                  <span class="badge badge-g">{{ t('dashboard.completedBadge') }}</span>
                 }
               </div>
             </div>

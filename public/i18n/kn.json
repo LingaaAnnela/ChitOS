@@ -79,6 +79,7 @@
     "reviewArrow": "ಪರಿಶೀಲನೆ →",
     "viewArrow": "ನೋಡಿ →",
     "invitingBadge": "ಆಹ್ವಾನಿಸುತ್ತಿದೆ",
+    "completedBadge": "ಪೂರ್ಣಗೊಂಡಿದೆ",
     "pendingApprovals": "ಬಾಕಿ ಅನುಮೋದನೆಗಳು",
     "membersWaiting": "ಸೇರಲು ಕಾಯುತ್ತಿರುವ ಸದಸ್ಯರು",
     "waiting": "ಕಾಯುತ್ತಿದ್ದಾರೆ",
@@ -156,6 +157,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "ಎಲ್ಲ ಚಕ್ರಗಳು ಪೂರ್ಣ",
+      "ended": "ಮುಗಿದಿದೆ",
+      "cycles": "ಚಕ್ರಗಳು",
+      "totalCollected": "ಒಟ್ಟು ಸಂಗ್ರಹ",
+      "totalDisbursed": "ಒಟ್ಟು ವಿತರಣೆ",
+      "paidToWinners": "ವಿಜೇತರಿಗೆ ಪಾವತಿ",
+      "duration": "ಅವಧಿ",
+      "months": "ತಿಂಗಳುಗಳು",
+      "members": "ಸದಸ್ಯರು",
+      "allReceived": "ಎಲ್ಲರೂ ಪಾಟ್ ಪಡೆದರು",
+      "payoutHistory": "ಪಾವತಿ ಇತಿಹಾಸ",
+      "memberPayouts": "ಸದಸ್ಯ ಪಾವತಿಗಳು",
+      "colMember": "ಸದಸ್ಯ",
+      "colCycle": "ಚಕ್ರ",
+      "colAmount": "ಸ್ವೀಕರಿಸಿದ ಮೊತ್ತ",
+      "colDate": "ದಿನಾಂಕ",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "ಚಕ್ರಗಳು",
+      "downloadPdf": "PDF ವರದಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+      "archive": "ಗುಂಪನ್ನು ಆರ್ಕೈವ್ ಮಾಡಿ"
     }
   },
   "approvals": {

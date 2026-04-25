@@ -79,6 +79,7 @@
     "reviewArrow": "సమీక్ష →",
     "viewArrow": "చూడు →",
     "invitingBadge": "ఆహ్వానిస్తోంది",
+    "completedBadge": "పూర్తయింది",
     "pendingApprovals": "పెండింగ్ అనుమతులు",
     "membersWaiting": "చేరడానికి వేచి ఉన్న సభ్యులు",
     "waiting": "వేచి ఉన్నారు",
@@ -156,6 +157,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "అన్ని సైకిల్లు పూర్తయ్యాయి",
+      "ended": "ముగిసింది",
+      "cycles": "సైకిల్లు",
+      "totalCollected": "మొత్తం వసూలు",
+      "totalDisbursed": "మొత్తం పంపిణీ",
+      "paidToWinners": "విజేతలకు చెల్లించారు",
+      "duration": "వ్యవధి",
+      "months": "నెలలు",
+      "members": "సభ్యులు",
+      "allReceived": "అందరూ పాట్ అందుకున్నారు",
+      "payoutHistory": "చెల్లింపు చరిత్ర",
+      "memberPayouts": "సభ్యుల చెల్లింపులు",
+      "colMember": "సభ్యుడు",
+      "colCycle": "సైకిల్",
+      "colAmount": "అందిన మొత్తం",
+      "colDate": "తేదీ",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "సైకిల్లు",
+      "downloadPdf": "PDF నివేదిక డౌన్‌లోడ్ చేయండి",
+      "archive": "గ్రూప్ ఆర్కైవ్ చేయండి"
     }
   },
   "approvals": {

@@ -356,6 +356,19 @@ export const ConsoleStore = signalStore(
         }
       },
 
+      async archiveGroup(groupId: string) {
+        try {
+          patchState(store, {
+            groups: store.groups().filter(g => g.id !== groupId),
+            selectedGroup: null,
+          });
+          ui.addToast('Group archived', 'success');
+        } catch (e: unknown) {
+          patchState(store, { error: errMsg(e) });
+          ui.addToast(errMsg(e), 'error');
+        }
+      },
+
       async recordConsensusWinner(cycleId: string, profileId: string) {
         const cycle = store.cycles().find(c => c.id === cycleId);
         const group = store.selectedGroup();

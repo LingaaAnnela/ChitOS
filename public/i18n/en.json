@@ -82,6 +82,7 @@
     "reviewArrow": "Review →",
     "viewArrow": "View →",
     "invitingBadge": "Inviting",
+    "completedBadge": "Completed",
     "pendingApprovals": "Pending approvals",
     "membersWaiting": "Members waiting to join",
     "waiting": "waiting",
@@ -160,6 +161,28 @@
       "emptySlot": "Open slot",
       "acceptedDate": "Accepted {{ date }}",
       "requestedDate": "Requested {{ date }} · awaiting approval"
+    },
+    "completed": {
+      "allCyclesComplete": "All cycles complete",
+      "ended": "Ended",
+      "cycles": "cycles",
+      "totalCollected": "Total collected",
+      "totalDisbursed": "Total disbursed",
+      "paidToWinners": "Paid to winners",
+      "duration": "Duration",
+      "months": "months",
+      "members": "Members",
+      "allReceived": "All received pot",
+      "payoutHistory": "Payout history",
+      "memberPayouts": "Member payouts",
+      "colMember": "Member",
+      "colCycle": "Cycle",
+      "colAmount": "Amount received",
+      "colDate": "Date",
+      "cycleLabel": "C{{ n }}",
+      "cyclesSub": "cycles",
+      "downloadPdf": "Download PDF Report",
+      "archive": "Archive Group"
     }
   },
 

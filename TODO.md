@@ -401,7 +401,7 @@
 
 ---
 
-- [ ] **TODO-016** · Effort: Medium · Deps: TODO-001
+- [x] **TODO-016** · Effort: Medium · Deps: TODO-001
   **Console: completed state for a group (Family Savings scenario)**
   When all cycles are done, the group detail and dashboard should show a "Completed" state with final summary and archive actions.
   ```
